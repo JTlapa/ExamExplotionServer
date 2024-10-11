@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host", "Host\Host.csproj", "{FCFAF645-64D1-44A5-96EB-8E38953EBBF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerService", "ServerServices\ServerService.csproj", "{3AF8EC20-C6D7-4E48-B487-276D42AC4A28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{F267914C-7292-4875-8622-FCFABF14B196}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FCFAF645-64D1-44A5-96EB-8E38953EBBF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCFAF645-64D1-44A5-96EB-8E38953EBBF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCFAF645-64D1-44A5-96EB-8E38953EBBF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCFAF645-64D1-44A5-96EB-8E38953EBBF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AF8EC20-C6D7-4E48-B487-276D42AC4A28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF8EC20-C6D7-4E48-B487-276D42AC4A28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF8EC20-C6D7-4E48-B487-276D42AC4A28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF8EC20-C6D7-4E48-B487-276D42AC4A28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F267914C-7292-4875-8622-FCFABF14B196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F267914C-7292-4875-8622-FCFABF14B196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F267914C-7292-4875-8622-FCFABF14B196}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F267914C-7292-4875-8622-FCFABF14B196}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29E856AD-7C1D-4A2D-817F-16E11E18554A}
+	EndGlobalSection
+EndGlobal
