@@ -1,0 +1,104 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vscode/
+
+# Build Results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Entity Framework
+*.tt                # Ignorar plantillas T4 (generadas)
+*.edmx.diagram       # Ignorar archivos de diagramas
+*.Designer.cs        # Ignorar archivos de diseñador generados automáticamente
+
+
+# NuGet
+*.nupkg
+# NuGet Packages
+*.snupkg
+*.nuget/
+packages/
+*.dll
+*.exe
+
+# Packages
+# it's better to restore NuGet packages in the build pipeline
+*.nupkg
+# NuGet v3's project.json files produces more ignorable files
+project.lock.json
+project.fragment.lock.json
+# NuGet v4
+project.assets.json
+# NPM packages
+node_modules/
+
+# SQL Server files
+*.mdf
+*.ldf
+
+# Resx files and localization
+*.resx
+*.Designer.cs
+
+# Log, local databases, and other generated files
+*.log
+*.ldf
+*.mdf
+*.pidb
+*.cache
+*.pdb
+*.opendb
+*.sdf
+*.sqlite
+*.db
+*.mdb
+
+# Application Insights
+ApplicationInsights.config
+
+# Web publishing
+.publish*
+
+# JetBrains Rider
+.idea/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# MacOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# WCF metadata
+*.svcinfo
+*.svcmap
+*.xsd
+*.xss
+*.datasource
+
+# Others
+*.dbmdl
+*.bak
+*.psess
+*.testsettings
+*.vsmdi
+TestResults/
