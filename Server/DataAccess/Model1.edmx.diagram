@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3e29fe5683c044d88a620ea8d9c08d33" Name="Diagram1">
+        <EntityTypeShape EntityType="ExamExplotionDBModel.Accessory" Width="1.5" PointX="5.25" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamExplotionDBModel.Account" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamExplotionDBModel.Game" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamExplotionDBModel.Guest" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamExplotionDBModel.Player" Width="1.5" PointX="5.25" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamExplotionDBModel.Users" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamExplotionDBModel.PurchasedAccessory" Width="1.5" PointX="7.5" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExamExplotionDBModel.Report" Width="1.5" PointX="7.5" PointY="5.5" IsExpanded="true" />
+        <AssociationConnector Association="ExamExplotionDBModel.FK__Purchased__acces__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamExplotionDBModel.FK_Player_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamExplotionDBModel.FK__Game__hostPlayer__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamExplotionDBModel.FK__Game__winnerPlay__4222D4EF" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamExplotionDBModel.FK_User_Guest" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamExplotionDBModel.FK__Purchased__playe__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamExplotionDBModel.FK__Report__idPlayer__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamExplotionDBModel.FK_User_Player" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamExplotionDBModel.Friend" ManuallyRouted="false" />
+        <AssociationConnector Association="ExamExplotionDBModel.PlayersByGame" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

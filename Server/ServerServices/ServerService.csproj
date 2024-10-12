@@ -43,7 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAccessoryManager.cs" />
     <Compile Include="IAccountManager.cs" />
+    <Compile Include="IGameManager.cs" />
+    <Compile Include="IPlayerManager.cs" />
+    <Compile Include="IReportManager.cs" />
     <Compile Include="ServiceImplementation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
