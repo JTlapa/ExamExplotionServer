@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using DataAccess.EntitiesManager;
+using ServerServices;
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
@@ -29,7 +30,7 @@ namespace ServerService
 
             if (!connectedUsers.ContainsKey(gamertag))
             {
-                connectedUsers.Add(gamertag, callback);
+                connectedUsers[gamertag] = callback;
                 Console.WriteLine($"{gamertag} conectado.");
                 return true;
             }
@@ -39,10 +40,56 @@ namespace ServerService
 
         public void SendMessage(string gamertag, string message)
         {
-            foreach (var client in connectedUsers.Values)
+            List<string> disconnectedClients = new List<string>();
+
+            foreach (var client in connectedUsers)
             {
-                client.ReceiveMessage(gamertag, message);
+                try
+                {
+                    client.Value.ReceiveMessage(gamertag, message);
+                }
+                catch (CommunicationObjectAbortedException)
+                {
+                    disconnectedClients.Add(client.Key);
+                    Console.WriteLine($"Cliente {client.Key} se ha desconectado.");
+                }
             }
+
+            foreach (var disconnectedClient in disconnectedClients)
+            {
+                connectedUsers.Remove(disconnectedClient);
+            }
+        }
+
+    }
+
+    public partial class ServiceImplementation : IPlayerManager
+    {
+        bool IPlayerManager.AddFriend(int playerId, int friendId)
+        {
+            throw new NotImplementedException();
+        }
+
+        int IPlayerManager.GetWins(int playerId)
+        {
+            return PlayerManagerDB.GetWins(playerId);
+        }
+
+        bool IPlayerManager.RegisterPlayer(PlayerM player)
+        {
+            Player playerToRegistrate = new Player();
+            playerToRegistrate.userId = player.UserId;
+            playerToRegistrate.wins = 0;
+            playerToRegistrate.score = 0;
+            playerToRegistrate.accountId = player.AccountId;
+
+            bool playerRegistered = PlayerManagerDB.RegisterPlayer(playerToRegistrate);
+            return playerRegistered;
+        }
+
+        bool IPlayerManager.UpdateScore(int userId, int newScore)
+        {
+            return PlayerManagerDB.UpdateScore(userId, newScore);
         }
     }
 }
