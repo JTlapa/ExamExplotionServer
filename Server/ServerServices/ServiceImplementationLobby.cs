@@ -7,19 +7,6 @@ using System.ServiceModel;
 
 namespace ServerService
 {
-    public partial class ServiceImplementation : IAccountManager
-    {
-        public bool validateLogIn(AccountM account)
-        {
-            Account accountToValidate = new Account();
-            accountToValidate.gamertag = account.Gamertag;
-            accountToValidate.password = account.Password;
-
-            bool result = AccountManagerDB.ValidateAccount(accountToValidate);
-
-            return result;
-        }
-    }
     public partial class ServiceImplementation : ILobbyManager
     {
         private static Dictionary<string, ILobbyConnectionCallback> connectedUsers = new Dictionary<string, ILobbyConnectionCallback>();

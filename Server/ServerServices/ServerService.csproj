@@ -44,12 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAccessoryManager.cs" />
-    <Compile Include="IAccountManager.cs" />
+    <Compile Include="IAuthenticationManager.cs" />
     <Compile Include="IGameManager.cs" />
     <Compile Include="ILobbyManager.cs" />
     <Compile Include="IPlayerManager.cs" />
     <Compile Include="IReportManager.cs" />
-    <Compile Include="ServiceImplementation.cs" />
+    <Compile Include="ServiceImplementationAuthentication.cs" />
+    <Compile Include="ServiceImplementationLobby.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -57,6 +58,10 @@
       <Project>{f267914c-7292-4875-8622-fcfabf14b196}</Project>
       <Name>DataAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
