@@ -4,12 +4,14 @@ using System.ServiceModel;
 
 namespace ServerService
 {
-    
-    [ServiceContract]
-    interface IAccountManager
+    [ServiceContract(SessionMode = SessionMode.Required)]
+    interface IAuthenticationManager
     {
         [OperationContract]
-        bool validateLogIn(AccountM account);
+        bool Login(AccountM account);
+
+        [OperationContract]
+        int GetUserIdFromCurrentSession();
 
     }
 

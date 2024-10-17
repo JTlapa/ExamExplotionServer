@@ -10,7 +10,7 @@ namespace DataAccess.EntitiesManager
     {
         public static bool RegisterPlayer(Player player)
         {
-            using (var context = new ExamExplotionDBEntities())
+            using (var context = new ExamExplotionDB())
             {
                 var playerRegistered = context.Player.Add(player);
                 context.SaveChanges();
@@ -27,7 +27,7 @@ namespace DataAccess.EntitiesManager
 
         public static bool UpdateScore(int userId, int newScore)
         {
-            using (var context = new ExamExplotionDBEntities())
+            using (var context = new ExamExplotionDB())
             {
                 var player = context.Player.FirstOrDefault(p => p.userId == userId);
 
@@ -45,7 +45,7 @@ namespace DataAccess.EntitiesManager
         /*
         public static int AddFriend(int playerId, int friendId)
         {
-            using (var context = new ExamExplotionDBEntities())
+            using (var context = new ExamExplotionDB())
             {
                 var player1 = context.Player.FirstOrDefault(p => p.userId == playerId);
                 var player2 = context.Player.FirstOrDefault(p => playerId == friendId);
@@ -67,7 +67,7 @@ namespace DataAccess.EntitiesManager
 
         public static int GetWins(int playerId)
         {
-            using(var context = new ExamExplotionDBEntities())
+            using(var context = new ExamExplotionDB())
             {
                 var player = context.Player.FirstOrDefault(p => p.userId == playerId);
                 return player != null ? player.wins.GetValueOrDefault(0) : -1; /* Returns -1 if player doesnt exists */

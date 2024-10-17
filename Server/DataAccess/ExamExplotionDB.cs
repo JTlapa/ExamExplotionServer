@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace DataAccess
 {
-    public partial class ExamExplotionDBEntities : DbContext
+    public partial class ExamExplotionDB : DbContext
     {
-        public ExamExplotionDBEntities()
-            : base("name=ExamExplotionDBEntities")
+        public ExamExplotionDB()
+            : base("name=ExamExplotionDB")
         {
         }
 

@@ -8,20 +8,21 @@ namespace DataAccess.EntitiesManager
 {
     public class AccountManagerDB
     {
-        public static bool ValidateAccount(Account account)
+        public static int ValidateAccount(Account account)
         {
-            using (var context = new ExamExplotionDBEntities())
+            using (var context = new ExamExplotionDB())
             {
                 var accountVerifed = context.Account.FirstOrDefault(u => u.gamertag == account.gamertag && u.password == account.password);
-
+                int idAccount;
                 if (accountVerifed != null)
                 {
-                    return true;
+                    idAccount = accountVerifed.accountId;
                 }
                 else
                 {
-                    return false;
+                    idAccount = -1;
                 }
+                return idAccount;
             }
         }
     }
