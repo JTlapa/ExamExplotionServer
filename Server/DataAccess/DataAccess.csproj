@@ -42,9 +42,18 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.Services" />
+    <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Data.Services.Design" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Selectors" />
+    <Reference Include="System.IdentityModel.Services" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,6 +66,7 @@
     <Compile Include="Account.cs" />
     <Compile Include="EntitiesManager\AccountManagerDB.cs" />
     <Compile Include="EntitiesManager\PlayerManagerDB.cs" />
+    <Compile Include="EntitiesManager\UserManagerDB.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Guest.cs" />
     <Compile Include="ExamExplotionDB.cs" />

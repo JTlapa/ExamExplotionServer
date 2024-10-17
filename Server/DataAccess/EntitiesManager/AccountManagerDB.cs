@@ -25,6 +25,25 @@ namespace DataAccess.EntitiesManager
                 return idAccount;
             }
         }
+
+        public static int AddAcount(Account account)
+        {
+            using (var context = new ExamExplotionDB())
+            {
+                var newAccount = context.Account.Add(account);
+                context.SaveChanges();
+                int idAccount;
+                if (newAccount != null)
+                {
+                    idAccount = newAccount.accountId;
+                }
+                else
+                {
+                    idAccount = -1;
+                }
+                return idAccount;
+            }
+        }
     }
 }
 
