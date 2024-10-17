@@ -27,7 +27,6 @@ namespace ServerService
             accountToValidate.password = account.Password;
 
             this.userId = AccountManagerDB.ValidateAccount(accountToValidate);
-
             if (this.userId != -1)
             {
                 this.gamertag = account.Gamertag;
