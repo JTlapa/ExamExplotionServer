@@ -11,15 +11,29 @@ namespace ServerService
         bool Login(AccountM account);
 
         [OperationContract]
-        int GetUserIdFromCurrentSession();
+        int GetAccountIdFromCurrentSession();
 
+        [OperationContract]
+        bool AddAccount(AccountM account);
     }
 
     [DataContract]
     public class AccountM
     {
+        private String name;
+        private String lastname;
+        private String email;
         private String gamertag;
         private String password;
+
+        [DataMember]
+        public String Name { get { return name; } set { name = value; } }
+
+        [DataMember]
+        public String Lastname { get { return lastname; } set { lastname = value; } }
+
+        [DataMember]
+        public String Email { get { return email; } set { email = value; } }
 
         [DataMember]
         public String Gamertag { get { return gamertag; } set { gamertag = value; } }
