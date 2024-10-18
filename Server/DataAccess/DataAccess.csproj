@@ -56,6 +56,7 @@
     <Compile Include="Accessory.cs" />
     <Compile Include="Account.cs" />
     <Compile Include="EntitiesManager\AccountManagerDB.cs" />
+    <Compile Include="EntitiesManager\GameManagerDB.cs" />
     <Compile Include="EntitiesManager\PlayerManagerDB.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Guest.cs" />

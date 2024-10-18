@@ -2,53 +2,100 @@
 using DataAccess.EntitiesManager;
 using ServerServices;
 using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.ServiceModel;
+using System.Resources;
+using System.Linq;
 
 namespace ServerService
 {
     public partial class ServiceImplementation : ILobbyManager
     {
-        private static Dictionary<string, ILobbyConnectionCallback> connectedUsers = new Dictionary<string, ILobbyConnectionCallback>();
+        private static readonly Dictionary<string, Dictionary<string, ILobbyConnectionCallback>> lobbyConnections = new Dictionary<string, Dictionary<string, ILobbyConnectionCallback>>();
 
-        public bool Connect(string gamertag)
+        public bool Connect(string gamertag, string lobbyCode)
         {
             var callback = OperationContext.Current.GetCallbackChannel<ILobbyConnectionCallback>();
-
-            if (!connectedUsers.ContainsKey(gamertag))
+            bool connected = false;
+            if (!lobbyConnections[lobbyCode].ContainsKey(gamertag))
             {
-                connectedUsers[gamertag] = callback;
+                lobbyConnections[lobbyCode].Add(gamertag, callback);
+                connected = true;
                 Console.WriteLine($"{gamertag} conectado.");
-                return true;
             }
-
-            return false;
+            return connected;
         }
 
-        public void SendMessage(string gamertag, string message)
+        public void Disconnect(string gamertag)
         {
-            List<string> disconnectedClients = new List<string>();
-
-            foreach (var client in connectedUsers)
+            /*if (connectedUsers.ContainsKey(gamertag))
             {
-                try
+                connectedUsers.Remove(gamertag);
+                Console.WriteLine($"{gamertag} desconectado.");
+            }*/
+        }
+
+        public string CreateLobby(GameM gameReceived)
+        {
+            string code = null;
+            do
+            {
+                code = GenerateLobbyCode();
+            }
+            while (lobbyConnections.ContainsKey(code));
+
+            Game gameToRegister = new Game();
+            gameToRegister.timePerTurn = gameReceived.TimePerTurn;
+            gameToRegister.invitationCode = code;
+            gameToRegister.lives = gameReceived.Lives;
+            gameToRegister.numberPlayers = gameReceived.NumberPlayers;
+            gameToRegister.hostPlayerId = gameReceived.HostPlayerId;
+            return code;
+        }
+        private static string GenerateLobbyCode()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random random = new Random();
+            return new string(Enumerable.Repeat(chars, 4).Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public void SendMessage(string code, string gamertag, string message)
+        {
+            if (lobbyConnections.ContainsKey(code))
+            {
+                var playersInLobby = lobbyConnections[code];
+
+                foreach (var player in playersInLobby)
                 {
-                    client.Value.ReceiveMessage(gamertag, message);
-                }
-                catch (CommunicationObjectAbortedException)
-                {
-                    disconnectedClients.Add(client.Key);
-                    Console.WriteLine($"Cliente {client.Key} se ha desconectado.");
+                    player.Value.ReceiveMessage(gamertag, message);
                 }
             }
+        }
+    }
 
-            foreach (var disconnectedClient in disconnectedClients)
+    public partial class ServiceImplementation : ILobbyConnectionManager
+    {
+        public bool JoinLobby(string code, string player, int maxPlayers)
+        {
+            bool joined = false;
+            if (lobbyConnections.ContainsKey(code))
             {
-                connectedUsers.Remove(disconnectedClient);
+                var players = lobbyConnections[code];
+
+                if (!players.ContainsKey(player))
+                {
+                    if (players.Count < maxPlayers)
+                    {
+                        joined = true;
+                    }
+                }
             }
+            return joined;
         }
 
     }
+
 
     public partial class ServiceImplementation : IPlayerManager
     {

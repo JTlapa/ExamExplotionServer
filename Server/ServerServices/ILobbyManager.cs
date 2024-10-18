@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServerServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
@@ -11,10 +12,15 @@ namespace ServerService
     public interface ILobbyManager
     {
         [OperationContract(IsOneWay = true)]
-        void SendMessage(string user, string message);
+        void SendMessage(string gameCode,string gamertag, string message);
 
         [OperationContract]
-        bool Connect(string user);
+        bool Connect(string user, string lobbyCode);
+        [OperationContract]
+        void Disconnect(string gamertag);
+
+        [OperationContract]
+        string CreateLobby(GameM gameReceived);
 
     }
     public interface ILobbyConnectionCallback
