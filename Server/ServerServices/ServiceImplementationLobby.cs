@@ -12,7 +12,7 @@ namespace ServerService
 {
     public partial class ServiceImplementation : ILobbyManager
     {
-        private static readonly Dictionary<string, Dictionary<string, ILobbyConnectionCallback>> lobbyConnections = new Dictionary<string, Dictionary<string, ILobbyConnectionCallback>>();
+        private static Dictionary<string, Dictionary<string, ILobbyConnectionCallback>> lobbyConnections = new Dictionary<string, Dictionary<string, ILobbyConnectionCallback>>();
 
         public bool Connect(string gamertag, string lobbyCode)
         {
@@ -51,6 +51,10 @@ namespace ServerService
             gameToRegister.lives = gameReceived.Lives;
             gameToRegister.numberPlayers = gameReceived.NumberPlayers;
             gameToRegister.hostPlayerId = gameReceived.HostPlayerId;
+
+            GameManagerDB.AddGame(gameToRegister);
+            lobbyConnections.Add(code, new Dictionary<string, ILobbyConnectionCallback>());
+
             return code;
         }
         private static string GenerateLobbyCode()
@@ -72,15 +76,13 @@ namespace ServerService
                 }
             }
         }
-    }
-
-    public partial class ServiceImplementation : ILobbyConnectionManager
-    {
-        public bool JoinLobby(string code, string player, int maxPlayers)
+        public bool JoinLobby(string code, string player)
         {
             bool joined = false;
             if (lobbyConnections.ContainsKey(code))
             {
+                Game game = GameManagerDB.getGameByCode(code);
+                int maxPlayers = game.numberPlayers ?? 0;
                 var players = lobbyConnections[code];
 
                 if (!players.ContainsKey(player))
@@ -93,10 +95,7 @@ namespace ServerService
             }
             return joined;
         }
-
     }
-
-
     public partial class ServiceImplementation : IPlayerManager
     {
         bool IPlayerManager.AddFriend(int playerId, int friendId)

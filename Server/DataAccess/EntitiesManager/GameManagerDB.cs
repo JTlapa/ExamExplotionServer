@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,16 @@ namespace DataAccess.EntitiesManager
                     return false;
                 }
             }
+        }
+
+        public static Game getGameByCode(string code)
+        {
+            Game game = null;
+            using (var context = new ExamExplotionDB())
+            {
+                game = context.Game.FirstOrDefault(g => g.invitationCode == code);
+            }
+            return game;
         }
     }
 }

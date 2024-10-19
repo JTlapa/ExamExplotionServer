@@ -16,11 +16,15 @@ namespace ServerService
 
         [OperationContract]
         bool Connect(string user, string lobbyCode);
+
         [OperationContract]
         void Disconnect(string gamertag);
 
         [OperationContract]
         string CreateLobby(GameM gameReceived);
+
+        [OperationContract]
+        bool JoinLobby(string code, string gamertag);
 
     }
     public interface ILobbyConnectionCallback

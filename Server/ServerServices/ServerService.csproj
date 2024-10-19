@@ -56,7 +56,6 @@
     <Compile Include="IAccessoryManager.cs" />
     <Compile Include="IAuthenticationManager.cs" />
     <Compile Include="IGameManager.cs" />
-    <Compile Include="ILobbyConnectionManager.cs" />
     <Compile Include="ILobbyManager.cs" />
     <Compile Include="IPlayerManager.cs" />
     <Compile Include="IReportManager.cs" />
