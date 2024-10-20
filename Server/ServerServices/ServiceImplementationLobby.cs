@@ -14,26 +14,54 @@ namespace ServerService
     {
         private static Dictionary<string, Dictionary<string, ILobbyConnectionCallback>> lobbyConnections = new Dictionary<string, Dictionary<string, ILobbyConnectionCallback>>();
 
-        public bool Connect(string gamertag, string lobbyCode)
+        public List<string> Connect(string gamertag, string lobbyCode)
         {
             var callback = OperationContext.Current.GetCallbackChannel<ILobbyConnectionCallback>();
-            bool connected = false;
+
+            if (!lobbyConnections.ContainsKey(lobbyCode))
+            {
+                lobbyConnections[lobbyCode] = new Dictionary<string, ILobbyConnectionCallback>();
+            }
+
             if (!lobbyConnections[lobbyCode].ContainsKey(gamertag))
             {
                 lobbyConnections[lobbyCode].Add(gamertag, callback);
-                connected = true;
                 Console.WriteLine($"{gamertag} conectado.");
+
+                NotifyPlayers(gamertag, lobbyCode);
             }
-            return connected;
+            else
+            {
+                Console.WriteLine($"El jugador {gamertag} ya está conectado.");
+            }
+            return lobbyConnections[lobbyCode].Keys.ToList();
         }
 
-        public void Disconnect(string gamertag)
+
+        private void NotifyPlayers(string gamertag, string lobbyCode)
         {
-            /*if (connectedUsers.ContainsKey(gamertag))
+            foreach (var player in lobbyConnections[lobbyCode])
             {
-                connectedUsers.Remove(gamertag);
-                Console.WriteLine($"{gamertag} desconectado.");
-            }*/
+                if (player.Key != gamertag)
+                {
+                    player.Value.OnPlayerJoined(gamertag);
+                }
+            }
+        }
+
+
+        public void Disconnect(string lobbyCode, string gamertag)
+        {
+            if(lobbyConnections.ContainsKey(lobbyCode) && lobbyConnections[lobbyCode].ContainsKey(gamertag))
+            {
+                lobbyConnections[lobbyCode].Remove(gamertag);
+                Console.WriteLine($"{gamertag} se ha desconectado");
+
+                foreach (var player in lobbyConnections[lobbyCode])
+                {
+                    player.Value.OnPlayerLeft(gamertag);
+                }
+            }
         }
 
         public string CreateLobby(GameM gameReceived)

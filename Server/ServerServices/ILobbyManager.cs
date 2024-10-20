@@ -15,10 +15,10 @@ namespace ServerService
         void SendMessage(string gameCode,string gamertag, string message);
 
         [OperationContract]
-        bool Connect(string user, string lobbyCode);
+        List<string> Connect(string user, string lobbyCode);
 
         [OperationContract]
-        void Disconnect(string gamertag);
+        void Disconnect(string lobbyCode, string gamertag);
 
         [OperationContract]
         string CreateLobby(GameM gameReceived);
@@ -31,5 +31,9 @@ namespace ServerService
     {
         [OperationContract(IsOneWay = true)]
         void ReceiveMessage(string gamertag, string message);
+        [OperationContract(IsOneWay = true)]
+        void OnPlayerJoined(string gamertag);
+        [OperationContract(IsOneWay = true)]
+        void OnPlayerLeft(string gamertag);
     }
 }
