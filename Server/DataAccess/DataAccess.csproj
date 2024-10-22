@@ -71,6 +71,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="Guest.cs" />
     <Compile Include="ExamExplotionDB.cs" />
+    <Compile Include="Helpers\PasswordEncryptor.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchasedAccessory.cs" />

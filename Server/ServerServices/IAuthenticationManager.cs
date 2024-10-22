@@ -15,6 +15,15 @@ namespace ServerService
 
         [OperationContract]
         bool AddAccount(AccountM account);
+
+        [OperationContract]
+        bool VerifyExistingGamertag(string gamertag);
+
+        [OperationContract]
+        bool VerifyExistingEmail(string email);
+
+        [OperationContract]
+        bool UpdatePassword(AccountM account);
     }
 
     [DataContract]
