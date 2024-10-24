@@ -17,7 +17,7 @@ namespace DataAccess.EntitiesManager
             {
                 var accountVerifed = context.Account.FirstOrDefault(a => a.gamertag == account.gamertag && a.password == account.password);
                 int idAccount;
-                if (accountVerifed != null)
+                if (accountVerifed != null && accountVerifed.status == "Active")
                 {
                     idAccount = accountVerifed.accountId;
                 }
