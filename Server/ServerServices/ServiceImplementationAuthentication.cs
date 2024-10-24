@@ -65,5 +65,23 @@ namespace ServerService
 
             return false;
         }
+
+        public bool UpdatePassword(AccountM account)
+        {
+            Account accountToUpdate = new Account();
+            accountToUpdate.gamertag = account.Gamertag;
+            accountToUpdate.password = account.Password;
+            return AccountManagerDB.UpdatePassword(accountToUpdate);
+        }
+
+        public bool VerifyExistingEmail(string email)
+        {
+            return AccountManagerDB.VerifyExistingEmail(email);
+        }
+
+        public bool VerifyExistingGamertag(string gamertag)
+        {
+            return AccountManagerDB.VerifyExistingGamertag(gamertag);
+        }
     }
 }
