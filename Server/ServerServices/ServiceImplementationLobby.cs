@@ -13,8 +13,9 @@ namespace ServerService
     public partial class ServiceImplementation : ILobbyManager
     {
         private static Dictionary<string, Dictionary<string, ILobbyConnectionCallback>> lobbyConnections = new Dictionary<string, Dictionary<string, ILobbyConnectionCallback>>();
+        private static Dictionary<string, Dictionary<string, bool>> playerStatus = new Dictionary<string, Dictionary<string, bool>>();
 
-        public List<string> Connect(string gamertag, string lobbyCode)
+        public void Connect(string gamertag, string lobbyCode)
         {
             var callback = OperationContext.Current.GetCallbackChannel<ILobbyConnectionCallback>();
 
@@ -22,30 +23,27 @@ namespace ServerService
             {
                 lobbyConnections[lobbyCode] = new Dictionary<string, ILobbyConnectionCallback>();
             }
-
+            if (!playerStatus.ContainsKey(lobbyCode))
+            {
+                playerStatus[lobbyCode] = new Dictionary<string, bool>();
+            }
             if (!lobbyConnections[lobbyCode].ContainsKey(gamertag))
             {
                 lobbyConnections[lobbyCode].Add(gamertag, callback);
-                Console.WriteLine($"{gamertag} conectado.");
-
-                NotifyPlayers(gamertag, lobbyCode);
+                if (!playerStatus[lobbyCode].ContainsKey(gamertag))
+                {
+                    playerStatus[lobbyCode].Add(gamertag, false);
+                    Console.WriteLine($"{gamertag} conectado.");
+                    NotifyPlayers(gamertag, lobbyCode);
+                }
             }
-            else
-            {
-                Console.WriteLine($"El jugador {gamertag} ya está conectado.");
-            }
-            return lobbyConnections[lobbyCode].Keys.ToList();
         }
-
 
         private void NotifyPlayers(string gamertag, string lobbyCode)
         {
             foreach (var player in lobbyConnections[lobbyCode])
             {
-                if (player.Key != gamertag)
-                {
-                    player.Value.OnPlayerJoined(gamertag);
-                }
+                player.Value.Repaint(playerStatus[lobbyCode]);
             }
         }
 
@@ -55,11 +53,12 @@ namespace ServerService
             if(lobbyConnections.ContainsKey(lobbyCode) && lobbyConnections[lobbyCode].ContainsKey(gamertag))
             {
                 lobbyConnections[lobbyCode].Remove(gamertag);
+                playerStatus[lobbyCode].Remove(gamertag);
                 Console.WriteLine($"{gamertag} se ha desconectado");
 
                 foreach (var player in lobbyConnections[lobbyCode])
                 {
-                    player.Value.OnPlayerLeft(gamertag);
+                    player.Value.Repaint(playerStatus[lobbyCode]);
                 }
             }
         }
@@ -122,6 +121,33 @@ namespace ServerService
                 }
             }
             return joined;
+        }
+
+        public void UpdatePlayerStatus(string lobbyCode, string gamertag, bool isReady)
+        {
+            if (lobbyConnections.ContainsKey(lobbyCode) && lobbyConnections[lobbyCode].ContainsKey(gamertag))
+            {
+                playerStatus[lobbyCode][gamertag] = isReady;
+                foreach (var player in lobbyConnections[lobbyCode])
+                {
+                    player.Value.Repaint(playerStatus[lobbyCode]);
+                }
+            }
+        }
+        public void LeaveLobby(string code, string gamertag)
+        {
+            if (lobbyConnections.ContainsKey(code))
+            {
+                if (lobbyConnections[code].ContainsKey(gamertag) && playerStatus[code].ContainsKey(gamertag))
+                {
+                    lobbyConnections[code].Remove(gamertag);
+                    playerStatus[code].Remove(gamertag);
+                    foreach (var player in lobbyConnections[code])
+                    {
+                        player.Value.Repaint(playerStatus[code]);
+                    }
+                }
+            }
         }
     }
     public partial class ServiceImplementation : IPlayerManager
