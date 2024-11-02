@@ -12,7 +12,7 @@ namespace ServerServices
     interface IPlayerManager
     {
         [OperationContract]
-        bool RegisterPlayer(PlayerM player);
+        bool RegisterPlayer(PlayerManagement player);
 
         [OperationContract]
         bool UpdateScore(int userId, int newScore);
@@ -25,7 +25,7 @@ namespace ServerServices
     }
 
     [DataContract]
-    public class PlayerM
+    public class PlayerManagement
     {
         private int userId;
         private int accountId;

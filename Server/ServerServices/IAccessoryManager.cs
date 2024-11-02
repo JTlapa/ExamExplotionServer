@@ -18,11 +18,11 @@ namespace ServerServices
         bool SetAccessoryInUse(int playerId, int accessoryId);
 
         [OperationContract]
-        List<AccessoryM> GetPurchasedAccessories(int playerId);
+        List<AccessoryManagement> GetPurchasedAccessories(int playerId);
     }
 
     [DataContract]
-    public class AccessoryM
+    public class AccessoryManagement
     {
         private int accessoryId;
         private int price;

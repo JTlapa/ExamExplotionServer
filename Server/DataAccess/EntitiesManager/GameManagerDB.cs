@@ -35,5 +35,21 @@ namespace DataAccess.EntitiesManager
             }
             return game;
         }
+
+        public static bool DeleteGame(string invitationCode)
+        {
+            using(var context = new ExamExplotionDB())
+            {
+                bool deleted = false;
+                var game = context.Game.FirstOrDefault(g => g.invitationCode == invitationCode);
+                if (game != null)
+                {
+                    context.Game.Remove(game);
+                    context.SaveChanges();
+                    deleted = true;
+                }
+                return deleted;
+            }
+        }
     }
 }

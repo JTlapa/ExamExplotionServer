@@ -13,7 +13,7 @@ namespace ServerServices
     interface IGameManager
     {
         [OperationContract]
-        int CreateGame(GameM game);
+        int CreateGame(GameManagement game);
 
         [OperationContract]
         bool JoinGame(int gameId, int playerId);
@@ -25,14 +25,14 @@ namespace ServerServices
         bool EndGame(int gameId, int winnerPlayerId);
 
         [OperationContract]
-        List<PlayerM> GetPlayersInGame(int gameId);
+        List<PlayerManagement> GetPlayersInGame(int gameId);
 
         [OperationContract]
         string GetGameStatus(int gameId);
     }
 
     [DataContract]
-    public class GameM
+    public class GameManagement
     {
         private int gameId;
         private string invitationCode;

@@ -21,7 +21,7 @@ namespace ServerService
         void Disconnect(string lobbyCode, string gamertag);
 
         [OperationContract]
-        string CreateLobby(GameM gameReceived);
+        string CreateLobby(GameManagement gameReceived);
 
         [OperationContract]
         bool JoinLobby(string code, string gamertag);

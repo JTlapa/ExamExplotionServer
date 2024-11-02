@@ -17,7 +17,7 @@ namespace ServerService
         int accountId;
         int userId;
 
-        public bool AddAccount(AccountM account)
+        public bool AddAccount(AccountManagement account)
         {
             bool dataEntered = false;
 
@@ -50,7 +50,7 @@ namespace ServerService
             return accountId;
         }
 
-        public bool Login(AccountM account)
+        public bool Login(AccountManagement account)
         {
             Account accountToValidate = new Account();
             accountToValidate.gamertag = account.Gamertag;
@@ -66,7 +66,7 @@ namespace ServerService
             return false;
         }
 
-        public bool UpdatePassword(AccountM account)
+        public bool UpdatePassword(AccountManagement account)
         {
             Account accountToUpdate = new Account();
             accountToUpdate.gamertag = account.Gamertag;

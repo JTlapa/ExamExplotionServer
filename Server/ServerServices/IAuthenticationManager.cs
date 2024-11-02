@@ -8,13 +8,13 @@ namespace ServerService
     interface IAuthenticationManager
     {
         [OperationContract]
-        bool Login(AccountM account);
+        bool Login(AccountManagement account);
 
         [OperationContract]
         int GetAccountIdFromCurrentSession();
 
         [OperationContract]
-        bool AddAccount(AccountM account);
+        bool AddAccount(AccountManagement account);
 
         [OperationContract]
         bool VerifyExistingGamertag(string gamertag);
@@ -23,11 +23,11 @@ namespace ServerService
         bool VerifyExistingEmail(string email);
 
         [OperationContract]
-        bool UpdatePassword(AccountM account);
+        bool UpdatePassword(AccountManagement account);
     }
 
     [DataContract]
-    public class AccountM
+    public class AccountManagement
     {
         private String name;
         private String lastname;

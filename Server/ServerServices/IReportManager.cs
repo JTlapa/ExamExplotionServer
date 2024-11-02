@@ -19,7 +19,7 @@ namespace ServerServices
     }
 
     [DataContract]
-    public class ReportM
+    public class ReportManagement
     {
         private int reportedPlayerId;
         private int reportAmount;

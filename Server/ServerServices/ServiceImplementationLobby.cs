@@ -52,6 +52,11 @@ namespace ServerService
         {
             if(lobbyConnections.ContainsKey(lobbyCode) && lobbyConnections[lobbyCode].ContainsKey(gamertag))
             {
+                if (lobbyConnections[lobbyCode].Count == 1)
+                {
+                    GameManagerDB.DeleteGame(lobbyCode);
+                    Console.WriteLine("Lobby eliminada");
+                }
                 lobbyConnections[lobbyCode].Remove(gamertag);
                 playerStatus[lobbyCode].Remove(gamertag);
                 Console.WriteLine($"{gamertag} se ha desconectado");
@@ -63,7 +68,7 @@ namespace ServerService
             }
         }
 
-        public string CreateLobby(GameM gameReceived)
+        public string CreateLobby(GameManagement gameReceived)
         {
             string code = null;
             do
@@ -162,7 +167,7 @@ namespace ServerService
             return PlayerManagerDB.GetWins(playerId);
         }
 
-        bool IPlayerManager.RegisterPlayer(PlayerM player)
+        bool IPlayerManager.RegisterPlayer(PlayerManagement player)
         {
             Player playerToRegistrate = new Player();
             playerToRegistrate.userId = player.UserId;
