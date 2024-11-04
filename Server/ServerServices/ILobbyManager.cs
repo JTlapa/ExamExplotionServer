@@ -30,6 +30,8 @@ namespace ServerService
         void UpdatePlayerStatus(string code, string gamertag, bool isReady);
         [OperationContract]
         void LeaveLobby(string code, string gamertag);
+        [OperationContract(IsOneWay = true)]
+        void PlayGame(string lobbyCode);
     }
     public interface ILobbyConnectionCallback
     {
@@ -37,5 +39,7 @@ namespace ServerService
         void ReceiveMessage(string gamertag, string message);
         [OperationContract(IsOneWay = true)]
         void Repaint(Dictionary<string, bool> playerStatus);
+        [OperationContract(IsOneWay = true)]
+        void StartGame(Dictionary<string, bool> lobbyPlayers);
     }
 }

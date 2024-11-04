@@ -154,6 +154,14 @@ namespace ServerService
                 }
             }
         }
+
+        public void PlayGame(string lobbyCode)
+        {
+            foreach (var player in lobbyConnections[lobbyCode])
+            {
+                player.Value.StartGame(playerStatus[lobbyCode]);
+            }
+        }
     }
     public partial class ServiceImplementation : IPlayerManager
     {
