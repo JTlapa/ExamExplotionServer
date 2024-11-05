@@ -12,11 +12,13 @@ namespace DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class Guest
+    public partial class Friend
     {
-        public int userId { get; set; }
-        public int guestNumber { get; set; }
+        public int playerId1 { get; set; }
+        public int playerId2 { get; set; }
+        public string tipo { get; set; }
     
-        public virtual Users Users { get; set; }
+        public virtual Player Player { get; set; }
+        public virtual Player Player1 { get; set; }
     }
 }

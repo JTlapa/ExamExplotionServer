@@ -1,0 +1,784 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ExamExplotionDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Accessory">
+          <Key>
+            <PropertyRef Name="accessoryId" />
+          </Key>
+          <Property Name="accessoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="price" Type="int" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="255" />
+          <Property Name="imagesPackage" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="accountId" />
+          </Key>
+          <Property Name="accountId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+          <Property Name="gamertag" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="256" />
+          <Property Name="status" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.Friend' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Friend">
+          <Key>
+            <PropertyRef Name="playerId1" />
+            <PropertyRef Name="playerId2" />
+          </Key>
+          <Property Name="playerId1" Type="int" Nullable="false" />
+          <Property Name="playerId2" Type="int" Nullable="false" />
+          <Property Name="tipo" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="gameId" />
+          </Key>
+          <Property Name="gameId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="invitationCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="gameStatus" Type="nvarchar" MaxLength="20" />
+          <Property Name="numberPlayers" Type="int" />
+          <Property Name="timePerTurn" Type="int" />
+          <Property Name="lives" Type="int" />
+          <Property Name="winnerPlayerId" Type="int" />
+          <Property Name="hostPlayerId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Guest">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="guestNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="score" Type="int" />
+          <Property Name="wins" Type="int" />
+          <Property Name="accountId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.PlayersByGame' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="PlayersByGame">
+          <Key>
+            <PropertyRef Name="gameId" />
+            <PropertyRef Name="playerId" />
+          </Key>
+          <Property Name="gameId" Type="int" Nullable="false" />
+          <Property Name="playerId" Type="int" Nullable="false" />
+          <Property Name="tipo" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.PurchasedAccessory' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="PurchasedAccessory">
+          <Key>
+            <PropertyRef Name="playerId" />
+            <PropertyRef Name="accessoryId" />
+          </Key>
+          <Property Name="playerId" Type="int" Nullable="false" />
+          <Property Name="accessoryId" Type="int" Nullable="false" />
+          <Property Name="inUse" Type="bit" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.Report' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="idPlayerReported" />
+            <PropertyRef Name="amount" />
+          </Key>
+          <Property Name="idPlayerReported" Type="int" Nullable="false" />
+          <Property Name="amount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Friend__playerId__46E78A0C">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Friend" Type="Self.Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="playerId1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Friend__playerId__47DBAE45">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Friend" Type="Self.Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="playerId2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Game__hostPlayer__4316F928">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="hostPlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Game__winnerPlay__4222D4EF">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="winnerPlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayersBy__gameI__4E88ABD4">
+          <End Role="Game" Type="Self.Game" Multiplicity="1" />
+          <End Role="PlayersByGame" Type="Self.PlayersByGame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="gameId" />
+            </Principal>
+            <Dependent Role="PlayersByGame">
+              <PropertyRef Name="gameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayersBy__playe__4F7CD00D">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="PlayersByGame" Type="Self.PlayersByGame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="PlayersByGame">
+              <PropertyRef Name="playerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Purchased__acces__4CA06362">
+          <End Role="Accessory" Type="Self.Accessory" Multiplicity="1" />
+          <End Role="PurchasedAccessory" Type="Self.PurchasedAccessory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accessory">
+              <PropertyRef Name="accessoryId" />
+            </Principal>
+            <Dependent Role="PurchasedAccessory">
+              <PropertyRef Name="accessoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Purchased__playe__4BAC3F29">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="PurchasedAccessory" Type="Self.PurchasedAccessory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="PurchasedAccessory">
+              <PropertyRef Name="playerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Report__idPlayer__49C3F6B7">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="idPlayerReported" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Player_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Player" Type="Self.Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="accountId" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="accountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Guest">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Guest" Type="Self.Guest" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Guest">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Player">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExamExplotionDBModelStoreContainer">
+          <EntitySet Name="Accessory" EntityType="Self.Accessory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Game" EntityType="Self.Game" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Guest" EntityType="Self.Guest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Friend" EntityType="Self.Friend" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Friend].[playerId1] AS [playerId1], 
+    [Friend].[playerId2] AS [playerId2], 
+    [Friend].[tipo] AS [tipo]
+    FROM [dbo].[Friend] AS [Friend]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PlayersByGame" EntityType="Self.PlayersByGame" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PlayersByGame].[gameId] AS [gameId], 
+    [PlayersByGame].[playerId] AS [playerId], 
+    [PlayersByGame].[tipo] AS [tipo]
+    FROM [dbo].[PlayersByGame] AS [PlayersByGame]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PurchasedAccessory" EntityType="Self.PurchasedAccessory" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PurchasedAccessory].[playerId] AS [playerId], 
+    [PurchasedAccessory].[accessoryId] AS [accessoryId], 
+    [PurchasedAccessory].[inUse] AS [inUse]
+    FROM [dbo].[PurchasedAccessory] AS [PurchasedAccessory]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Report" EntityType="Self.Report" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Report].[idPlayerReported] AS [idPlayerReported], 
+    [Report].[amount] AS [amount]
+    FROM [dbo].[Report] AS [Report]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Friend__playerId__46E78A0C" Association="Self.FK__Friend__playerId__46E78A0C">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Friend" EntitySet="Friend" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Friend__playerId__47DBAE45" Association="Self.FK__Friend__playerId__47DBAE45">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Friend" EntitySet="Friend" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Game__hostPlayer__4316F928" Association="Self.FK__Game__hostPlayer__4316F928">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Game__winnerPlay__4222D4EF" Association="Self.FK__Game__winnerPlay__4222D4EF">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayersBy__gameI__4E88ABD4" Association="Self.FK__PlayersBy__gameI__4E88ABD4">
+            <End Role="Game" EntitySet="Game" />
+            <End Role="PlayersByGame" EntitySet="PlayersByGame" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayersBy__playe__4F7CD00D" Association="Self.FK__PlayersBy__playe__4F7CD00D">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PlayersByGame" EntitySet="PlayersByGame" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Purchased__acces__4CA06362" Association="Self.FK__Purchased__acces__4CA06362">
+            <End Role="Accessory" EntitySet="Accessory" />
+            <End Role="PurchasedAccessory" EntitySet="PurchasedAccessory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Purchased__playe__4BAC3F29" Association="Self.FK__Purchased__playe__4BAC3F29">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PurchasedAccessory" EntitySet="PurchasedAccessory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Report__idPlayer__49C3F6B7" Association="Self.FK__Report__idPlayer__49C3F6B7">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Player_Account" Association="Self.FK_Player_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Player" EntitySet="Player" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Guest" Association="Self.FK_User_Guest">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Guest" EntitySet="Guest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Player" Association="Self.FK_User_Player">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Player" EntitySet="Player" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExamExplotionDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Accessory">
+          <Key>
+            <PropertyRef Name="accessoryId" />
+          </Key>
+          <Property Name="accessoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="price" Type="Int32" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="imagesPackage" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PurchasedAccessory" Relationship="Self.FK__Purchased__acces__4CA06362" FromRole="Accessory" ToRole="PurchasedAccessory" />
+        </EntityType>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="accountId" />
+          </Key>
+          <Property Name="accountId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="gamertag" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Player" Relationship="Self.FK_Player_Account" FromRole="Account" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="gameId" />
+          </Key>
+          <Property Name="gameId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="invitationCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="gameStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="numberPlayers" Type="Int32" />
+          <Property Name="timePerTurn" Type="Int32" />
+          <Property Name="lives" Type="Int32" />
+          <Property Name="winnerPlayerId" Type="Int32" />
+          <Property Name="hostPlayerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Game__hostPlayer__4316F928" FromRole="Game" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="Self.FK__Game__winnerPlay__4222D4EF" FromRole="Game" ToRole="Users" />
+          <NavigationProperty Name="PlayersByGame" Relationship="Self.FK__PlayersBy__gameI__4E88ABD4" FromRole="Game" ToRole="PlayersByGame" />
+        </EntityType>
+        <EntityType Name="Guest">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="guestNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_Guest" FromRole="Guest" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="score" Type="Int32" />
+          <Property Name="wins" Type="Int32" />
+          <Property Name="accountId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_Player_Account" FromRole="Player" ToRole="Account" />
+          <NavigationProperty Name="Friend" Relationship="Self.FK__Friend__playerId__46E78A0C" FromRole="Player" ToRole="Friend" />
+          <NavigationProperty Name="Friend1" Relationship="Self.FK__Friend__playerId__47DBAE45" FromRole="Player" ToRole="Friend" />
+          <NavigationProperty Name="PlayersByGame" Relationship="Self.FK__PlayersBy__playe__4F7CD00D" FromRole="Player" ToRole="PlayersByGame" />
+          <NavigationProperty Name="PurchasedAccessory" Relationship="Self.FK__Purchased__playe__4BAC3F29" FromRole="Player" ToRole="PurchasedAccessory" />
+          <NavigationProperty Name="Report" Relationship="Self.FK__Report__idPlayer__49C3F6B7" FromRole="Player" ToRole="Report" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_Player" FromRole="Player" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Game" Relationship="Self.FK__Game__hostPlayer__4316F928" FromRole="Users" ToRole="Game" />
+          <NavigationProperty Name="Game1" Relationship="Self.FK__Game__winnerPlay__4222D4EF" FromRole="Users" ToRole="Game" />
+          <NavigationProperty Name="Guest" Relationship="Self.FK_User_Guest" FromRole="Users" ToRole="Guest" />
+          <NavigationProperty Name="Player" Relationship="Self.FK_User_Player" FromRole="Users" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="Friend">
+          <Key>
+            <PropertyRef Name="playerId1" />
+            <PropertyRef Name="playerId2" />
+          </Key>
+          <Property Name="playerId1" Type="Int32" Nullable="false" />
+          <Property Name="playerId2" Type="Int32" Nullable="false" />
+          <Property Name="tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Player" Relationship="Self.FK__Friend__playerId__46E78A0C" FromRole="Friend" ToRole="Player" />
+          <NavigationProperty Name="Player1" Relationship="Self.FK__Friend__playerId__47DBAE45" FromRole="Friend" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="PlayersByGame">
+          <Key>
+            <PropertyRef Name="gameId" />
+            <PropertyRef Name="playerId" />
+          </Key>
+          <Property Name="gameId" Type="Int32" Nullable="false" />
+          <Property Name="playerId" Type="Int32" Nullable="false" />
+          <Property Name="tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Game" Relationship="Self.FK__PlayersBy__gameI__4E88ABD4" FromRole="PlayersByGame" ToRole="Game" />
+          <NavigationProperty Name="Player" Relationship="Self.FK__PlayersBy__playe__4F7CD00D" FromRole="PlayersByGame" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="PurchasedAccessory">
+          <Key>
+            <PropertyRef Name="playerId" />
+            <PropertyRef Name="accessoryId" />
+          </Key>
+          <Property Name="playerId" Type="Int32" Nullable="false" />
+          <Property Name="accessoryId" Type="Int32" Nullable="false" />
+          <Property Name="inUse" Type="Boolean" />
+          <NavigationProperty Name="Accessory" Relationship="Self.FK__Purchased__acces__4CA06362" FromRole="PurchasedAccessory" ToRole="Accessory" />
+          <NavigationProperty Name="Player" Relationship="Self.FK__Purchased__playe__4BAC3F29" FromRole="PurchasedAccessory" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="idPlayerReported" />
+            <PropertyRef Name="amount" />
+          </Key>
+          <Property Name="idPlayerReported" Type="Int32" Nullable="false" />
+          <Property Name="amount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Player" Relationship="Self.FK__Report__idPlayer__49C3F6B7" FromRole="Report" ToRole="Player" />
+        </EntityType>
+        <Association Name="FK__Purchased__acces__4CA06362">
+          <End Role="Accessory" Type="Self.Accessory" Multiplicity="1" />
+          <End Role="PurchasedAccessory" Type="Self.PurchasedAccessory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accessory">
+              <PropertyRef Name="accessoryId" />
+            </Principal>
+            <Dependent Role="PurchasedAccessory">
+              <PropertyRef Name="accessoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Player_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Player" Type="Self.Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="accountId" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="accountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Game__hostPlayer__4316F928">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="hostPlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Game__winnerPlay__4222D4EF">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="winnerPlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayersBy__gameI__4E88ABD4">
+          <End Role="Game" Type="Self.Game" Multiplicity="1" />
+          <End Role="PlayersByGame" Type="Self.PlayersByGame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="gameId" />
+            </Principal>
+            <Dependent Role="PlayersByGame">
+              <PropertyRef Name="gameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Guest">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Guest" Type="Self.Guest" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Guest">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Friend__playerId__46E78A0C">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Friend" Type="Self.Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="playerId1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Friend__playerId__47DBAE45">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Friend" Type="Self.Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="playerId2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayersBy__playe__4F7CD00D">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="PlayersByGame" Type="Self.PlayersByGame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="PlayersByGame">
+              <PropertyRef Name="playerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Purchased__playe__4BAC3F29">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="PurchasedAccessory" Type="Self.PurchasedAccessory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="PurchasedAccessory">
+              <PropertyRef Name="playerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Report__idPlayer__49C3F6B7">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="idPlayerReported" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Player">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExamExplotionDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accessory" EntityType="Self.Accessory" />
+          <EntitySet Name="Account" EntityType="Self.Account" />
+          <EntitySet Name="Game" EntityType="Self.Game" />
+          <EntitySet Name="Guest" EntityType="Self.Guest" />
+          <EntitySet Name="Player" EntityType="Self.Player" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="Friend" EntityType="Self.Friend" />
+          <EntitySet Name="PlayersByGame" EntityType="Self.PlayersByGame" />
+          <EntitySet Name="PurchasedAccessory" EntityType="Self.PurchasedAccessory" />
+          <EntitySet Name="Report" EntityType="Self.Report" />
+          <AssociationSet Name="FK__Purchased__acces__4CA06362" Association="Self.FK__Purchased__acces__4CA06362">
+            <End Role="Accessory" EntitySet="Accessory" />
+            <End Role="PurchasedAccessory" EntitySet="PurchasedAccessory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Player_Account" Association="Self.FK_Player_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Player" EntitySet="Player" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Game__hostPlayer__4316F928" Association="Self.FK__Game__hostPlayer__4316F928">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Game__winnerPlay__4222D4EF" Association="Self.FK__Game__winnerPlay__4222D4EF">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayersBy__gameI__4E88ABD4" Association="Self.FK__PlayersBy__gameI__4E88ABD4">
+            <End Role="Game" EntitySet="Game" />
+            <End Role="PlayersByGame" EntitySet="PlayersByGame" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Guest" Association="Self.FK_User_Guest">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Guest" EntitySet="Guest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Friend__playerId__46E78A0C" Association="Self.FK__Friend__playerId__46E78A0C">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Friend" EntitySet="Friend" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Friend__playerId__47DBAE45" Association="Self.FK__Friend__playerId__47DBAE45">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Friend" EntitySet="Friend" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayersBy__playe__4F7CD00D" Association="Self.FK__PlayersBy__playe__4F7CD00D">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PlayersByGame" EntitySet="PlayersByGame" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Purchased__playe__4BAC3F29" Association="Self.FK__Purchased__playe__4BAC3F29">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PurchasedAccessory" EntitySet="PurchasedAccessory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Report__idPlayer__49C3F6B7" Association="Self.FK__Report__idPlayer__49C3F6B7">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Player" Association="Self.FK_User_Player">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Player" EntitySet="Player" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExamExplotionDBModelStoreContainer" CdmEntityContainer="ExamExplotionDBEntities">
+          <EntitySetMapping Name="Accessory">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.Accessory">
+              <MappingFragment StoreEntitySet="Accessory">
+                <ScalarProperty Name="accessoryId" ColumnName="accessoryId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="imagesPackage" ColumnName="imagesPackage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Account">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="accountId" ColumnName="accountId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="gamertag" ColumnName="gamertag" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Game">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.Game">
+              <MappingFragment StoreEntitySet="Game">
+                <ScalarProperty Name="gameId" ColumnName="gameId" />
+                <ScalarProperty Name="invitationCode" ColumnName="invitationCode" />
+                <ScalarProperty Name="gameStatus" ColumnName="gameStatus" />
+                <ScalarProperty Name="numberPlayers" ColumnName="numberPlayers" />
+                <ScalarProperty Name="timePerTurn" ColumnName="timePerTurn" />
+                <ScalarProperty Name="lives" ColumnName="lives" />
+                <ScalarProperty Name="winnerPlayerId" ColumnName="winnerPlayerId" />
+                <ScalarProperty Name="hostPlayerId" ColumnName="hostPlayerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Guest">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.Guest">
+              <MappingFragment StoreEntitySet="Guest">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="guestNumber" ColumnName="guestNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Player">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.Player">
+              <MappingFragment StoreEntitySet="Player">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="wins" ColumnName="wins" />
+                <ScalarProperty Name="accountId" ColumnName="accountId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Friend">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.Friend">
+              <MappingFragment StoreEntitySet="Friend">
+                <ScalarProperty Name="playerId1" ColumnName="playerId1" />
+                <ScalarProperty Name="playerId2" ColumnName="playerId2" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayersByGame">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.PlayersByGame">
+              <MappingFragment StoreEntitySet="PlayersByGame">
+                <ScalarProperty Name="gameId" ColumnName="gameId" />
+                <ScalarProperty Name="playerId" ColumnName="playerId" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchasedAccessory">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.PurchasedAccessory">
+              <MappingFragment StoreEntitySet="PurchasedAccessory">
+                <ScalarProperty Name="playerId" ColumnName="playerId" />
+                <ScalarProperty Name="accessoryId" ColumnName="accessoryId" />
+                <ScalarProperty Name="inUse" ColumnName="inUse" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Report">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="idPlayerReported" ColumnName="idPlayerReported" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

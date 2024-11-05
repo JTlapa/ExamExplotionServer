@@ -10,7 +10,7 @@ namespace DataAccess.EntitiesManager
     {
         public static int AddUser(Users user)
         {
-            using (var context = new ExamExplotionDB())
+            using (var context = new ExamExplotionDBEntities())
             {
                 var newUser = context.Users.Add(user);
                 context.SaveChanges();

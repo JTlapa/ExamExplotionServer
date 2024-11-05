@@ -13,7 +13,7 @@ namespace DataAccess.EntitiesManager
         {
             string hashedPassword = PasswordEncryptor.HashPassword(account.password);
             account.password = hashedPassword;
-            using (var context = new ExamExplotionDB())
+            using (var context = new ExamExplotionDBEntities())
             {
                 var accountVerifed = context.Account.FirstOrDefault(a => a.gamertag == account.gamertag && a.password == account.password);
                 int idAccount;
@@ -31,7 +31,7 @@ namespace DataAccess.EntitiesManager
 
         public static int AddAcount(Account account)
         {
-            using (var context = new ExamExplotionDB())
+            using (var context = new ExamExplotionDBEntities())
             {
                 account.status = "Active";
                 string hashedPassword = PasswordEncryptor.HashPassword(account.password);
@@ -54,7 +54,7 @@ namespace DataAccess.EntitiesManager
         public static bool UpdatePassword(Account account)
         {
             bool passwordUpdated = false;
-            using (var context = new ExamExplotionDB())
+            using (var context = new ExamExplotionDBEntities())
             {
                 string hashedPassword = PasswordEncryptor.HashPassword(account.password);
 
@@ -72,7 +72,7 @@ namespace DataAccess.EntitiesManager
         public static bool VerifyExistingGamertag(string gamertag)
         {
             bool gamertagExists = false;
-            using (var context = new ExamExplotionDB())
+            using (var context = new ExamExplotionDBEntities())
             {
                 var account = context.Account.FirstOrDefault(a => a.gamertag == gamertag);
                 if(account != null)
@@ -85,7 +85,7 @@ namespace DataAccess.EntitiesManager
         public static bool VerifyExistingEmail(string email)
         {
             bool emailExists = false;
-            using (var context = new ExamExplotionDB())
+            using (var context = new ExamExplotionDBEntities())
             {
                 var account = context.Account.FirstOrDefault(a => a.email == email);
                 if (account != null)

@@ -11,7 +11,7 @@ namespace DataAccess.EntitiesManager
     {
         public static bool AddGame(Game game)
         {
-            using (var context = new ExamExplotionDB())
+            using (var context = new ExamExplotionDBEntities())
             {
                 var gameRegistered = context.Game.Add(game);
                 context.SaveChanges();
@@ -29,7 +29,7 @@ namespace DataAccess.EntitiesManager
         public static Game getGameByCode(string code)
         {
             Game game = null;
-            using (var context = new ExamExplotionDB())
+            using (var context = new ExamExplotionDBEntities())
             {
                 game = context.Game.FirstOrDefault(g => g.invitationCode == code);
             }
@@ -38,7 +38,7 @@ namespace DataAccess.EntitiesManager
 
         public static bool DeleteGame(string invitationCode)
         {
-            using(var context = new ExamExplotionDB())
+            using(var context = new ExamExplotionDBEntities())
             {
                 bool deleted = false;
                 var game = context.Game.FirstOrDefault(g => g.invitationCode == invitationCode);
