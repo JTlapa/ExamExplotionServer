@@ -23,11 +23,11 @@
           <Property Name="name" Type="nvarchar" MaxLength="50" />
           <Property Name="email" Type="nvarchar" MaxLength="50" />
           <Property Name="gamertag" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="password" Type="varchar" MaxLength="256" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="status" Type="nvarchar" MaxLength="20" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.Friend' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ExamExplotionDB.dbo.Friend' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Friend">
           <Key>
             <PropertyRef Name="playerId1" />
@@ -66,8 +66,8 @@ advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.Friend' no tiene definid
           <Property Name="wins" Type="int" />
           <Property Name="accountId" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.PlayersByGame' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ExamExplotionDB.dbo.PlayersByGame' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PlayersByGame">
           <Key>
             <PropertyRef Name="gameId" />
@@ -77,8 +77,8 @@ advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.PlayersByGame' no tiene 
           <Property Name="playerId" Type="int" Nullable="false" />
           <Property Name="tipo" Type="nvarchar" MaxLength="20" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.PurchasedAccessory' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ExamExplotionDB.dbo.PurchasedAccessory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PurchasedAccessory">
           <Key>
             <PropertyRef Name="playerId" />
@@ -88,8 +88,8 @@ advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.PurchasedAccessory' no t
           <Property Name="accessoryId" Type="int" Nullable="false" />
           <Property Name="inUse" Type="bit" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.Report' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Report">
           <Key>
             <PropertyRef Name="idPlayerReported" />
@@ -355,7 +355,7 @@ advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.Report' no tiene definid
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="gamertag" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Player" Relationship="Self.FK_Player_Account" FromRole="Account" ToRole="Player" />
         </EntityType>
@@ -775,7 +775,7 @@ advertencia 6002: La tabla o vista 'ExamExplotionDB.dbo.Report' no tiene definid
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

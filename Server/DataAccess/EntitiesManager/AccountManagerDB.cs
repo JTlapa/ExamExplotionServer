@@ -15,17 +15,26 @@ namespace DataAccess.EntitiesManager
             account.password = hashedPassword;
             using (var context = new ExamExplotionDBEntities())
             {
-                var accountVerifed = context.Account.FirstOrDefault(a => a.gamertag == account.gamertag && a.password == account.password);
-                int idAccount;
-                if (accountVerifed != null && accountVerifed.status == "Active")
+                try
                 {
-                    idAccount = accountVerifed.accountId;
+                    var accountVerifed = context.Account.FirstOrDefault(a => a.gamertag == account.gamertag && a.password == account.password);
+                    int idAccount;
+                    if (accountVerifed != null && accountVerifed.status == "Active")
+                    {
+                        idAccount = accountVerifed.accountId;
+                    }
+                    else
+                    {
+                        idAccount = -1;
+                    }
+                    return idAccount;
                 }
-                else
+                catch (Exception ex)
                 {
-                    idAccount = -1;
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("Inner exception: " + ex.InnerException?.Message);
+                    return -1;
                 }
-                return idAccount;
             }
         }
 
