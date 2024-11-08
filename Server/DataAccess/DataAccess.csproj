@@ -75,6 +75,7 @@
     <Compile Include="EntitiesManager\AccountManagerDB.cs" />
     <Compile Include="EntitiesManager\GameManagerDB.cs" />
     <Compile Include="EntitiesManager\PlayerManagerDB.cs" />
+    <Compile Include="EntitiesManager\ReportManagerDB.cs" />
     <Compile Include="EntitiesManager\UserManagerDB.cs" />
     <Compile Include="Friend.cs">
       <DependentUpon>Model1.tt</DependentUpon>

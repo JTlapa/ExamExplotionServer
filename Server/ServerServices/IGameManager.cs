@@ -7,28 +7,37 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServerServices
+namespace ServerService
 {
-    [ServiceContract]
-    interface IGameManager
+    [ServiceContract(CallbackContract = typeof(IGameConnectionCallback))]
+    public interface IGameManager
     {
         [OperationContract]
-        int CreateGame(GameManagement game);
-
+        bool ConnectGame(string gameCode, string gamertag);
         [OperationContract]
-        bool JoinGame(int gameId, int playerId);
-
+        bool EndGame(string gameCode, int winnerPlayerId);
+        [OperationContract(IsOneWay = true)]
+        void NotifyEndTurn(string gameCode, string currentGamertag);
         [OperationContract]
-        bool StartGame(int gameId);
-
+        List<PlayerManagement> GetPlayersInGame(string gameCode);
         [OperationContract]
-        bool EndGame(int gameId, int winnerPlayerId);
-
+        string GetGameStatus(string gameCode);
         [OperationContract]
-        List<PlayerManagement> GetPlayersInGame(int gameId);
-
+        string GetCurrentTurn(string gameCode);
         [OperationContract]
-        string GetGameStatus(int gameId);
+        GameManagement GetGame(string gameCode);
+        [OperationContract(IsOneWay = true)]
+        void InitializeGameTurns(string gameCode, List<string> gamertags);
+        [OperationContract(IsOneWay = true)]
+        void NotifyClientOfTurn(string gameCode, string nextGametag);
+    }
+
+    public interface IGameConnectionCallback
+    {
+        [OperationContract(IsOneWay = true)]
+        void UpdateCurrentTurn(string gamertag);
+        [OperationContract(IsOneWay = true)]
+        void SyncTimer();
     }
 
     [DataContract]
