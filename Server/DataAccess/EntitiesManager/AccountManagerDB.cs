@@ -102,6 +102,20 @@ namespace DataAccess.EntitiesManager
             }
             return emailExists;
         }
+
+        internal static int GetAccountIdByGamertag(string gamertag)
+        {
+            int accountId = -1;
+            using (var context = new ExamExplotionDBEntities())
+            {
+                Account account = context.Account.FirstOrDefault(a => a.gamertag == gamertag);
+                if (account != null)
+                {
+                    accountId = account.accountId;
+                }
+            }
+            return accountId;
+        }
     }
 }
 

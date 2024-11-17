@@ -40,16 +40,20 @@ namespace ServerService
                 player.score = 0;
                 player.wins = 0;
                 PlayerManagerDB.RegisterPlayer(player);
+                AddDefaultAccessory(userId);
                 dataEntered = true;
             }
             return dataEntered;
         }
 
-        public int GetAccountIdFromCurrentSession()
+        private void AddDefaultAccessory(int userId)
         {
-            return accountId;
+            PurchasedAccessory purchasedAccessory = new PurchasedAccessory();
+            purchasedAccessory.accessoryId = 1;
+            purchasedAccessory.playerId = userId;
+            purchasedAccessory.inUse = true;
+            PurchasedAccessoryManagerDB.AddPurchasedAccessory(purchasedAccessory);
         }
-
         public bool Login(AccountManagement account)
         {
             Account accountToValidate = new Account();

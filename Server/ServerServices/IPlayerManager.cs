@@ -27,6 +27,8 @@ namespace ServerService
         bool AddFriend(int playerId, int friendId);
         [OperationContract]
         GuestManagement AddGuest();
+        [OperationContract]
+        PlayerManagement GetPlayerByGamertag(string gamertag);
     }
 
     [DataContract]

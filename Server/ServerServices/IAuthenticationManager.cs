@@ -11,9 +11,6 @@ namespace ServerService
         bool Login(AccountManagement account);
 
         [OperationContract]
-        int GetAccountIdFromCurrentSession();
-
-        [OperationContract]
         bool AddAccount(AccountManagement account);
 
         [OperationContract]

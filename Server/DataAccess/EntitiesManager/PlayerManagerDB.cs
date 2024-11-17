@@ -82,7 +82,17 @@ namespace DataAccess.EntitiesManager
                 return player != null ? player.score.GetValueOrDefault(0) : -1; /* Returns -1 if player doesnt exists */
             }
         }
+
+        public static Player GetPlayerByGamertag(string gamertag)
+        {
+            int accountId = AccountManagerDB.GetAccountIdByGamertag(gamertag);
+            Player player = null;
+            using (var context = new ExamExplotionDBEntities())
+            {
+                player = context.Player.FirstOrDefault(p => p.accountId == accountId);
+            }
+            return player;
+
+        }
     }
 }
-
-//DEBO AGREGAR LA PARTE DE RESTAR LOS PUNTOS Y MANEJAR UNA DIVISION PUNTOS SON DIFERENTESD E WINS

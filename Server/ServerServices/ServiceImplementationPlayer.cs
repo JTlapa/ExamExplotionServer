@@ -28,6 +28,17 @@ namespace ServerService
             return guestManagement;
         }
 
+        public PlayerManagement GetPlayerByGamertag(string gamertag)
+        {
+            PlayerManagement playerManagement = new PlayerManagement();
+            Player player = PlayerManagerDB.GetPlayerByGamertag(gamertag);
+
+            playerManagement.UserId = player.userId;
+            playerManagement.AccountId = player.accountId;
+
+            return playerManagement;
+        }
+
         public int GetPoints(int playerId)
         {
             return PlayerManagerDB.GetPoints(playerId);
