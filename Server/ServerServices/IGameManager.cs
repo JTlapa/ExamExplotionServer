@@ -30,6 +30,16 @@ namespace ServerService
         void InitializeGameTurns(string gameCode, List<string> gamertags);
         [OperationContract(IsOneWay = true)]
         void NotifyClientOfTurn(string gameCode, string nextGametag);
+        [OperationContract(IsOneWay = true)]
+        void InitializeDeck(string gameCode, int playerCount);
+        [OperationContract]
+        Card DrawCard(string gameCode);
+        [OperationContract]
+        List<Card> SeeTheFuture(string gameCode);
+        [OperationContract]
+        bool AddCardToDeck(string gameCode, Card card);
+        [OperationContract]
+        bool ShuffleDeck(string gameCode);
     }
 
     public interface IGameConnectionCallback
@@ -38,6 +48,17 @@ namespace ServerService
         void UpdateCurrentTurn(string gamertag);
         [OperationContract(IsOneWay = true)]
         void SyncTimer();
+    }
+
+    [DataContract]
+    public class Card
+    {
+        private string cardName;
+        private string cardPath;
+        [DataMember]
+        public string CardName { get { return cardName; } set { cardName = value; } }
+        [DataMember]
+        public string CardPath { get { return cardPath; } set { cardPath = value; } }
     }
 
     [DataContract]
