@@ -10,6 +10,29 @@ namespace ServerService
 {
     public partial class ServiceImplementation : IPlayerManager
     {
+        public GuestManagement AddGuest()
+        {
+            Guest guest = new Guest();
+            Users user = new Users();
+            int newUserId = UserManagerDB.AddUser(user);
+            guest.userId = newUserId;
+            int guestNumber = GuestManagerDB.AddGuest(guest);
+
+            GuestManagement guestManagement = null;
+            if(newUserId != -1 && guestNumber != -1)
+            {
+                guestManagement = new GuestManagement();
+                guestManagement.GuestNumber = guestNumber;
+                guestManagement.UserId = newUserId;
+            }
+            return guestManagement;
+        }
+
+        public int GetPoints(int playerId)
+        {
+            return PlayerManagerDB.GetPoints(playerId);
+        }
+
         bool IPlayerManager.AddFriend(int playerId, int friendId)
         {
             throw new NotImplementedException();

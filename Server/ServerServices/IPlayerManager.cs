@@ -21,7 +21,12 @@ namespace ServerService
         int GetWins(int playerId);
 
         [OperationContract]
+        int GetPoints(int playerId);
+
+        [OperationContract]
         bool AddFriend(int playerId, int friendId);
+        [OperationContract]
+        GuestManagement AddGuest();
     }
 
     [DataContract]
@@ -40,6 +45,18 @@ namespace ServerService
         public int Score { get { return score; } set { score = value; } }
         [DataMember]
         public int Wins { get { return wins; } set { wins = value; } }
+    }
+
+    [DataContract]
+    public class GuestManagement
+    {
+        private int userId;
+        private int guestNumber;
+
+        [DataMember]
+        public int UserId { get { return userId; } set { userId = value; } }
+        [DataMember]
+        public int GuestNumber {  get { return guestNumber; } set { guestNumber = value; } }
     }
 
 }

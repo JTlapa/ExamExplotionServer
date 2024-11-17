@@ -12,33 +12,45 @@ namespace ServerService
     interface IAccessoryManager
     {
         [OperationContract]
-        bool PurchaseAccessory(int playerId, int accessoryId);
+        bool PurchaseAccessory(PurchasedAccessoryManagement purchasedAccessoryManagement);
 
         [OperationContract]
-        bool SetAccessoryInUse(int playerId, int accessoryId);
+        bool SetAccessoryInUse(PurchasedAccessoryManagement purchasedAccessoryManagement);
 
         [OperationContract]
-        List<AccessoryManagement> GetPurchasedAccessories(int playerId);
+        List<int> GetPurchasedAccessories(int playerId);
+
+        [OperationContract]
+        AccessoryManagement GetAccessoryInUse(int playerId);
     }
+
 
     [DataContract]
     public class AccessoryManagement
     {
         private int accessoryId;
-        private int price;
         private string accessoryName;
-        private string description;
-        private string imagesPackage;
+        private string path;
+        [DataMember]
+        public int AccessoryId { get { return accessoryId; } set { accessoryId = value; } }
+        [DataMember]
+        public string AccessoryName { get { return accessoryName; } set { accessoryName = value; } }
+        [DataMember]
+        public string Path { get { return path; } set { path = value; } }
+    }
+
+    [DataContract]
+    public class PurchasedAccessoryManagement
+    {
+        private int accessoryId;
+        private int playerId;
+        private bool inUse;
 
         [DataMember]
         public int AccesoryId { get { return accessoryId; } set { accessoryId = value; } }
         [DataMember]
-        public string AccessoryName { get { return accessoryName; } set { accessoryName = value; } }
+        public int PlayerId { get { return playerId; } set { playerId = value; } }
         [DataMember]
-        public int Price { get { return price; } set { price = value; } }
-        [DataMember]
-        public string Description { get { return description; } set { description = value; } }
-        [DataMember]
-        public string ImagesPackage { get { return imagesPackage; } set { imagesPackage = value; } }
+        public bool InUse { get { return inUse; } set { inUse = value; } }
     }
 }

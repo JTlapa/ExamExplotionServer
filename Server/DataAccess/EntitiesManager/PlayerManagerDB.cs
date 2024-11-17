@@ -31,12 +31,12 @@ namespace DataAccess.EntitiesManager
             {
                 var player = context.Player.FirstOrDefault(p => p.userId == userId);
 
-                if (player != null)
+                if (player == null)
                 {
                     return false;
                 }
 
-                player.score = newScore;
+                player.score += newScore;
                 context.SaveChanges();
             }
             return true;
@@ -73,5 +73,16 @@ namespace DataAccess.EntitiesManager
                 return player != null ? player.wins.GetValueOrDefault(0) : -1; /* Returns -1 if player doesnt exists */
             }
         }
+
+        public static int GetPoints(int playerId)
+        {
+            using (var context = new ExamExplotionDBEntities())
+            {
+                var player = context.Player.FirstOrDefault(p => p.userId == playerId);
+                return player != null ? player.score.GetValueOrDefault(0) : -1; /* Returns -1 if player doesnt exists */
+            }
+        }
     }
 }
+
+//DEBO AGREGAR LA PARTE DE RESTAR LOS PUNTOS Y MANEJAR UNA DIVISION PUNTOS SON DIFERENTESD E WINS

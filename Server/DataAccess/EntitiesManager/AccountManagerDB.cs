@@ -31,8 +31,6 @@ namespace DataAccess.EntitiesManager
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine("Inner exception: " + ex.InnerException?.Message);
                     return -1;
                 }
             }

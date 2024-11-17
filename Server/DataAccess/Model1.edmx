@@ -23,19 +23,17 @@
           <Property Name="name" Type="nvarchar" MaxLength="50" />
           <Property Name="email" Type="nvarchar" MaxLength="50" />
           <Property Name="gamertag" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="256" />
           <Property Name="status" Type="nvarchar" MaxLength="20" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ExamExplotionDB.dbo.Friend' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Friend">
           <Key>
-            <PropertyRef Name="playerId1" />
-            <PropertyRef Name="playerId2" />
+            <PropertyRef Name="FriendId" />
           </Key>
           <Property Name="playerId1" Type="int" Nullable="false" />
           <Property Name="playerId2" Type="int" Nullable="false" />
           <Property Name="tipo" Type="nvarchar" MaxLength="20" />
+          <Property Name="FriendId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Game">
           <Key>
@@ -66,37 +64,31 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Friend' does not have a primar
           <Property Name="wins" Type="int" />
           <Property Name="accountId" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ExamExplotionDB.dbo.PlayersByGame' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PlayersByGame">
           <Key>
-            <PropertyRef Name="gameId" />
-            <PropertyRef Name="playerId" />
+            <PropertyRef Name="playersByGameId" />
           </Key>
           <Property Name="gameId" Type="int" Nullable="false" />
           <Property Name="playerId" Type="int" Nullable="false" />
           <Property Name="tipo" Type="nvarchar" MaxLength="20" />
+          <Property Name="playersByGameId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ExamExplotionDB.dbo.PurchasedAccessory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PurchasedAccessory">
           <Key>
-            <PropertyRef Name="playerId" />
-            <PropertyRef Name="accessoryId" />
+            <PropertyRef Name="PurchasedAccessoryId" />
           </Key>
           <Property Name="playerId" Type="int" Nullable="false" />
           <Property Name="accessoryId" Type="int" Nullable="false" />
           <Property Name="inUse" Type="bit" />
+          <Property Name="PurchasedAccessoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Report">
           <Key>
-            <PropertyRef Name="idPlayerReported" />
-            <PropertyRef Name="amount" />
+            <PropertyRef Name="reportId" />
           </Key>
           <Property Name="idPlayerReported" Type="int" Nullable="false" />
           <Property Name="amount" Type="int" Nullable="false" />
+          <Property Name="reportId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -251,37 +243,14 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
         <EntityContainer Name="ExamExplotionDBModelStoreContainer">
           <EntitySet Name="Accessory" EntityType="Self.Accessory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Friend" EntityType="Self.Friend" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Game" EntityType="Self.Game" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Guest" EntityType="Self.Guest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayersByGame" EntityType="Self.PlayersByGame" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchasedAccessory" EntityType="Self.PurchasedAccessory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Friend" EntityType="Self.Friend" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Friend].[playerId1] AS [playerId1], 
-    [Friend].[playerId2] AS [playerId2], 
-    [Friend].[tipo] AS [tipo]
-    FROM [dbo].[Friend] AS [Friend]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="PlayersByGame" EntityType="Self.PlayersByGame" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [PlayersByGame].[gameId] AS [gameId], 
-    [PlayersByGame].[playerId] AS [playerId], 
-    [PlayersByGame].[tipo] AS [tipo]
-    FROM [dbo].[PlayersByGame] AS [PlayersByGame]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="PurchasedAccessory" EntityType="Self.PurchasedAccessory" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [PurchasedAccessory].[playerId] AS [playerId], 
-    [PurchasedAccessory].[accessoryId] AS [accessoryId], 
-    [PurchasedAccessory].[inUse] AS [inUse]
-    FROM [dbo].[PurchasedAccessory] AS [PurchasedAccessory]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Report" EntityType="Self.Report" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Report].[idPlayerReported] AS [idPlayerReported], 
-    [Report].[amount] AS [amount]
-    FROM [dbo].[Report] AS [Report]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK__Friend__playerId__46E78A0C" Association="Self.FK__Friend__playerId__46E78A0C">
             <End Role="Player" EntitySet="Player" />
             <End Role="Friend" EntitySet="Friend" />
@@ -355,9 +324,20 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="gamertag" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Player" Relationship="Self.FK_Player_Account" FromRole="Account" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="Friend">
+          <Key>
+            <PropertyRef Name="FriendId" />
+          </Key>
+          <Property Name="playerId1" Type="Int32" Nullable="false" />
+          <Property Name="playerId2" Type="Int32" Nullable="false" />
+          <Property Name="tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FriendId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Player" Relationship="Self.FK__Friend__playerId__46E78A0C" FromRole="Friend" ToRole="Player" />
+          <NavigationProperty Name="Player1" Relationship="Self.FK__Friend__playerId__47DBAE45" FromRole="Friend" ToRole="Player" />
         </EntityType>
         <EntityType Name="Game">
           <Key>
@@ -399,6 +379,37 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
           <NavigationProperty Name="Report" Relationship="Self.FK__Report__idPlayer__49C3F6B7" FromRole="Player" ToRole="Report" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_Player" FromRole="Player" ToRole="Users" />
         </EntityType>
+        <EntityType Name="PlayersByGame">
+          <Key>
+            <PropertyRef Name="playersByGameId" />
+          </Key>
+          <Property Name="gameId" Type="Int32" Nullable="false" />
+          <Property Name="playerId" Type="Int32" Nullable="false" />
+          <Property Name="tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="playersByGameId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Game" Relationship="Self.FK__PlayersBy__gameI__4E88ABD4" FromRole="PlayersByGame" ToRole="Game" />
+          <NavigationProperty Name="Player" Relationship="Self.FK__PlayersBy__playe__4F7CD00D" FromRole="PlayersByGame" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="PurchasedAccessory">
+          <Key>
+            <PropertyRef Name="PurchasedAccessoryId" />
+          </Key>
+          <Property Name="playerId" Type="Int32" Nullable="false" />
+          <Property Name="accessoryId" Type="Int32" Nullable="false" />
+          <Property Name="inUse" Type="Boolean" />
+          <Property Name="PurchasedAccessoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Accessory" Relationship="Self.FK__Purchased__acces__4CA06362" FromRole="PurchasedAccessory" ToRole="Accessory" />
+          <NavigationProperty Name="Player" Relationship="Self.FK__Purchased__playe__4BAC3F29" FromRole="PurchasedAccessory" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="reportId" />
+          </Key>
+          <Property Name="idPlayerReported" Type="Int32" Nullable="false" />
+          <Property Name="amount" Type="Int32" Nullable="false" />
+          <Property Name="reportId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Player" Relationship="Self.FK__Report__idPlayer__49C3F6B7" FromRole="Report" ToRole="Player" />
+        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="userId" />
@@ -408,48 +419,6 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
           <NavigationProperty Name="Game1" Relationship="Self.FK__Game__winnerPlay__4222D4EF" FromRole="Users" ToRole="Game" />
           <NavigationProperty Name="Guest" Relationship="Self.FK_User_Guest" FromRole="Users" ToRole="Guest" />
           <NavigationProperty Name="Player" Relationship="Self.FK_User_Player" FromRole="Users" ToRole="Player" />
-        </EntityType>
-        <EntityType Name="Friend">
-          <Key>
-            <PropertyRef Name="playerId1" />
-            <PropertyRef Name="playerId2" />
-          </Key>
-          <Property Name="playerId1" Type="Int32" Nullable="false" />
-          <Property Name="playerId2" Type="Int32" Nullable="false" />
-          <Property Name="tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Player" Relationship="Self.FK__Friend__playerId__46E78A0C" FromRole="Friend" ToRole="Player" />
-          <NavigationProperty Name="Player1" Relationship="Self.FK__Friend__playerId__47DBAE45" FromRole="Friend" ToRole="Player" />
-        </EntityType>
-        <EntityType Name="PlayersByGame">
-          <Key>
-            <PropertyRef Name="gameId" />
-            <PropertyRef Name="playerId" />
-          </Key>
-          <Property Name="gameId" Type="Int32" Nullable="false" />
-          <Property Name="playerId" Type="Int32" Nullable="false" />
-          <Property Name="tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Game" Relationship="Self.FK__PlayersBy__gameI__4E88ABD4" FromRole="PlayersByGame" ToRole="Game" />
-          <NavigationProperty Name="Player" Relationship="Self.FK__PlayersBy__playe__4F7CD00D" FromRole="PlayersByGame" ToRole="Player" />
-        </EntityType>
-        <EntityType Name="PurchasedAccessory">
-          <Key>
-            <PropertyRef Name="playerId" />
-            <PropertyRef Name="accessoryId" />
-          </Key>
-          <Property Name="playerId" Type="Int32" Nullable="false" />
-          <Property Name="accessoryId" Type="Int32" Nullable="false" />
-          <Property Name="inUse" Type="Boolean" />
-          <NavigationProperty Name="Accessory" Relationship="Self.FK__Purchased__acces__4CA06362" FromRole="PurchasedAccessory" ToRole="Accessory" />
-          <NavigationProperty Name="Player" Relationship="Self.FK__Purchased__playe__4BAC3F29" FromRole="PurchasedAccessory" ToRole="Player" />
-        </EntityType>
-        <EntityType Name="Report">
-          <Key>
-            <PropertyRef Name="idPlayerReported" />
-            <PropertyRef Name="amount" />
-          </Key>
-          <Property Name="idPlayerReported" Type="Int32" Nullable="false" />
-          <Property Name="amount" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Player" Relationship="Self.FK__Report__idPlayer__49C3F6B7" FromRole="Report" ToRole="Player" />
         </EntityType>
         <Association Name="FK__Purchased__acces__4CA06362">
           <End Role="Accessory" Type="Self.Accessory" Multiplicity="1" />
@@ -472,6 +441,30 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
             </Principal>
             <Dependent Role="Player">
               <PropertyRef Name="accountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Friend__playerId__46E78A0C">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Friend" Type="Self.Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="playerId1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Friend__playerId__47DBAE45">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="Friend" Type="Self.Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="playerId2" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -520,30 +513,6 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
             </Principal>
             <Dependent Role="Guest">
               <PropertyRef Name="userId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Friend__playerId__46E78A0C">
-          <End Role="Player" Type="Self.Player" Multiplicity="1" />
-          <End Role="Friend" Type="Self.Friend" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="Friend">
-              <PropertyRef Name="playerId1" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Friend__playerId__47DBAE45">
-          <End Role="Player" Type="Self.Player" Multiplicity="1" />
-          <End Role="Friend" Type="Self.Friend" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="Friend">
-              <PropertyRef Name="playerId2" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -598,14 +567,14 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
         <EntityContainer Name="ExamExplotionDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Accessory" EntityType="Self.Accessory" />
           <EntitySet Name="Account" EntityType="Self.Account" />
+          <EntitySet Name="Friend" EntityType="Self.Friend" />
           <EntitySet Name="Game" EntityType="Self.Game" />
           <EntitySet Name="Guest" EntityType="Self.Guest" />
           <EntitySet Name="Player" EntityType="Self.Player" />
-          <EntitySet Name="Users" EntityType="Self.Users" />
-          <EntitySet Name="Friend" EntityType="Self.Friend" />
           <EntitySet Name="PlayersByGame" EntityType="Self.PlayersByGame" />
           <EntitySet Name="PurchasedAccessory" EntityType="Self.PurchasedAccessory" />
           <EntitySet Name="Report" EntityType="Self.Report" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
           <AssociationSet Name="FK__Purchased__acces__4CA06362" Association="Self.FK__Purchased__acces__4CA06362">
             <End Role="Accessory" EntitySet="Accessory" />
             <End Role="PurchasedAccessory" EntitySet="PurchasedAccessory" />
@@ -613,6 +582,14 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
           <AssociationSet Name="FK_Player_Account" Association="Self.FK_Player_Account">
             <End Role="Account" EntitySet="Account" />
             <End Role="Player" EntitySet="Player" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Friend__playerId__46E78A0C" Association="Self.FK__Friend__playerId__46E78A0C">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Friend" EntitySet="Friend" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Friend__playerId__47DBAE45" Association="Self.FK__Friend__playerId__47DBAE45">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="Friend" EntitySet="Friend" />
           </AssociationSet>
           <AssociationSet Name="FK__Game__hostPlayer__4316F928" Association="Self.FK__Game__hostPlayer__4316F928">
             <End Role="Users" EntitySet="Users" />
@@ -629,14 +606,6 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
           <AssociationSet Name="FK_User_Guest" Association="Self.FK_User_Guest">
             <End Role="Users" EntitySet="Users" />
             <End Role="Guest" EntitySet="Guest" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Friend__playerId__46E78A0C" Association="Self.FK__Friend__playerId__46E78A0C">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="Friend" EntitySet="Friend" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Friend__playerId__47DBAE45" Association="Self.FK__Friend__playerId__47DBAE45">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="Friend" EntitySet="Friend" />
           </AssociationSet>
           <AssociationSet Name="FK__PlayersBy__playe__4F7CD00D" Association="Self.FK__PlayersBy__playe__4F7CD00D">
             <End Role="Player" EntitySet="Player" />
@@ -684,6 +653,16 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Friend">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.Friend">
+              <MappingFragment StoreEntitySet="Friend">
+                <ScalarProperty Name="playerId1" ColumnName="playerId1" />
+                <ScalarProperty Name="playerId2" ColumnName="playerId2" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="FriendId" ColumnName="FriendId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Game">
             <EntityTypeMapping TypeName="ExamExplotionDBModel.Game">
               <MappingFragment StoreEntitySet="Game">
@@ -716,28 +695,13 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="ExamExplotionDBModel.Users">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="userId" ColumnName="userId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Friend">
-            <EntityTypeMapping TypeName="ExamExplotionDBModel.Friend">
-              <MappingFragment StoreEntitySet="Friend">
-                <ScalarProperty Name="playerId1" ColumnName="playerId1" />
-                <ScalarProperty Name="playerId2" ColumnName="playerId2" />
-                <ScalarProperty Name="tipo" ColumnName="tipo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PlayersByGame">
             <EntityTypeMapping TypeName="ExamExplotionDBModel.PlayersByGame">
               <MappingFragment StoreEntitySet="PlayersByGame">
                 <ScalarProperty Name="gameId" ColumnName="gameId" />
                 <ScalarProperty Name="playerId" ColumnName="playerId" />
                 <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="playersByGameId" ColumnName="playersByGameId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -747,6 +711,7 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
                 <ScalarProperty Name="playerId" ColumnName="playerId" />
                 <ScalarProperty Name="accessoryId" ColumnName="accessoryId" />
                 <ScalarProperty Name="inUse" ColumnName="inUse" />
+                <ScalarProperty Name="PurchasedAccessoryId" ColumnName="PurchasedAccessoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -755,6 +720,14 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
               <MappingFragment StoreEntitySet="Report">
                 <ScalarProperty Name="idPlayerReported" ColumnName="idPlayerReported" />
                 <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="reportId" ColumnName="reportId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="userId" ColumnName="userId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -775,7 +748,7 @@ warning 6002: The table/view 'ExamExplotionDB.dbo.Report' does not have a primar
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

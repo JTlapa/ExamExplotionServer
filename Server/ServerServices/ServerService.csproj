@@ -59,6 +59,7 @@
     <Compile Include="ILobbyManager.cs" />
     <Compile Include="IPlayerManager.cs" />
     <Compile Include="IReportManager.cs" />
+    <Compile Include="ServiceImplementationPurchasedAccessory.cs" />
     <Compile Include="ServiceImplementationAuthentication.cs" />
     <Compile Include="ServiceImplementationGame.cs" />
     <Compile Include="ServiceImplementationLobby.cs" />
