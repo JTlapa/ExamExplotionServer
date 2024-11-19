@@ -73,6 +73,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="EntitiesManager\AccountManagerDB.cs" />
+    <Compile Include="EntitiesManager\FriendManagerDB.cs" />
     <Compile Include="EntitiesManager\GameManagerDB.cs" />
     <Compile Include="EntitiesManager\GuestManagerDB.cs" />
     <Compile Include="EntitiesManager\PlayerManagerDB.cs" />
