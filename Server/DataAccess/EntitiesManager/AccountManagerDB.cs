@@ -31,6 +31,7 @@ namespace DataAccess.EntitiesManager
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.StackTrace);
                     return -1;
                 }
             }
