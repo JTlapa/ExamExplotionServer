@@ -101,12 +101,12 @@ namespace DataAccess.EntitiesManager
             using (var context = new ExamExplotionDBEntities())
             {
                 var topPlayers = context.Player.Join(context.Account, player => player.accountId, account => account.accountId, 
-                                         (player, account) => new {Gamertag = account.gamertag, Score = player.score})
-                                         .OrderByDescending(p => p.Score).Take(5).ToList();
+                                         (player, account) => new {Gamertag = account.gamertag, Wins = player.wins})
+                                         .OrderByDescending(p => p.Wins).Take(5).ToList();
 
                 foreach (var player in topPlayers)
                 {
-                    globalLeaderboard.Add(player.Gamertag, (int)player.Score);
+                    globalLeaderboard.Add(player.Gamertag, (int)player.Wins);
                 }
             }
             return globalLeaderboard;
@@ -124,17 +124,17 @@ namespace DataAccess.EntitiesManager
                           (player, account) => new
                           {
                               Gamertag = account.gamertag,
-                              Score = player.score,
+                              Wins = player.wins,
                               UserId = player.userId
                           })
                     .Where(p => friendsId.Contains(p.UserId))
-                    .OrderByDescending(p => p.Score)
+                    .OrderByDescending(p => p.Wins)
                     .ToList();
                 foreach (var player in leaderboard)
                 {
                     if (!friendsLeaderboard.ContainsKey(player.Gamertag))
                     {
-                        friendsLeaderboard.Add(player.Gamertag, (int)player.Score);
+                        friendsLeaderboard.Add(player.Gamertag, (int)player.Wins);
                     }
                 }
             }

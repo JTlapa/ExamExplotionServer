@@ -29,6 +29,11 @@ namespace ServerService
         GuestManagement AddGuest();
         [OperationContract]
         PlayerManagement GetPlayerByGamertag(string gamertag);
+
+        [OperationContract]
+        Dictionary<string, int> GetGlobalLeaderboard();
+        [OperationContract]
+        Dictionary<string, int> GetFriendsLeaderboard(int playerId);
     }
 
     [DataContract]
