@@ -94,5 +94,52 @@ namespace DataAccess.EntitiesManager
             return player;
 
         }
+
+        public static Dictionary<string, int> GetGlobalLeaderboard()
+        {
+            Dictionary<string, int> globalLeaderboard= new Dictionary<string, int>();
+            using (var context = new ExamExplotionDBEntities())
+            {
+                var topPlayers = context.Player.Join(context.Account, player => player.accountId, account => account.accountId, 
+                                         (player, account) => new {Gamertag = account.gamertag, Wins = player.wins})
+                                         .OrderByDescending(p => p.Wins).Take(5).ToList();
+
+                foreach (var player in topPlayers)
+                {
+                    globalLeaderboard.Add(player.Gamertag, (int)player.Wins);
+                }
+            }
+            return globalLeaderboard;
+        }
+
+        public static Dictionary<string, int> GetLeaderboardByFriends(List<int> friendsId)
+        {
+            Dictionary<string, int> friendsLeaderboard = new Dictionary<string, int>();
+            using (var context = new ExamExplotionDBEntities())
+            {
+                var leaderboard = context.Player
+                    .Join(context.Account,
+                          player => player.accountId,
+                          account => account.accountId,
+                          (player, account) => new
+                          {
+                              Gamertag = account.gamertag,
+                              Wins = player.wins,
+                              UserId = player.userId
+                          })
+                    .Where(p => friendsId.Contains(p.UserId))
+                    .OrderByDescending(p => p.Wins)
+                    .ToList();
+                foreach (var player in leaderboard)
+                {
+                    if (!friendsLeaderboard.ContainsKey(player.Gamertag))
+                    {
+                        friendsLeaderboard.Add(player.Gamertag, (int)player.Wins);
+                    }
+                }
+            }
+            return friendsLeaderboard;
+        }
+
     }
 }

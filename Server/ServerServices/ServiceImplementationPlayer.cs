@@ -28,6 +28,18 @@ namespace ServerService
             return guestManagement;
         }
 
+        public Dictionary<string, int> GetFriendsLeaderboard(int playerId)
+        {
+            List<int> friendsIds = FriendManagerDB.GetFriendsIdByPlayer(playerId);
+            friendsIds.Add(playerId);
+            return PlayerManagerDB.GetLeaderboardByFriends(friendsIds);
+        }
+
+        public Dictionary<string, int> GetGlobalLeaderboard()
+        {
+            return PlayerManagerDB.GetGlobalLeaderboard();
+        }
+
         public PlayerManagement GetPlayerByGamertag(string gamertag)
         {
             PlayerManagement playerManagement = new PlayerManagement();
