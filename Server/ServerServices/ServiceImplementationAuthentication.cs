@@ -7,6 +7,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace ServerService
 {
@@ -20,39 +21,53 @@ namespace ServerService
         public bool AddAccount(AccountManagement account)
         {
             bool dataEntered = false;
-
-            Account accountToAdd = new Account();
-            accountToAdd.name = account.Name + account.Lastname;
-            accountToAdd.email = account.Email;
-            accountToAdd.password = account.Password;
-            accountToAdd.gamertag = account.Gamertag;
-
-            Users user = new Users();
-
-            accountId = AccountManagerDB.AddAcount(accountToAdd);
-            userId = UserManagerDB.AddUser(user);
-
-            if(accountId != -1 && userId != -1)
+            try
             {
-                Player player = new Player();
-                player.accountId = accountId;
-                player.userId = userId;
-                player.score = 0;
-                player.wins = 0;
-                PlayerManagerDB.RegisterPlayer(player);
-                AddDefaultAccessory(userId);
-                dataEntered = true;
+                Account accountToAdd = new Account();
+                accountToAdd.name = account.Name + account.Lastname;
+                accountToAdd.email = account.Email;
+                accountToAdd.password = account.Password;
+                accountToAdd.gamertag = account.Gamertag;
+
+                Users user = new Users();
+
+                accountId = AccountManagerDB.AddAcount(accountToAdd);
+                userId = UserManagerDB.AddUser(user);
+
+                if(accountId != -1 && userId != -1)
+                {
+                    Player player = new Player();
+                    player.accountId = accountId;
+                    player.userId = userId;
+                    player.score = 0;
+                    player.wins = 0;
+                    PlayerManagerDB.RegisterPlayer(player);
+                    AddDefaultAccessory(userId);
+                    dataEntered = true;
+                }
+                return dataEntered;
             }
-            return dataEntered;
+            catch (SqlException sqlException)
+            {
+                Console.WriteLine(sqlException.Message);
+                return false;
+            }
         }
 
         private void AddDefaultAccessory(int userId)
         {
-            PurchasedAccessory purchasedAccessory = new PurchasedAccessory();
-            purchasedAccessory.accessoryId = 1;
-            purchasedAccessory.playerId = userId;
-            purchasedAccessory.inUse = true;
-            PurchasedAccessoryManagerDB.AddPurchasedAccessory(purchasedAccessory);
+            try
+            {
+                PurchasedAccessory purchasedAccessory = new PurchasedAccessory();
+                purchasedAccessory.accessoryId = 1;
+                purchasedAccessory.playerId = userId;
+                purchasedAccessory.inUse = true;
+                PurchasedAccessoryManagerDB.AddPurchasedAccessory(purchasedAccessory);
+            }
+            catch (SqlException sqlException)
+            {
+                Console.WriteLine(sqlException.Message);
+            }
         }
         public bool Login(AccountManagement account)
         {
