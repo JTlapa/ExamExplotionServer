@@ -1,7 +1,10 @@
 ﻿using DataAccess.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,66 +16,107 @@ namespace DataAccess.EntitiesManager
         {
             string hashedPassword = PasswordEncryptor.HashPassword(account.password);
             account.password = hashedPassword;
-            using (var context = new ExamExplotionDBEntities())
+            int idAccount = -1;
+            try
             {
-                try
+                using (var context = new ExamExplotionDBEntities())
                 {
                     var accountVerifed = context.Account.FirstOrDefault(a => a.gamertag == account.gamertag && a.password == account.password);
-                    int idAccount;
                     if (accountVerifed != null && accountVerifed.status == "Active")
                     {
                         idAccount = accountVerifed.accountId;
                     }
-                    else
-                    {
-                        idAccount = -1;
-                    }
-                    return idAccount;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.StackTrace);
-                    return -1;
                 }
             }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+            }
+            return idAccount;
         }
 
         public static int AddAcount(Account account)
         {
-            using (var context = new ExamExplotionDBEntities())
+            int idAccount = -1;
+            try
             {
-                account.status = "Active";
-                string hashedPassword = PasswordEncryptor.HashPassword(account.password);
-                account.password = hashedPassword;
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    account.status = "Active";
+                    string hashedPassword = PasswordEncryptor.HashPassword(account.password);
+                    account.password = hashedPassword;
 
-                var newAccount = context.Account.Add(account);
-                context.SaveChanges();
-                int idAccount;
-                if (newAccount != null)
-                {
-                    idAccount = newAccount.accountId;
+                    var newAccount = context.Account.Add(account);
+                    context.SaveChanges();
+                    if (newAccount != null)
+                    {
+                        idAccount = newAccount.accountId;
+                    }
                 }
-                else
-                {
-                    idAccount = -1;
-                }
-                return idAccount;
             }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+            }
+            return idAccount;
         }
         public static bool UpdatePassword(Account account)
         {
             bool passwordUpdated = false;
-            using (var context = new ExamExplotionDBEntities())
+            try
             {
-                string hashedPassword = PasswordEncryptor.HashPassword(account.password);
-
-                var accountToUpdate = context.Account.FirstOrDefault(a => a.gamertag == account.gamertag);
-                if (accountToUpdate != null)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    accountToUpdate.password = hashedPassword;
-                    context.SaveChanges();
-                    passwordUpdated = true;
+                    string hashedPassword = PasswordEncryptor.HashPassword(account.password);
+
+                    var accountToUpdate = context.Account.FirstOrDefault(a => a.gamertag == account.gamertag);
+                    if (accountToUpdate != null)
+                    {
+                        accountToUpdate.password = hashedPassword;
+                        context.SaveChanges();
+                        passwordUpdated = true;
+                    }
                 }
+            }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
             }
             return passwordUpdated;
         }
@@ -93,13 +137,32 @@ namespace DataAccess.EntitiesManager
         public static bool VerifyExistingEmail(string email)
         {
             bool emailExists = false;
-            using (var context = new ExamExplotionDBEntities())
+            try
             {
-                var account = context.Account.FirstOrDefault(a => a.email == email);
-                if (account != null)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    emailExists = true;
+                    var account = context.Account.FirstOrDefault(a => a.email == email);
+                    if (account != null)
+                    {
+                        emailExists = true;
+                    }
                 }
+            }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
             }
             return emailExists;
         }
@@ -107,13 +170,32 @@ namespace DataAccess.EntitiesManager
         internal static int GetAccountIdByGamertag(string gamertag)
         {
             int accountId = -1;
-            using (var context = new ExamExplotionDBEntities())
+            try
             {
-                Account account = context.Account.FirstOrDefault(a => a.gamertag == gamertag);
-                if (account != null)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    accountId = account.accountId;
+                    Account account = context.Account.FirstOrDefault(a => a.gamertag == gamertag);
+                    if (account != null)
+                    {
+                        accountId = account.accountId;
+                    }
                 }
+            }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
             }
             return accountId;
         }

@@ -1,6 +1,8 @@
 ﻿using DataAccess.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -14,14 +16,33 @@ namespace DataAccess.EntitiesManager
         {
             bool purchasedAccessoryAdded = false;
             ChargeAccessoryPrice(purchasedAccessory);
-            using (var context = new ExamExplotionDBEntities())
+            try
             {
-                var newPurchasedAccessory = context.PurchasedAccessory.Add(purchasedAccessory);
-                context.SaveChanges();
-                if (newPurchasedAccessory != null)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    purchasedAccessoryAdded = true;
+                    var newPurchasedAccessory = context.PurchasedAccessory.Add(purchasedAccessory);
+                    context.SaveChanges();
+                    if (newPurchasedAccessory != null)
+                    {
+                        purchasedAccessoryAdded = true;
+                    }
                 }
+            }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
             }
             return purchasedAccessoryAdded;
         }
@@ -29,13 +50,32 @@ namespace DataAccess.EntitiesManager
         private static void ChargeAccessoryPrice(PurchasedAccessory purchasedAccessory)
         {
             int amount = 0;
-            using (var context = new ExamExplotionDBEntities())
+            try
             {
-                var accessory = context.Accessory.FirstOrDefault(a => a.accessoryId == purchasedAccessory.accessoryId);
-                if (accessory != null)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    amount = 0 - accessory.price;
+                    var accessory = context.Accessory.FirstOrDefault(a => a.accessoryId == purchasedAccessory.accessoryId);
+                    if (accessory != null)
+                    {
+                        amount = 0 - accessory.price;
+                    }
                 }
+            }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
             }
             PlayerManagerDB.UpdateScore(purchasedAccessory.playerId, amount);
         }
@@ -43,15 +83,34 @@ namespace DataAccess.EntitiesManager
         private static bool RemoveePurchasedAccessoryInUse(int playerId)
         {
             bool purchasedAccessoryUpdated = false;
-            using (var context = new ExamExplotionDBEntities())
+            try
             {
-                var purchasedAccessoryToUpdate = context.PurchasedAccessory.FirstOrDefault(p => p.playerId == playerId && p.inUse == true );
-                if (purchasedAccessoryToUpdate != null)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    purchasedAccessoryToUpdate.inUse = false;
-                    context.SaveChanges();
-                    purchasedAccessoryUpdated = true;
+                    var purchasedAccessoryToUpdate = context.PurchasedAccessory.FirstOrDefault(p => p.playerId == playerId && p.inUse == true );
+                    if (purchasedAccessoryToUpdate != null)
+                    {
+                        purchasedAccessoryToUpdate.inUse = false;
+                        context.SaveChanges();
+                        purchasedAccessoryUpdated = true;
+                    }
                 }
+            }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
             }
             return purchasedAccessoryUpdated;
         }
@@ -62,42 +121,100 @@ namespace DataAccess.EntitiesManager
             bool purchasedAccessoryInUseRemoved = RemoveePurchasedAccessoryInUse(purchasedAccessory.playerId);
             if( purchasedAccessoryInUseRemoved)
             {
-                using (var context = new ExamExplotionDBEntities())
+                try
                 {
-                    var purchasedAccessoryToUpdate = context.PurchasedAccessory.FirstOrDefault(p => p.playerId == purchasedAccessory.playerId && p.accessoryId == purchasedAccessory.accessoryId);
-                    if (purchasedAccessoryToUpdate != null)
+                    using (var context = new ExamExplotionDBEntities())
                     {
-                        purchasedAccessoryToUpdate.inUse = true;
-                        context.SaveChanges();
-                        purchasedAccessoryUpdated = true;
+                        var purchasedAccessoryToUpdate = context.PurchasedAccessory.FirstOrDefault(p => p.playerId == purchasedAccessory.playerId && p.accessoryId == purchasedAccessory.accessoryId);
+                        if (purchasedAccessoryToUpdate != null)
+                        {
+                            purchasedAccessoryToUpdate.inUse = true;
+                            context.SaveChanges();
+                            purchasedAccessoryUpdated = true;
+                        }
                     }
+                }
+                catch (SqlException sqlException)
+                {
+                    // Log de error SQL
+                }
+                catch (InvalidOperationException invalidOperationException)
+                {
+                    // Log de error de operación inválida
+                }
+                catch (EntityException entityException)
+                {
+                    // Log de error de Entity Framework
+                }
+                catch (Exception ex)
+                {
+                    // Log de cualquier otro error no especificado
                 }
             }
             return purchasedAccessoryUpdated;
         }
         public static List<int> GetPurchasedAccessoriesIdByPlayer(int playerId)
         {
-            using (var context = new ExamExplotionDBEntities())
+            List<int> purchasedAccessoriesIds = new List<int>();
+            try
             {
-                var purchasedAccessoriesIds = context.PurchasedAccessory.Where(p => p.playerId == playerId).Select(p => p.accessoryId).ToList();
-
-                return purchasedAccessoriesIds;
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    purchasedAccessoriesIds = context.PurchasedAccessory.Where(p => p.playerId == playerId).Select(p => p.accessoryId).ToList();
+                }
             }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+            }
+            return purchasedAccessoriesIds;
         }
         public static Accessory GetAccessoryInUse(int playerId)
         {
-            using (var context = new ExamExplotionDBEntities())
+            Accessory accessory = new Accessory();
+            try
             {
-                var purchasedAccessory = context.PurchasedAccessory.FirstOrDefault(p => p.playerId == playerId && p.inUse == true);
-                var accessory = context.Accessory.FirstOrDefault(p => p.accessoryId ==  purchasedAccessory.accessoryId);
-                if(accessory == null)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    accessory = new Accessory();
-                    accessory.accessoryId = 1;
-                    accessory.price = 0;
+                    var purchasedAccessory = context.PurchasedAccessory.FirstOrDefault(p => p.playerId == playerId && p.inUse == true);
+                    accessory = context.Accessory.FirstOrDefault(p => p.accessoryId ==  purchasedAccessory.accessoryId);
+                    if(accessory == null)
+                    {
+                        accessory = new Accessory();
+                        accessory.accessoryId = 1;
+                        accessory.price = 0;
+                    }
                 }
-                return accessory;
             }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+            }
+            return accessory;
         }
     }
 }

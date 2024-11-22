@@ -1,30 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace DataAccess.EntitiesManager
 {
     public class UserManagerDB
     {
+        /// <summary>
+        /// Agrega un usuario a la base de datos y retorna su identificador.
+        /// </summary>
+        /// <param name="user">El objeto <see cref="Users"/> a agregar.</param>
+        /// <returns>El ID del usuario si fue agregado exitosamente; -1 si ocurrió un error.</returns>
         public static int AddUser(Users user)
         {
-            using (var context = new ExamExplotionDBEntities())
+            int idAccount = -1;
+
+            try
             {
-                var newUser = context.Users.Add(user);
-                context.SaveChanges();
-                int idAccount;
-                if (newUser != null)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    idAccount = newUser.userId;
+                    var newUser = context.Users.Add(user);
+                    context.SaveChanges();
+
+                    idAccount = newUser != null ? newUser.userId : -1;
                 }
-                else
-                {
-                    idAccount = -1;
-                }
-                return idAccount;
             }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+                idAccount = -1;
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+                idAccount = -1;
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+                idAccount = -1;
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+                idAccount = -1;
+            }
+
+            return idAccount;
         }
     }
 }
