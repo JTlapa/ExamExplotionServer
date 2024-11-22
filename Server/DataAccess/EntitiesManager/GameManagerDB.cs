@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,45 +13,101 @@ namespace DataAccess.EntitiesManager
     {
         public static bool AddGame(Game game)
         {
-            using (var context = new ExamExplotionDBEntities())
+            bool gameAdded = false;
+            try
             {
-                var gameRegistered = context.Game.Add(game);
-                context.SaveChanges();
-                if (gameRegistered != null)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    return true;
-                }
-                else
-                {
-                    return false;
+                    var gameRegistered = context.Game.Add(game);
+                    context.SaveChanges();
+                    if (gameRegistered != null)
+                    {
+                        gameAdded = true;
+                    }
                 }
             }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+            }
+            return gameAdded;
         }
 
         public static Game getGameByCode(string code)
         {
             Game game = null;
-            using (var context = new ExamExplotionDBEntities())
+            try
             {
-                game = context.Game.FirstOrDefault(g => g.invitationCode == code);
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    game = context.Game.FirstOrDefault(g => g.invitationCode == code);
+                }
+
+            }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
             }
             return game;
         }
 
         public static bool DeleteGame(string invitationCode)
         {
-            using(var context = new ExamExplotionDBEntities())
+            bool deleted = false;
+            try
             {
-                bool deleted = false;
-                var game = context.Game.FirstOrDefault(g => g.invitationCode == invitationCode);
-                if (game != null)
+                using(var context = new ExamExplotionDBEntities())
                 {
-                    context.Game.Remove(game);
-                    context.SaveChanges();
-                    deleted = true;
+                    var game = context.Game.FirstOrDefault(g => g.invitationCode == invitationCode);
+                    if (game != null)
+                    {
+                        context.Game.Remove(game);
+                        context.SaveChanges();
+                        deleted = true;
+                    }
                 }
-                return deleted;
             }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+            }
+            return deleted;
         }
     }
 }

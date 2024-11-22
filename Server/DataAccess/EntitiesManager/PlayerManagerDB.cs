@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,36 +12,73 @@ namespace DataAccess.EntitiesManager
     {
         public static bool RegisterPlayer(Player player)
         {
-            using (var context = new ExamExplotionDBEntities())
+            bool registered = false;
+            try
             {
-                var playerRegistered = context.Player.Add(player);
-                context.SaveChanges();
-                if (playerRegistered != null)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    return true;
-                }
-                else
-                {
-                    return false;
+                    var playerRegistered = context.Player.Add(player);
+                    context.SaveChanges();
+                    if (playerRegistered != null)
+                    {
+                        registered = true;
+                    }
                 }
             }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+            }
+            return registered;
         }
 
         public static bool UpdateScore(int userId, int newScore)
         {
-            using (var context = new ExamExplotionDBEntities())
+            bool scoreUpdated = false;
+            try
             {
-                var player = context.Player.FirstOrDefault(p => p.userId == userId);
-
-                if (player == null)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    return false;
-                }
+                    var player = context.Player.FirstOrDefault(p => p.userId == userId);
 
-                player.score += newScore;
-                context.SaveChanges();
+                    if (player != null)
+                    {
+                        scoreUpdated = true;
+                    }
+
+                    player.score += newScore;
+                    context.SaveChanges();
+                }
             }
-            return true;
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+            }
+            return scoreUpdated;
         }
 
         /*
@@ -67,79 +106,190 @@ namespace DataAccess.EntitiesManager
 
         public static int GetWins(int playerId)
         {
-            using(var context = new ExamExplotionDBEntities())
+            int wins = -1; // Valor por defecto en caso de error o si el jugador no existe
+            try
             {
-                var player = context.Player.FirstOrDefault(p => p.userId == playerId);
-                return player != null ? player.wins.GetValueOrDefault(0) : -1; /* Returns -1 if player doesnt exists */
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    var player = context.Player.FirstOrDefault(p => p.userId == playerId);
+                    if (player != null)
+                    {
+                        wins = player.wins.GetValueOrDefault(0);
+                    }
+                }
             }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+            }
+            return wins;
         }
 
         public static int GetPoints(int playerId)
         {
-            using (var context = new ExamExplotionDBEntities())
+            int points = -1; // Valor por defecto en caso de error o si el jugador no existe
+            try
             {
-                var player = context.Player.FirstOrDefault(p => p.userId == playerId);
-                return player != null ? player.score.GetValueOrDefault(0) : -1; /* Returns -1 if player doesnt exists */
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    var player = context.Player.FirstOrDefault(p => p.userId == playerId);
+                    if (player != null)
+                    {
+                        points = player.score.GetValueOrDefault(0);
+                    }
+                }
             }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+            }
+            return points;
         }
 
         public static Player GetPlayerByGamertag(string gamertag)
         {
-            int accountId = AccountManagerDB.GetAccountIdByGamertag(gamertag);
-            Player player = null;
-            using (var context = new ExamExplotionDBEntities())
+            Player player = null; // Valor por defecto en caso de error o si el jugador no existe
+            try
             {
-                player = context.Player.FirstOrDefault(p => p.accountId == accountId);
+                int accountId = AccountManagerDB.GetAccountIdByGamertag(gamertag);
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    player = context.Player.FirstOrDefault(p => p.accountId == accountId);
+                }
+            }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
             }
             return player;
-
         }
 
         public static Dictionary<string, int> GetGlobalLeaderboard()
         {
-            Dictionary<string, int> globalLeaderboard= new Dictionary<string, int>();
-            using (var context = new ExamExplotionDBEntities())
+            Dictionary<string, int> globalLeaderboard = new Dictionary<string, int>(); // Inicialización por defecto
+            try
             {
-                var topPlayers = context.Player.Join(context.Account, player => player.accountId, account => account.accountId, 
-                                         (player, account) => new {Gamertag = account.gamertag, Wins = player.wins})
-                                         .OrderByDescending(p => p.Wins).Take(5).ToList();
-
-                foreach (var player in topPlayers)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    globalLeaderboard.Add(player.Gamertag, (int)player.Wins);
+                    var topPlayers = context.Player
+                        .Join(context.Account,
+                              player => player.accountId,
+                              account => account.accountId,
+                              (player, account) => new { Gamertag = account.gamertag, Wins = player.wins })
+                        .OrderByDescending(p => p.Wins)
+                        .Take(5)
+                        .ToList();
+
+                    foreach (var player in topPlayers)
+                    {
+                        globalLeaderboard.Add(player.Gamertag, (int)player.Wins);
+                    }
                 }
+            }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
             }
             return globalLeaderboard;
         }
 
         public static Dictionary<string, int> GetLeaderboardByFriends(List<int> friendsId)
         {
-            Dictionary<string, int> friendsLeaderboard = new Dictionary<string, int>();
-            using (var context = new ExamExplotionDBEntities())
+            Dictionary<string, int> friendsLeaderboard = new Dictionary<string, int>(); // Inicialización por defecto
+            try
             {
-                var leaderboard = context.Player
-                    .Join(context.Account,
-                          player => player.accountId,
-                          account => account.accountId,
-                          (player, account) => new
-                          {
-                              Gamertag = account.gamertag,
-                              Wins = player.wins,
-                              UserId = player.userId
-                          })
-                    .Where(p => friendsId.Contains(p.UserId))
-                    .OrderByDescending(p => p.Wins)
-                    .ToList();
-                foreach (var player in leaderboard)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    if (!friendsLeaderboard.ContainsKey(player.Gamertag))
+                    var leaderboard = context.Player
+                        .Join(context.Account,
+                              player => player.accountId,
+                              account => account.accountId,
+                              (player, account) => new
+                              {
+                                  Gamertag = account.gamertag,
+                                  Wins = player.wins,
+                                  UserId = player.userId
+                              })
+                        .Where(p => friendsId.Contains(p.UserId))
+                        .OrderByDescending(p => p.Wins)
+                        .ToList();
+
+                    foreach (var player in leaderboard)
                     {
-                        friendsLeaderboard.Add(player.Gamertag, (int)player.Wins);
+                        if (!friendsLeaderboard.ContainsKey(player.Gamertag))
+                        {
+                            friendsLeaderboard.Add(player.Gamertag, (int)player.Wins);
+                        }
                     }
                 }
             }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+            }
             return friendsLeaderboard;
         }
+
 
     }
 }
