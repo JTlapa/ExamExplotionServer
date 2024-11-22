@@ -20,26 +20,19 @@ namespace ServerService
         void NotifyEndTurn(string gameCode, string currentGamertag);
         [OperationContract]
         List<PlayerManagement> GetPlayersInGame(string gameCode);
-        [OperationContract]
-        string GetGameStatus(string gameCode);
-        [OperationContract]
-        string GetCurrentTurn(string gameCode);
+         
         [OperationContract]
         GameManagement GetGame(string gameCode);
         [OperationContract(IsOneWay = true)]
         void InitializeGameTurns(string gameCode, List<string> gamertags);
         [OperationContract(IsOneWay = true)]
         void NotifyClientOfTurn(string gameCode, string nextGametag);
-        [OperationContract(IsOneWay = true)]
-        void InitializeDeck(string gameCode, int playerCount);
         [OperationContract]
-        Card DrawCard(string gameCode);
-        [OperationContract]
-        List<Card> SeeTheFuture(string gameCode);
-        [OperationContract]
-        bool AddCardToDeck(string gameCode, Card card);
+        bool AddCardToDeck(string gameCode, CardManagement card);
         [OperationContract]
         bool ShuffleDeck(string gameCode);
+        [OperationContract]
+        Dictionary<string, int> GetPlayerDeck(string gameCode, string gamertag);
     }
 
     public interface IGameConnectionCallback
@@ -51,7 +44,7 @@ namespace ServerService
     }
 
     [DataContract]
-    public class Card
+    public class CardManagement
     {
         private string cardName;
         private string cardPath;
