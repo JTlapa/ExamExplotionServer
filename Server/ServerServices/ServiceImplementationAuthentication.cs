@@ -102,5 +102,10 @@ namespace ServerService
         {
             return AccountManagerDB.VerifyExistingGamertag(gamertag);
         }
+
+        public int GetAccountIdByGamertag(string gamertag)
+        {
+            return AccountManagerDB.GetAccountIdByGamertag(gamertag);
+        }
     }
 }

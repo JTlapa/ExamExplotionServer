@@ -167,7 +167,7 @@ namespace DataAccess.EntitiesManager
             return emailExists;
         }
 
-        internal static int GetAccountIdByGamertag(string gamertag)
+        public static int GetAccountIdByGamertag(string gamertag)
         {
             int accountId = -1;
             try
@@ -198,6 +198,40 @@ namespace DataAccess.EntitiesManager
                 // Log de cualquier otro error no especificado
             }
             return accountId;
+        }
+
+        public static bool DeactivateAccount(string gamertag)
+        {
+            bool accountDeactivated = false;
+            try
+            {
+                using(var context = new ExamExplotionDBEntities())
+                {
+                    Account account = context.Account.FirstOrDefault(a => a.gamertag == gamertag);
+                    if (account != null)
+                    {
+                        account.status = "Inactive";
+                        accountDeactivated = true;
+                    }
+                }
+            }
+            catch (SqlException sqlException)
+            {
+                // Log de error SQL
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                // Log de error de operación inválida
+            }
+            catch (EntityException entityException)
+            {
+                // Log de error de Entity Framework
+            }
+            catch (Exception ex)
+            {
+                // Log de cualquier otro error no especificado
+            }
+            return accountDeactivated;
         }
     }
 }
