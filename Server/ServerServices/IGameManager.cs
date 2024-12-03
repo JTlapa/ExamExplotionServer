@@ -12,6 +12,8 @@ namespace ServerService
     [ServiceContract(CallbackContract = typeof(IGameConnectionCallback))]
     public interface IGameManager
     {
+        [OperationContract(IsOneWay = true)]
+        void InitializeDeck(string gameCode, int playerCount, string gamertag);
         [OperationContract]
         bool ConnectGame(string gameCode, string gamertag);
         [OperationContract]
@@ -19,21 +21,16 @@ namespace ServerService
         [OperationContract(IsOneWay = true)]
         void NotifyEndTurn(string gameCode, string currentGamertag);
         [OperationContract]
-        List<PlayerManagement> GetPlayersInGame(string gameCode);
-         
-        [OperationContract]
         GameManagement GetGame(string gameCode);
         [OperationContract(IsOneWay = true)]
         void InitializeGameTurns(string gameCode, List<string> gamertags);
         [OperationContract(IsOneWay = true)]
         void NotifyClientOfTurn(string gameCode, string nextGametag);
-        [OperationContract]
-        bool AddCardToDeck(string gameCode, CardManagement card);
-        [OperationContract]
-        bool ShuffleDeck(string gameCode);
-        [OperationContract]
-        Dictionary<string, int> GetPlayerDeck(string gameCode, string gamertag);
-    }
+        [OperationContract (IsOneWay = true)]
+        void NotifyDrawCard(string gameCode, string gamertag, bool isTopCard);
+        [OperationContract (IsOneWay = true)]
+        void NotifyCardOnBoard(string gameCode, string path);
+     }
 
     public interface IGameConnectionCallback
     {
@@ -41,6 +38,12 @@ namespace ServerService
         void UpdateCurrentTurn(string gamertag);
         [OperationContract(IsOneWay = true)]
         void SyncTimer();
+        [OperationContract(IsOneWay = true)]
+        void RecivePlayerAndGameDeck(Stack<CardManagement> gameDeck, List<CardManagement> playerDeck);
+        [OperationContract(IsOneWay = true)]
+        void RemoveCardFromStack(bool isTopCard);
+        [OperationContract(IsOneWay = true)]
+        void PrintCardOnBoard(string path);
     }
 
     [DataContract]

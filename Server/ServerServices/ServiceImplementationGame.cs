@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ServerService
@@ -15,95 +16,75 @@ namespace ServerService
         private Dictionary<string, List<string>> playersInGame = new Dictionary<string, List<string>>();
         private static Dictionary<string, Dictionary<string, IGameConnectionCallback>> gameConnections = new Dictionary<string, Dictionary<string, IGameConnectionCallback>>();
         private static Dictionary<string, bool> turnTransitionState = new Dictionary<string, bool>();
-        private Dictionary<string, Stack<CardManagement>> gameDeck = new Dictionary<string, Stack<CardManagement>>();
-        private Dictionary<string, Dictionary<string, bool>> cardsDealt = new Dictionary<string, Dictionary<string, bool>>();  
-
-        //Esta funcion no va a ir aqui
         public void InitializeDeck(string gameCode, int playerCount, string gamertag)
         {
-            if (!gameDeck.ContainsKey(gameCode))
-            {
-                gameDeck.Add(gameCode, new Stack<CardManagement>());
-            }
-            if (!cardsDealt.ContainsKey(gameCode))
-            {
-                cardsDealt.Add(gameCode, new Dictionary<string, bool>());
-            }
-            cardsDealt[gameCode].Add(gamertag, false);
-            if (gameDeck[gameCode].Count == 0)
-            {
-                List<CardManagement> cards = new List<CardManagement>();
-                AddCardToList(cards, "Ver el futuro", "viewTheFuture", 6);
-                AddCardToList(cards, "Dejo el equipo", "leftTeam", 6);
-                AddCardToList(cards, "Exentar", "exempt", 5);
-                AddCardToList(cards, "Paro", "please", 6);
-                AddCardToList(cards, "Revolver", "shuffle", 6);
-                AddCardToList(cards, "Agarrar de abajo", "takeFromBelow", 7);
-                AddCardToList(cards, "El profe R", "profeR", 3);
-                AddCardToList(cards, "El profe O", "profeO", 3);
-                AddCardToList(cards, "El profe S", "profeS", 3);
-                AddCardToList(cards, "El profe A", "profeA", 3);
-                AddCardToList(cards, "El profe M", "profeM", 3);
+            List<CardManagement> cards = new List<CardManagement>();
+            AddCardToList(cards, "Ver el futuro", "viewTheFuture", 6);
+            AddCardToList(cards, "Dejo el equipo", "leftTeam", 6);
+            AddCardToList(cards, "Exentar", "exempt", 5);
+            AddCardToList(cards, "Paro", "please", 6);
+            AddCardToList(cards, "Revolver", "shuffle", 6);
+            AddCardToList(cards, "Agarrar de abajo", "takeFromBelow", 7);
+            AddCardToList(cards, "El profe R", "profeR", 3);
+            AddCardToList(cards, "El profe O", "profeO", 3);
+            AddCardToList(cards, "El profe S", "profeS", 3);
+            AddCardToList(cards, "El profe A", "profeA", 3);
+            AddCardToList(cards, "El profe M", "profeM", 3);
 
-                var shuffledDeck = cards.OrderBy(cardDeck => Guid.NewGuid()).ToList();
-                gameDeck[gameCode] = new Stack<CardManagement>(shuffledDeck);
+            List<CardManagement> shuffledDeck = cards.OrderBy(cardDeck => Guid.NewGuid()).ToList();
+            Stack<CardManagement> gameDeck = new Stack<CardManagement>(shuffledDeck);
+
+            Console.WriteLine($"Se inicio el stack del juego {gameCode}");
+            SendPlayerAndGameDeck(gameDeck, gameCode, playerCount);
+        }
+        private void SendPlayerAndGameDeck(Stack<CardManagement> gameDeck, string gameCode, int playerCount)
+        {
+            List<CardManagement>[] playerDecks = {null, null, null, null};
+            for(int i = 0; i < playerCount; i++)
+            {
+                List<CardManagement> playerDeck = new List<CardManagement>();
+                CardManagement card = new CardManagement();
+                card.CardName = "Re Registration";
+                card.CardPath = "reRegistration";
+                playerDeck.Add(card);
+                for (int j = 0; j < 7; j++)
+                {
+                    card = gameDeck.Pop();
+                    playerDeck.Add(card);
+                }
+                playerDecks[i] = playerDeck;
+                Console.WriteLine($"Se repartio a {i}");
+            }
+            Stack<CardManagement> finalGameDeck = FinalizeGameDeck(gameDeck, playerCount);
+            if (gameConnections.ContainsKey(gameCode))
+            {
+                int index = 0;
+                var playersInGame = gameConnections[gameCode];
+                foreach (var player in playersInGame)
+                {
+                    player.Value.RecivePlayerAndGameDeck(finalGameDeck, playerDecks[index]);
+                    index++;
+                }
             }
         }
-        //esta tampoco va aqui
+
+        private Stack<CardManagement> FinalizeGameDeck(Stack<CardManagement> gameDeck, int playerCount)
+        {
+            int repiteCount = Math.Max(0, playerCount - 1);
+            int reinscripcionCount = Math.Max(0, 6 - playerCount);
+            List<CardManagement> cards = gameDeck.ToList();
+            AddCardToList(cards, "Repite", "examBomb", repiteCount);
+            AddCardToList(cards, "Reinscripcion", "reRegistration", reinscripcionCount);
+            var shuffledDeck = cards.OrderBy(cardDeck => Guid.NewGuid()).ToList();
+            var newGameDeck = new Stack<CardManagement>(shuffledDeck);
+            return newGameDeck;
+        }
         private void AddCardToList(List<CardManagement> cardList, string cardName, string cardPath, int count)
         {
             for (int i = 0; i < count; i++)
             {
                 cardList.Add(new CardManagement { CardName = cardName, CardPath = cardPath});
             }
-        }
-        //tampoco iria
-        public CardManagement DrawCard(string gameCode)
-        {
-            if (gameDeck.ContainsKey(gameCode) && gameDeck[gameCode].Count > 0)
-            {
-                return gameDeck[gameCode].Pop();
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public List<CardManagement> SeeTheFuture(string gameCode)
-        {
-            if (gameDeck.ContainsKey(gameCode) && gameDeck[gameCode].Count > 0)
-            {
-                return gameDeck[gameCode].Take(3).ToList();
-            }
-            else
-            {
-                return new List<CardManagement>();
-            }
-        }
-
-        public bool AddCardToDeck(string gameCode, CardManagement card)
-        {
-            bool added = false;
-            if (gameDeck.ContainsKey(gameCode))
-            {
-                gameDeck[gameCode].Push(card);
-                added = true;
-            }
-            return added;
-        }
-
-        public bool ShuffleDeck(string gameCode)
-        {
-            bool shuffled = false;
-            if (gameDeck.ContainsKey(gameCode))
-            {
-                var cards = gameDeck[gameCode].ToList();
-                cards = cards.OrderBy(_ => Guid.NewGuid()).ToList();
-                gameDeck[gameCode] = new Stack<CardManagement>(cards);
-                shuffled = true;
-            }
-            return shuffled;
         }
 
         public bool EndGame(string gameCode, int winnerPlayerId)
@@ -146,16 +127,16 @@ namespace ServerService
 
         public void NotifyClientOfTurn(string gameCode, string nextGametag)
         {
-            if (gameConnections.ContainsKey(gameCode))
-            {
-                var playersInGame = gameConnections[gameCode];
-                foreach (var player in playersInGame)
+                if (gameConnections.ContainsKey(gameCode))
                 {
-                    player.Value.UpdateCurrentTurn(nextGametag);
-                    player.Value.SyncTimer();
+                    var playersInGame = gameConnections[gameCode];
+                    foreach (var player in playersInGame)
+                    {
+                        player.Value.UpdateCurrentTurn(nextGametag);
+                        player.Value.SyncTimer();
+                    }
+                    ResetTurnTransitionState(gameCode);
                 }
-                ResetTurnTransitionState(gameCode);
-            }
         }
 
         public void NotifyEndTurn(string gameCode, string currentGamertag)
@@ -191,57 +172,36 @@ namespace ServerService
             if (!gameConnections.ContainsKey(gameCode))
             {
                 gameConnections[gameCode] = new Dictionary<string, IGameConnectionCallback>();
-            }
+            } 
             gameConnections[gameCode][gamertag] = callback;
             connected = true;
             return connected;
         }
 
-        public Dictionary<string, int> GetPlayerDeck(string gameCode, string gamertag)
+        public void NotifyDrawCard(string gameCode, string gamertag, bool isTopCard)
         {
-            Dictionary<string, int> playerDeck = new Dictionary<string, int>();
-            playerDeck.Add("reRegistration", 1);
-            for(int i = 0; i < 7; i++)
+            if (gameConnections.ContainsKey(gameCode))
             {
-                CardManagement card = gameDeck[gameCode].Pop();
-                if (playerDeck.ContainsKey(card.CardPath))
+                var playersInGame = gameConnections[gameCode];
+                foreach (var player in playersInGame)
                 {
-                    playerDeck[card.CardPath] += 1;
+                    if(player.Key != gamertag)
+                    {
+                        player.Value.RemoveCardFromStack(isTopCard);
+                    }
                 }
-                else
-                {
-                    playerDeck.Add(card.CardPath, 1);
-                }
+                ResetTurnTransitionState(gameCode);
             }
-            cardsDealt[gameCode][gamertag] = true;
-            FinalizeGameDeck(gameCode);
-            return playerDeck;
         }
-
-        private void FinalizeGameDeck(string gameCode)
+        public void NotifyCardOnBoard(string gameCode, string path)
         {
-            bool cardsDealtReady = true;
-            int playerCount = 0;
-            foreach (bool player in cardsDealt[gameCode].Values)
+            if(gameConnections.ContainsKey(gameCode))
             {
-                if (!player)
+                var playersInGame = gameConnections[gameCode];
+                foreach (var player in playersInGame)
                 {
-                    cardsDealtReady = false;
+                    player.Value.PrintCardOnBoard(path);
                 }
-                playerCount++;
-            }
-            if (cardsDealtReady)
-            {
-                int repiteCount = Math.Max(0, playerCount - 1);
-                int reinscripcionCount = Math.Max(0, 6 - playerCount);
-
-                List<CardManagement> cards = gameDeck[gameCode].ToList();
-                AddCardToList(cards, "Repite", "examBomb", repiteCount);
-                AddCardToList(cards, "Reinscripcion", "reRegistration", reinscripcionCount);
-                var shuffledDeck = cards.OrderBy(cardDeck => Guid.NewGuid()).ToList();
-
-                gameDeck[gameCode] = new Stack<CardManagement>(shuffledDeck);
-                Console.WriteLine($"Quedaron {gameDeck[gameCode].Count} cartas despues de repartir");
             }
         }
     }
