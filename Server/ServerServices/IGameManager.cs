@@ -25,6 +25,14 @@ namespace ServerService
         bool ConnectGame(string gameCode, string gamertag);
 
         /// <summary>
+        /// Inicializa el mazo de cartas para una partida.
+        /// </summary>
+        /// <param name="gameCode">Código único de la partida.</param>
+        /// <param name="playerCount">Número de jugadores en la partida.</param>
+        [OperationContract(IsOneWay = true)]
+        void InitializeDeck(string gameCode, int playerCount, string gamertag);
+
+        /// <summary>
         /// Finaliza la partida y registra al jugador ganador.
         /// </summary>
         /// <param name="gameCode">Código único de la partida.</param>
@@ -40,22 +48,6 @@ namespace ServerService
         /// <param name="currentGamertag">Gamertag del jugador cuyo turno finalizó.</param>
         [OperationContract(IsOneWay = true)]
         void NotifyEndTurn(string gameCode, string currentGamertag);
-
-        /// <summary>
-        /// Obtiene la lista de jugadores conectados a una partida.
-        /// </summary>
-        /// <param name="gameCode">Código único de la partida.</param>
-        /// <returns>Lista de objetos <see cref="PlayerManagement"/> que representan a los jugadores.</returns>
-        [OperationContract]
-        List<PlayerManagement> GetPlayersInGame(string gameCode);
-
-        /// <summary>
-        /// Obtiene el estado actual de una partida.
-        /// </summary>
-        /// <param name="gameCode">Código único de la partida.</param>
-        /// <returns>Estado de la partida como cadena de texto.</returns>
-        [OperationContract]
-        string GetGameStatus(string gameCode);
 
         /// <summary>
         /// Obtiene el gamertag del jugador que tiene el turno actual.
@@ -89,47 +81,11 @@ namespace ServerService
         [OperationContract(IsOneWay = true)]
         void NotifyClientOfTurn(string gameCode, string nextGametag);
 
-        /// <summary>
-        /// Inicializa el mazo de cartas para una partida.
-        /// </summary>
-        /// <param name="gameCode">Código único de la partida.</param>
-        /// <param name="playerCount">Número de jugadores en la partida.</param>
-        [OperationContract(IsOneWay = true)]
-        void InitializeDeck(string gameCode, int playerCount);
-
-        /// <summary>
-        /// Permite a un jugador robar una carta del mazo.
-        /// </summary>
-        /// <param name="gameCode">Código único de la partida.</param>
-        /// <returns>Objeto <see cref="Card"/> que representa la carta robada.</returns>
-        [OperationContract]
-        Card DrawCard(string gameCode);
-
-        /// <summary>
-        /// Permite a un jugador ver las cartas siguientes en el mazo.
-        /// </summary>
-        /// <param name="gameCode">Código único de la partida.</param>
-        /// <returns>Lista de objetos <see cref="Card"/> que representan las cartas visibles.</returns>
-        [OperationContract]
-        List<Card> SeeTheFuture(string gameCode);
-
-        /// <summary>
-        /// Agrega una carta al mazo de la partida.
-        /// </summary>
-        /// <param name="gameCode">Código único de la partida.</param>
-        /// <param name="card">Objeto <see cref="Card"/> que representa la carta a agregar.</param>
-        /// <returns>Verdadero si la carta se agregó exitosamente; falso en caso contrario.</returns>
-        [OperationContract]
-        bool AddCardToDeck(string gameCode, Card card);
-
-        /// <summary>
-        /// Baraja el mazo de cartas de la partida.
-        /// </summary>
-        /// <param name="gameCode">Código único de la partida.</param>
-        /// <returns>Verdadero si el mazo se barajó exitosamente; falso en caso contrario.</returns>
-        [OperationContract]
-        bool ShuffleDeck(string gameCode);
-    }
+        [OperationContract (IsOneWay = true)]
+        void NotifyDrawCard(string gameCode, string gamertag, bool isTopCard);
+        [OperationContract (IsOneWay = true)]
+        void NotifyCardOnBoard(string gameCode, string path);
+     }
 
     /// <summary>
     /// Define las operaciones de callback que el servidor puede invocar en los clientes conectados.
@@ -148,13 +104,19 @@ namespace ServerService
         /// </summary>
         [OperationContract(IsOneWay = true)]
         void SyncTimer();
+        [OperationContract(IsOneWay = true)]
+        void RecivePlayerAndGameDeck(Stack<CardManagement> gameDeck, List<CardManagement> playerDeck);
+        [OperationContract(IsOneWay = true)]
+        void RemoveCardFromStack(bool isTopCard);
+        [OperationContract(IsOneWay = true)]
+        void PrintCardOnBoard(string path);
     }
 
     /// <summary>
     /// Representa una carta dentro del juego.
     /// </summary>
     [DataContract]
-    public class Card
+    public class CardManagement
     {
         private string cardName;
         private string cardPath;
