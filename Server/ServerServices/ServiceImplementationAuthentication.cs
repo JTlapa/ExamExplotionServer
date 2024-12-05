@@ -107,5 +107,10 @@ namespace ServerService
         {
             return AccountManagerDB.GetAccountIdByGamertag(gamertag);
         }
+
+        public bool DeactivateAccount(string gamertag)
+        {
+            return AccountManagerDB.DeactivateAccount(gamertag);
+        }
     }
 }

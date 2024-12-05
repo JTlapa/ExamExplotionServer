@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="IAccessoryManager.cs" />
     <Compile Include="IAuthenticationManager.cs" />
+    <Compile Include="ICardFuncionalityManager.cs" />
     <Compile Include="IGameManager.cs" />
     <Compile Include="ILobbyManager.cs" />
     <Compile Include="IPlayerManager.cs" />

@@ -57,6 +57,14 @@ namespace ServerService
         /// <returns>ID de la cuenta asociada al gamertag.</returns>
         [OperationContract]
         int GetAccountIdByGamertag(string gamertag);
+
+        /// <summary>
+        /// Desactiva la cuenta de un jugador tras haber recibido 3 reportes.
+        /// </summary>
+        /// <param name="gamertag">Gamertag del usuario.</param>
+        /// <returns>Verdadero si la cuenta fue desactivada con exitosamente, falso en caso contrario.</returns>
+        [OperationContract]
+        bool DeactivateAccount(string gamertag);
     }
 
     /// <summary>
