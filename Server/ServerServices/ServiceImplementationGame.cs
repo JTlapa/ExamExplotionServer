@@ -68,6 +68,18 @@ namespace ServerService
             }
         }
 
+        public void SendShuffleDeck(string gameCode, Stack<CardManagement> gameDeck)
+        {
+            if (gameConnections.ContainsKey(gameCode))
+            {
+                var playersInGame = gameConnections[gameCode];
+                foreach (var player in playersInGame)
+                {
+                    player.Value.ReceiveGameDeck(gameDeck);
+                }
+            }
+        }
+
         private Stack<CardManagement> FinalizeGameDeck(Stack<CardManagement> gameDeck, int playerCount)
         {
             int repiteCount = Math.Max(0, playerCount - 1);
@@ -201,6 +213,36 @@ namespace ServerService
                 foreach (var player in playersInGame)
                 {
                     player.Value.PrintCardOnBoard(path);
+                }
+            }
+        }
+
+        public void RequestCard(string gameCode, string playerRequested, string playerRequesting)
+        {
+            if (gameConnections.ContainsKey(gameCode))
+            {
+                var playersInGame = gameConnections[gameCode];
+                foreach (var player in playersInGame)
+                {
+                    if (player.Key.Equals(playerRequested))
+                    {
+                        player.Value.NotifyCardRequested(gameCode, playerRequesting);
+                    }
+                }
+            }
+        }
+
+        public void SendCardToPlayer(string gameCode, string playerRequesting, CardManagement cardToSend)
+        {
+            if (gameConnections.ContainsKey(gameCode))
+            {
+                var playersInGame = gameConnections[gameCode];
+                foreach (var player in playersInGame)
+                {
+                    if (player.Key.Equals(playerRequesting))
+                    {
+                        player.Value.NotifyCardReceived(cardToSend);
+                    }
                 }
             }
         }

@@ -85,6 +85,12 @@ namespace ServerService
         void NotifyDrawCard(string gameCode, string gamertag, bool isTopCard);
         [OperationContract (IsOneWay = true)]
         void NotifyCardOnBoard(string gameCode, string path);
+        [OperationContract(IsOneWay = true)]
+        void SendShuffleDeck(string gameCode, Stack<CardManagement> gameDeck);
+        [OperationContract(IsOneWay = true)]
+        void RequestCard(string gameCode, string playerRequested, string playerRequesting);
+        [OperationContract(IsOneWay = true)]
+        void SendCardToPlayer(string gameCode, string playerRequesting, CardManagement cardToSend);
      }
 
     /// <summary>
@@ -110,6 +116,12 @@ namespace ServerService
         void RemoveCardFromStack(bool isTopCard);
         [OperationContract(IsOneWay = true)]
         void PrintCardOnBoard(string path);
+        [OperationContract(IsOneWay = true)]
+        void ReceiveGameDeck(Stack<CardManagement> gameDeck);
+        [OperationContract(IsOneWay = true)]
+        void NotifyCardRequested(string gameCode, string playerRequesting);
+        [OperationContract(IsOneWay = true)]
+        void NotifyCardReceived(CardManagement card);
     }
 
     /// <summary>
