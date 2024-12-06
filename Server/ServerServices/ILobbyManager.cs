@@ -106,5 +106,11 @@ namespace ServerService
         /// <param name="lobbyPlayers">Diccionario con los jugadores del lobby y sus estados de conexión.</param>
         [OperationContract(IsOneWay = true)]
         void StartGame(Dictionary<string, bool> lobbyPlayers);
+
+        /// <summary>
+        /// Actualiza el host de la lobby en cada cliente una vez que el host actual abandono la lobby
+        /// </summary>
+        [OperationContract (IsOneWay = true)]
+        void UpdateHost();
     }
 }

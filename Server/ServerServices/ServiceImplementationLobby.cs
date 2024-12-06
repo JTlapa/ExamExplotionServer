@@ -63,6 +63,7 @@ namespace ServerService
                 foreach (var player in lobbyConnections[lobbyCode])
                 {
                     player.Value.Repaint(playerStatus[lobbyCode]);
+                    player.Value.UpdateHost();
                 }
             }
         }
