@@ -96,3 +96,6 @@ $RECYCLE.BIN/
 *.testsettings
 *.vsmdi
 TestResults/
+
+#SonarQube
+Server/.sonarqube
