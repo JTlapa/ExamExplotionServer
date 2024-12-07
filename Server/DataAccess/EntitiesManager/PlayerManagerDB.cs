@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.EntitiesManager
 {
-    public class PlayerManagerDB
+    public static class PlayerManagerDB
     {
         public static bool RegisterPlayer(Player player)
         {

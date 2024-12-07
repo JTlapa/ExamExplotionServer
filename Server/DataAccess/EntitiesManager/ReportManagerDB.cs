@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.EntitiesManager
 {
-    public class ReportManagerDB
+    public static class ReportManagerDB
     {
         public static int GetReportCount(int playerId)
         {

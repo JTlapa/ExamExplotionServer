@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.EntitiesManager
 {
-    public class FriendManagerDB
+    public static class FriendManagerDB
     {
         public static List<int> GetFriendsIdByPlayer(int userId)
         {

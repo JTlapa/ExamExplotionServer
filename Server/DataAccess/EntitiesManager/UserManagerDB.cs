@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace DataAccess.EntitiesManager
 {
-    public class UserManagerDB
+    public static class UserManagerDB
     {
         /// <summary>
         /// Agrega un usuario a la base de datos y retorna su identificador.
