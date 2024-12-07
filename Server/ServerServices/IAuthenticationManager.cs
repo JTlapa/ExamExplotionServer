@@ -16,7 +16,7 @@ namespace ServerService
         /// <param name="account">Objeto <see cref="AccountManagement"/> con las credenciales del usuario.</param>
         /// <returns>Verdadero si la autenticación es exitosa; falso en caso contrario.</returns>
         [OperationContract]
-        bool Login(AccountManagement account);
+        int Login(AccountManagement account);
 
         /// <summary>
         /// Registra una nueva cuenta en el sistema.

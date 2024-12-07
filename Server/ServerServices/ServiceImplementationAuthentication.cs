@@ -14,10 +14,6 @@ namespace ServerService
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public partial class ServiceImplementation : IAuthenticationManager
     {
-        string gamertag;
-        int accountId;
-        int userId;
-
         public bool AddAccount(AccountManagement account)
         {
             bool dataEntered = false;
@@ -30,8 +26,8 @@ namespace ServerService
 
             Users user = new Users();
 
-            accountId = AccountManagerDB.AddAcount(accountToAdd);
-            userId = UserManagerDB.AddUser(user);
+            var accountId = AccountManagerDB.AddAcount(accountToAdd);
+            var userId = UserManagerDB.AddUser(user);
 
             if(accountId != -1 && userId != -1)
             {
@@ -56,20 +52,14 @@ namespace ServerService
             purchasedAccessory.inUse = true;
             PurchasedAccessoryManagerDB.AddPurchasedAccessory(purchasedAccessory);
         }
-        public bool Login(AccountManagement account)
+        public int Login(AccountManagement account)
         {
             Account accountToValidate = new Account();
             accountToValidate.gamertag = account.Gamertag;
             accountToValidate.password = account.Password;
 
-            this.accountId = AccountManagerDB.ValidateAccount(accountToValidate);
-            if (this.accountId != -1)
-            {
-                this.gamertag = account.Gamertag;
-                return true;
-            }
-
-            return false;
+            var accountId = AccountManagerDB.ValidateAccount(accountToValidate);
+            return accountId;
         }
 
         public bool UpdatePassword(AccountManagement account)

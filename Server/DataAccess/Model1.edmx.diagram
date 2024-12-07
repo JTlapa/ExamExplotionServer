@@ -27,6 +27,9 @@
         <AssociationConnector Association="ExamExplotionDBModel.FK__Purchased__playe__4BAC3F29" ManuallyRouted="false" />
         <AssociationConnector Association="ExamExplotionDBModel.FK__Report__idPlayer__49C3F6B7" ManuallyRouted="false" />
         <AssociationConnector Association="ExamExplotionDBModel.FK_User_Player" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ExamExplotionDBModel.BlockList" Width="1.5" PointX="8.25" PointY="17.625" />
+        <AssociationConnector Association="ExamExplotionDBModel.FK__BlockList__block__70DDC3D8" />
+        <AssociationConnector Association="ExamExplotionDBModel.FK__BlockList__idPla__6FE99F9F" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

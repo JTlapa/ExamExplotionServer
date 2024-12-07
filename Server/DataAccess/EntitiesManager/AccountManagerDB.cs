@@ -27,7 +27,10 @@ namespace DataAccess.EntitiesManager
                     if (accountVerifed != null && accountVerifed.status == "Active")
                     {
                         idAccount = accountVerifed.accountId;
-                        log.Error("prueba");
+                    }
+                    else
+                    {
+                        idAccount = -2;
                     }
                 }
             }

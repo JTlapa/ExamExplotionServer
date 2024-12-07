@@ -12,14 +12,13 @@ namespace DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class PlayersByGame
+    public partial class BlockList
     {
-        public int gameId { get; set; }
-        public int playerId { get; set; }
-        public string tipo { get; set; }
-        public int playersByGameId { get; set; }
+        public int idBlock { get; set; }
+        public int idPlayer { get; set; }
+        public int blockedPlayer { get; set; }
     
-        public virtual Game Game { get; set; }
         public virtual Player Player { get; set; }
+        public virtual Player Player1 { get; set; }
     }
 }

@@ -23,8 +23,16 @@
           <Property Name="name" Type="nvarchar" MaxLength="50" />
           <Property Name="email" Type="nvarchar" MaxLength="50" />
           <Property Name="gamertag" Type="varchar" MaxLength="20" />
-          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="256" />
           <Property Name="status" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="BlockList">
+          <Key>
+            <PropertyRef Name="idBlock" />
+          </Key>
+          <Property Name="idBlock" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idPlayer" Type="int" Nullable="false" />
+          <Property Name="blockedPlayer" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Friend">
           <Key>
@@ -96,6 +104,30 @@
           </Key>
           <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <Association Name="FK__BlockList__block__70DDC3D8">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="BlockList" Type="Self.BlockList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="BlockList">
+              <PropertyRef Name="blockedPlayer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BlockList__idPla__6FE99F9F">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="BlockList" Type="Self.BlockList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="BlockList">
+              <PropertyRef Name="idPlayer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Friend__playerId__46E78A0C">
           <End Role="Player" Type="Self.Player" Multiplicity="1" />
           <End Role="Friend" Type="Self.Friend" Multiplicity="*" />
@@ -243,6 +275,7 @@
         <EntityContainer Name="ExamExplotionDBModelStoreContainer">
           <EntitySet Name="Accessory" EntityType="Self.Accessory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BlockList" EntityType="Self.BlockList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Friend" EntityType="Self.Friend" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Game" EntityType="Self.Game" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Guest" EntityType="Self.Guest" Schema="dbo" store:Type="Tables" />
@@ -251,6 +284,14 @@
           <EntitySet Name="PurchasedAccessory" EntityType="Self.PurchasedAccessory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BlockList__block__70DDC3D8" Association="Self.FK__BlockList__block__70DDC3D8">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="BlockList" EntitySet="BlockList" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BlockList__idPla__6FE99F9F" Association="Self.FK__BlockList__idPla__6FE99F9F">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="BlockList" EntitySet="BlockList" />
+          </AssociationSet>
           <AssociationSet Name="FK__Friend__playerId__46E78A0C" Association="Self.FK__Friend__playerId__46E78A0C">
             <End Role="Player" EntitySet="Player" />
             <End Role="Friend" EntitySet="Friend" />
@@ -323,7 +364,7 @@
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="gamertag" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Player" Relationship="Self.FK_Player_Account" FromRole="Account" ToRole="Player" />
         </EntityType>
@@ -377,6 +418,8 @@
           <NavigationProperty Name="PurchasedAccessory" Relationship="Self.FK__Purchased__playe__4BAC3F29" FromRole="Player" ToRole="PurchasedAccessory" />
           <NavigationProperty Name="Report" Relationship="Self.FK__Report__idPlayer__49C3F6B7" FromRole="Player" ToRole="Report" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_Player" FromRole="Player" ToRole="Users" />
+          <NavigationProperty Name="BlockList" Relationship="ExamExplotionDBModel.FK__BlockList__block__70DDC3D8" FromRole="Player" ToRole="BlockList" />
+          <NavigationProperty Name="BlockList1" Relationship="ExamExplotionDBModel.FK__BlockList__idPla__6FE99F9F" FromRole="Player" ToRole="BlockList" />
         </EntityType>
         <EntityType Name="PlayersByGame">
           <Key>
@@ -622,7 +665,50 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Player" EntitySet="Player" />
           </AssociationSet>
+          <EntitySet Name="BlockList" EntityType="ExamExplotionDBModel.BlockList" />
+          <AssociationSet Name="FK__BlockList__block__70DDC3D8" Association="ExamExplotionDBModel.FK__BlockList__block__70DDC3D8">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="BlockList" EntitySet="BlockList" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BlockList__idPla__6FE99F9F" Association="ExamExplotionDBModel.FK__BlockList__idPla__6FE99F9F">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="BlockList" EntitySet="BlockList" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="BlockList">
+          <Key>
+            <PropertyRef Name="idBlock" />
+          </Key>
+          <Property Name="idBlock" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idPlayer" Type="Int32" Nullable="false" />
+          <Property Name="blockedPlayer" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Player" Relationship="ExamExplotionDBModel.FK__BlockList__block__70DDC3D8" FromRole="BlockList" ToRole="Player" />
+          <NavigationProperty Name="Player1" Relationship="ExamExplotionDBModel.FK__BlockList__idPla__6FE99F9F" FromRole="BlockList" ToRole="Player" />
+        </EntityType>
+        <Association Name="FK__BlockList__block__70DDC3D8">
+          <End Type="ExamExplotionDBModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="ExamExplotionDBModel.BlockList" Role="BlockList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="BlockList">
+              <PropertyRef Name="blockedPlayer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BlockList__idPla__6FE99F9F">
+          <End Type="ExamExplotionDBModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="ExamExplotionDBModel.BlockList" Role="BlockList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="BlockList">
+              <PropertyRef Name="idPlayer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -727,6 +813,15 @@
             <EntityTypeMapping TypeName="ExamExplotionDBModel.Users">
               <MappingFragment StoreEntitySet="Users">
                 <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BlockList">
+            <EntityTypeMapping TypeName="ExamExplotionDBModel.BlockList">
+              <MappingFragment StoreEntitySet="BlockList">
+                <ScalarProperty Name="blockedPlayer" ColumnName="blockedPlayer" />
+                <ScalarProperty Name="idPlayer" ColumnName="idPlayer" />
+                <ScalarProperty Name="idBlock" ColumnName="idBlock" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
