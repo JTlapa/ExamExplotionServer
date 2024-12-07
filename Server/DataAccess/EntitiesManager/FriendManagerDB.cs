@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -10,6 +11,7 @@ namespace DataAccess.EntitiesManager
 {
     public static class FriendManagerDB
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(FriendManagerDB);
         public static List<int> GetFriendsIdByPlayer(int userId)
         {
             List<int> friendsId = new List<int>();
@@ -23,21 +25,18 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return friendsId;
         }
+
     }
 }

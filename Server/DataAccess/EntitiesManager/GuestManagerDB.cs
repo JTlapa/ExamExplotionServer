@@ -1,4 +1,5 @@
 ﻿using DataAccess.Helpers;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,6 +12,8 @@ namespace DataAccess.EntitiesManager
 {
     public static class GuestManagerDB
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(GuestManagerDB));
+
         public static int AddGuest(Guest guest)
         {
             int guestNumber = -1;
@@ -20,7 +23,7 @@ namespace DataAccess.EntitiesManager
                 {
                     Guest newGuest = context.Guest.Add(guest);
                     context.SaveChanges();
-                    if(newGuest != null)
+                    if (newGuest != null)
                     {
                         guestNumber = newGuest.guestNumber;
                     }
@@ -28,21 +31,18 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return guestNumber;
         }
     }
+
 }

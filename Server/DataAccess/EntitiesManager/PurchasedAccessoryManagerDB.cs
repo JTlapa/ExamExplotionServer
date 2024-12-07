@@ -1,4 +1,5 @@
 ﻿using DataAccess.Helpers;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,6 +13,7 @@ namespace DataAccess.EntitiesManager
 {
     public static class PurchasedAccessoryManagerDB
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(PurchasedAccessoryManagerDB));
         public static bool AddPurchasedAccessory(PurchasedAccessory purchasedAccessory)
         {
             bool purchasedAccessoryAdded = false;
@@ -30,19 +32,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return purchasedAccessoryAdded;
         }
@@ -63,19 +61,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             PlayerManagerDB.UpdateScore(purchasedAccessory.playerId, amount);
         }
@@ -98,19 +92,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return purchasedAccessoryUpdated;
         }
@@ -136,19 +126,15 @@ namespace DataAccess.EntitiesManager
                 }
                 catch (SqlException sqlException)
                 {
-                    // Log de error SQL
+                    log.Error(sqlException);
                 }
                 catch (InvalidOperationException invalidOperationException)
                 {
-                    // Log de error de operación inválida
+                    log.Warn(invalidOperationException);
                 }
                 catch (EntityException entityException)
                 {
-                    // Log de error de Entity Framework
-                }
-                catch (Exception ex)
-                {
-                    // Log de cualquier otro error no especificado
+                    log.Error(entityException);
                 }
             }
             return purchasedAccessoryUpdated;
@@ -165,19 +151,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return purchasedAccessoriesIds;
         }
@@ -200,19 +182,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return accessory;
         }

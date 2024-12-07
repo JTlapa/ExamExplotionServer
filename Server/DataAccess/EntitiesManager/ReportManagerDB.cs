@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -11,9 +12,11 @@ namespace DataAccess.EntitiesManager
 {
     public static class ReportManagerDB
     {
+
+        private static readonly ILog log = LogManager.GetLogger(typeof(ReportManagerDB));
         public static int GetReportCount(int playerId)
         {
-            int reports;
+            int reports = -1;
             try
             {
                 using(var context = new ExamExplotionDBEntities())
@@ -25,23 +28,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
-                reports = -1;
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
-                reports = -1;
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-                reports = -1;
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
-                reports = -1;
+                log.Error(entityException);
             }
             return reports;
         }
@@ -49,7 +44,7 @@ namespace DataAccess.EntitiesManager
         public static bool ReportPlayer(int reportedPlayerId)
         {
             Report reportObtained;
-            bool reported;
+            bool reported = false;
             try
             {
                 using(var context = new ExamExplotionDBEntities())
@@ -61,23 +56,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
-                reported = false;
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
-                reported = false;
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-                reported = false;
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
-                reported = false;
+                log.Error(entityException);
             }
             return reported;
         }

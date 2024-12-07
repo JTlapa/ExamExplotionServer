@@ -7,11 +7,13 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 
 namespace DataAccess.EntitiesManager
 {
     public static class AccountManagerDB
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(AccountManagerDB));
         public static int ValidateAccount(Account account)
         {
             string hashedPassword = PasswordEncryptor.HashPassword(account.password);
@@ -25,24 +27,21 @@ namespace DataAccess.EntitiesManager
                     if (accountVerifed != null && accountVerifed.status == "Active")
                     {
                         idAccount = accountVerifed.accountId;
+                        log.Error("prueba");
                     }
                 }
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return idAccount;
         }
@@ -68,19 +67,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return idAccount;
         }
@@ -104,19 +99,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return passwordUpdated;
         }
@@ -124,13 +115,28 @@ namespace DataAccess.EntitiesManager
         public static bool VerifyExistingGamertag(string gamertag)
         {
             bool gamertagExists = false;
-            using (var context = new ExamExplotionDBEntities())
+            try
             {
-                var account = context.Account.FirstOrDefault(a => a.gamertag == gamertag);
-                if(account != null)
+                using (var context = new ExamExplotionDBEntities())
                 {
-                    gamertagExists = true;
+                    var account = context.Account.FirstOrDefault(a => a.gamertag == gamertag);
+                    if (account != null)
+                    {
+                        gamertagExists = true;
+                    }
                 }
+            }
+            catch (SqlException sqlException)
+            {
+                log.Error(sqlException);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                log.Warn(invalidOperationException);
+            }
+            catch (EntityException entityException)
+            {
+                log.Error(entityException);
             }
             return gamertagExists;
         }
@@ -150,19 +156,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return emailExists;
         }
@@ -183,19 +185,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return accountId;
         }
@@ -215,21 +213,17 @@ namespace DataAccess.EntitiesManager
                     }
                 }
             }
-            catch (SqlException sqlException)
-            {
-                // Log de error SQL
+            catch(SqlException sqlException)
+            { 
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
-            }
+                log.Warn(invalidOperationException);
+             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return accountDeactivated;
         }

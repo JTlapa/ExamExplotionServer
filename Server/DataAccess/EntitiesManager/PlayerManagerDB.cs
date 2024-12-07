@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -10,6 +11,8 @@ namespace DataAccess.EntitiesManager
 {
     public static class PlayerManagerDB
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(PlayerManagerDB));
+
         public static bool RegisterPlayer(Player player)
         {
             bool registered = false;
@@ -27,19 +30,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return registered;
         }
@@ -56,53 +55,25 @@ namespace DataAccess.EntitiesManager
                     if (player != null)
                     {
                         scoreUpdated = true;
+                        player.score += newScore;
+                        context.SaveChanges();
                     }
-
-                    player.score += newScore;
-                    context.SaveChanges();
                 }
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return scoreUpdated;
         }
-
-        /*
-        public static int AddFriend(int playerId, int friendId)
-        {
-            using (var context = new ExamExplotionDBEntities())
-            {
-                var player1 = context.Player.FirstOrDefault(p => p.userId == playerId);
-                var player2 = context.Player.FirstOrDefault(p => playerId == friendId);
-
-                if (player1 != null || player2 != null)
-                {
-                    bool alreadyFriends = context.Friend.Any(f =>
-                        (f.playerId1 == playerId && f.playerId2 == friendId) ||
-                        (f.playerId1 == friendId && f.playerId2 == playerId));
-                    if (alreadyFriends)
-                    {
-                        return 2; // They're already friends 
-                    }
-
-                    context.Friend.Add(new Friend)
-                }
-            }
-        } */
 
         public static int GetWins(int playerId)
         {
@@ -120,19 +91,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return wins;
         }
@@ -153,19 +120,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return points;
         }
@@ -183,19 +146,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return player;
         }
@@ -224,19 +183,15 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return globalLeaderboard;
         }
@@ -273,23 +228,18 @@ namespace DataAccess.EntitiesManager
             }
             catch (SqlException sqlException)
             {
-                // Log de error SQL
+                log.Error(sqlException);
             }
             catch (InvalidOperationException invalidOperationException)
             {
-                // Log de error de operación inválida
+                log.Warn(invalidOperationException);
             }
             catch (EntityException entityException)
             {
-                // Log de error de Entity Framework
-            }
-            catch (Exception ex)
-            {
-                // Log de cualquier otro error no especificado
+                log.Error(entityException);
             }
             return friendsLeaderboard;
         }
-
-
     }
+
 }
