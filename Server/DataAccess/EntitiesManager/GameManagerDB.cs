@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.EntitiesManager
 {
-    public class GameManagerDB
+    public static class GameManagerDB
     {
         public static bool AddGame(Game game)
         {

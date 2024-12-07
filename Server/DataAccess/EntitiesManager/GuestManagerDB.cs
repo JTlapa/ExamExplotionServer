@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.EntitiesManager
 {
-    public class GuestManagerDB
+    public static class GuestManagerDB
     {
         public static int AddGuest(Guest guest)
         {

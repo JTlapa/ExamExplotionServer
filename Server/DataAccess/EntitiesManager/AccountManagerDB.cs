@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.EntitiesManager
 {
-    public class AccountManagerDB
+    public static class AccountManagerDB
     {
         public static int ValidateAccount(Account account)
         {

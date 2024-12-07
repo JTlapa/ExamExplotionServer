@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.EntitiesManager
 {
-    public class PurchasedAccessoryManagerDB
+    public static class PurchasedAccessoryManagerDB
     {
         public static bool AddPurchasedAccessory(PurchasedAccessory purchasedAccessory)
         {
