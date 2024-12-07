@@ -56,11 +56,6 @@ namespace ServerService
             return PlayerManagerDB.GetPoints(playerId);
         }
 
-        bool IPlayerManager.AddFriend(int playerId, int friendId)
-        {
-            throw new NotImplementedException();
-        }
-
         int IPlayerManager.GetWins(int playerId)
         {
             return PlayerManagerDB.GetWins(playerId);

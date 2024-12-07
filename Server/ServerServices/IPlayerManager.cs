@@ -48,15 +48,6 @@ namespace ServerService
         int GetPoints(int playerId);
 
         /// <summary>
-        /// Agrega a otro jugador como amigo en la lista de amigos del jugador especificado.
-        /// </summary>
-        /// <param name="playerId">Identificador único del jugador que agrega al amigo.</param>
-        /// <param name="friendId">Identificador único del jugador a agregar como amigo.</param>
-        /// <returns>Verdadero si el amigo fue agregado exitosamente; falso en caso contrario.</returns>
-        [OperationContract]
-        bool AddFriend(int playerId, int friendId);
-
-        /// <summary>
         /// Agrega un jugador invitado al sistema.
         /// </summary>
         /// <returns>Un objeto <see cref="GuestManagement"/> con los detalles del jugador invitado creado.</returns>

@@ -55,10 +55,12 @@
   <ItemGroup>
     <Compile Include="IAccessoryManager.cs" />
     <Compile Include="IAuthenticationManager.cs" />
+    <Compile Include="IFriendAndBlockList.cs" />
     <Compile Include="IGameManager.cs" />
     <Compile Include="ILobbyManager.cs" />
     <Compile Include="IPlayerManager.cs" />
     <Compile Include="IReportManager.cs" />
+    <Compile Include="ServiceImplementationFriendAndBlockList.cs" />
     <Compile Include="ServiceImplementationPurchasedAccessory.cs" />
     <Compile Include="ServiceImplementationAuthentication.cs" />
     <Compile Include="ServiceImplementationGame.cs" />

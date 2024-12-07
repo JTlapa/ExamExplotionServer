@@ -1,47 +1,55 @@
 ﻿using DataAccess;
+using DataAccess.EntitiesManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServerServices
+namespace ServerService
 {
-    public class ServiceImplementationFriendAndBlockList : IFriendAndBlockList
+    public partial class ServiceImplementation : IFriendAndBlockList
     {
-        public int AddBlock(BlockList blockList)
+        public int AddBlock(BlockListManagement blockList)
         {
-            throw new NotImplementedException();
+            BlockList block = new BlockList();
+            block.idPlayer = blockList.PlayerId;
+            block.blockedPlayer = blockList.BlockedPlayerId;
+            return BlockListManagerDB.AddBlock(block);
         }
 
-        public int AddFriend(Friend friend)
+        public int AddFriend(FriendManagement friend)
         {
-            throw new NotImplementedException();
+            Friend friendToAdd = new Friend();
+            friendToAdd.playerId1 = friend.Player1Id;
+            friendToAdd.playerId2 = friend.Player2Id;
+            return FriendManagerDB.AddFriend(friendToAdd);
         }
 
         public Dictionary<int, string> GetBlockedGamertags(int playerId)
         {
-            throw new NotImplementedException();
+            return BlockListManagerDB.GetGamertagsBlocked(playerId);
         }
 
         public Dictionary<int, string> GetFriendsGamertags(int playerId)
         {
-            throw new NotImplementedException();
+            return FriendManagerDB.GetFriendsGamertags(playerId);
         }
 
-        public bool IsPlayerBlocked(BlockList blockList)
+        public bool RemoveBlock(BlockListManagement blockList)
         {
-            throw new NotImplementedException();
+            BlockList block = new BlockList();
+            block.idPlayer = blockList.PlayerId;
+            block.blockedPlayer = blockList.BlockedPlayerId;
+            return BlockListManagerDB.RemoveBlockList(block);
         }
 
-        public bool RemoveBlock(BlockList blockList)
+        public bool RemoveFriend(FriendManagement friend)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool RemoveFriend(Friend friend)
-        {
-            throw new NotImplementedException();
+            Friend friendToRemove = new Friend();
+            friendToRemove.playerId1 = friend.Player1Id;
+            friendToRemove.playerId2 = friend.Player2Id;
+            return FriendManagerDB.RemoveFriend(friendToRemove);
         }
     }
 }
