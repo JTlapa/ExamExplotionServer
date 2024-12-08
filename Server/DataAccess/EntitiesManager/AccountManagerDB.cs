@@ -28,7 +28,7 @@ namespace DataAccess.EntitiesManager
                     {
                         idAccount = accountVerifed.accountId;
                     }
-                    else
+                    else if(accountVerifed != null)
                     {
                         idAccount = -2;
                     }

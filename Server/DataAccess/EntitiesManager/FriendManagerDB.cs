@@ -19,7 +19,11 @@ namespace DataAccess.EntitiesManager
             {
                 using (var context = new ExamExplotionDBEntities())
                 {
-                    var friends = context.Friend.Where(f => f.playerId1 == userId).Select(f => f.playerId2).ToList();
+                    var friends = context.Friend
+                        .Where(f => f.playerId1 == userId || f.playerId2 == userId)
+                        .Select(f => f.playerId1 == userId ? f.playerId2 : f.playerId1)
+                        .ToList();
+
                     friendsId = friends;
                 }
             }
