@@ -81,14 +81,46 @@ namespace ServerService
         [OperationContract(IsOneWay = true)]
         void NotifyClientOfTurn(string gameCode, string nextGametag);
 
+
+        /// <summary>
+        /// Notifica a los clientes conectados a una partida que un jugador ha tomado una carta de encima o debajo de la pila
+        /// </summary>
+        /// <param name="gameCode">Partida a la que se notificará</param>
+        /// <param name="gamertag">Gamertag del jugador que tomó la carta</param>
+        /// <param name="isTopCard">True cuando es la carta de encima, false cuando es la carta de abajo</param>
         [OperationContract (IsOneWay = true)]
         void NotifyDrawCard(string gameCode, string gamertag, bool isTopCard);
+        /// <summary>
+        /// Notifica a los clientes de una partida pintar una carta sobre el tablero
+        /// </summary>
+        /// <param name="gameCode">Código de partida a la que se notificará</param>
+        /// <param name="path">Ruta de la imagen de la carta a poner en el tablero</param>
         [OperationContract (IsOneWay = true)]
         void NotifyCardOnBoard(string gameCode, string path);
+
+        /// <summary>
+        /// Enviar un deck de cartas revuelto a todos los clientes de una partida por igual
+        /// </summary>
+        /// <param name="gameCode">Código de partida al que se hará llegar el deck</param>
+        /// <param name="gameDeck">deck revuelto que se hará llegar</param>
         [OperationContract(IsOneWay = true)]
         void SendShuffleDeck(string gameCode, Stack<CardManagement> gameDeck);
+
+        /// <summary>
+        /// Notificar a un jugador que se le ha solicitado una carta
+        /// </summary>
+        /// <param name="gameCode">Código de partida al que pertenecen los jugadores</param>
+        /// <param name="playerRequested">gamertag del jugador solicitado</param>
+        /// <param name="playerRequesting">gamertag del jugador solicitante</param>
         [OperationContract(IsOneWay = true)]
         void RequestCard(string gameCode, string playerRequested, string playerRequesting);
+
+        /// <summary>
+        /// Mandar una carta solicitada a un jugador
+        /// </summary>
+        /// <param name="gameCode">Código de partida donde sucede el evento</param>
+        /// <param name="playerRequesting">gamertag del jugador solicitante</param>
+        /// <param name="cardToSend">Carta enviada</param>
         [OperationContract(IsOneWay = true)]
         void SendCardToPlayer(string gameCode, string playerRequesting, CardManagement cardToSend);
      }
@@ -110,19 +142,52 @@ namespace ServerService
         /// </summary>
         [OperationContract(IsOneWay = true)]
         void SyncTimer();
+
+        /// <summary>
+        /// Envía al cliente el mazo de juego actual y el mazo personal del jugador.
+        /// </summary>
+        /// <param name="gameDeck">Pila de cartas que representa el mazo de juego.</param>
+        /// <param name="playerDeck">Lista de cartas que representa el mazo personal del jugador.</param>
         [OperationContract(IsOneWay = true)]
         void RecivePlayerAndGameDeck(Stack<CardManagement> gameDeck, List<CardManagement> playerDeck);
+
+        /// <summary>
+        /// Elimina una carta del mazo de juego en la posición especificada.
+        /// </summary>
+        /// <param name="isTopCard">Indica si la carta eliminada está en la parte superior del mazo.</param>
         [OperationContract(IsOneWay = true)]
         void RemoveCardFromStack(bool isTopCard);
+
+        /// <summary>
+        /// Muestra una carta en el tablero de juego.
+        /// </summary>
+        /// <param name="path">Ruta de la imagen que representa la carta.</param>
         [OperationContract(IsOneWay = true)]
         void PrintCardOnBoard(string path);
+
+        /// <summary>
+        /// Envía al cliente el mazo de juego actualizado.
+        /// </summary>
+        /// <param name="gameDeck">Pila de cartas que representa el mazo de juego.</param>
         [OperationContract(IsOneWay = true)]
         void ReceiveGameDeck(Stack<CardManagement> gameDeck);
+
+        /// <summary>
+        /// Notifica a los clientes que un jugador ha solicitado una carta.
+        /// </summary>
+        /// <param name="gameCode">Código del juego en curso.</param>
+        /// <param name="playerRequesting">Gamertag del jugador que solicitó la carta.</param>
         [OperationContract(IsOneWay = true)]
         void NotifyCardRequested(string gameCode, string playerRequesting);
+
+        /// <summary>
+        /// Notifica al cliente que ha recibido una carta solicitada.
+        /// </summary>
+        /// <param name="card">Carta recibida por el jugador.</param>
         [OperationContract(IsOneWay = true)]
         void NotifyCardReceived(CardManagement card);
     }
+
 
     /// <summary>
     /// Representa una carta dentro del juego.
