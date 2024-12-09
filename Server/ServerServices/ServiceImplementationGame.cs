@@ -16,6 +16,7 @@ namespace ServerService
         private Dictionary<string, List<string>> playersInGame = new Dictionary<string, List<string>>();
         private static Dictionary<string, Dictionary<string, IGameConnectionCallback>> gameConnections = new Dictionary<string, Dictionary<string, IGameConnectionCallback>>();
         private static Dictionary<string, bool> turnTransitionState = new Dictionary<string, bool>();
+        private static Dictionary<string, List<string>> doubleTurns = new Dictionary<string, List<string>>();
         public void InitializeDeck(string gameCode, int playerCount, string gamertag)
         {
             List<CardManagement> cards = new List<CardManagement>();
@@ -98,12 +99,6 @@ namespace ServerService
                 cardList.Add(new CardManagement { CardName = cardName, CardPath = cardPath});
             }
         }
-
-        public bool EndGame(string gameCode, int winnerPlayerId)
-        {
-            throw new NotImplementedException();
-        }
-
         public string GetCurrentTurn(string gameCode)
         {
             return currentTurnByGame.ContainsKey(gameCode) ? currentTurnByGame[gameCode] : null;
@@ -162,6 +157,21 @@ namespace ServerService
 
                     int nextIndex = (currentIndex + 1) % players.Count;
                     var nextGametag = players[nextIndex];
+                    if (doubleTurns.ContainsKey(gameCode))
+                    {
+                        var playersWithDoubleTurns = doubleTurns[gameCode];
+                        if (playersWithDoubleTurns.Contains(currentGamertag))
+                        {
+                            nextGametag = currentGamertag;
+                            nextIndex = currentIndex;
+                            doubleTurns[gameCode].Remove(nextGametag);
+                        }
+                        else if (playersWithDoubleTurns.Contains("next"))
+                        {
+                            doubleTurns[gameCode].Remove("next");
+                            doubleTurns[gameCode].Add(nextGametag);
+                        }
+                    }
 
                     currentTurnByGame[gameCode] = nextGametag;
                     turnTransitionState[gameCode] = true;
@@ -244,6 +254,95 @@ namespace ServerService
                         player.Value.NotifyCardReceived(cardToSend);
                     }
                 }
+            }
+        }
+        public void NotifyMessage(string gameCode, string gamertagOrigin, string gamertagDestination, string message)
+        {
+            if (gameConnections.ContainsKey(gameCode))
+            {
+                var playersInGame = gameConnections[gameCode];
+                if(gamertagDestination == "all")
+                {
+                    foreach (var player in playersInGame)
+                    {
+                        if (player.Key != gamertagOrigin)
+                        {
+                            player.Value.ReciveNotification(message);
+                        }
+                    }
+                }
+                else
+                {
+                    if (playersInGame.ContainsKey(gamertagDestination))
+                    {
+                        playersInGame[gamertagDestination].ReciveNotification(message);
+                    }
+                }
+            }
+        }
+        public void RemovePlayerByGame(string gameCode, string gamertag)
+        {
+            if (playersInGame.ContainsKey(gameCode))
+            {
+                var players = playersInGame[gameCode];
+                if (players.Contains(gamertag))
+                {
+                    players.Remove(gamertag);
+                    playersInGame[gameCode] = players;
+                    if(players.Count <= 1)
+                    {
+                        NotifyThereIsAWinner(gameCode, gamertag);
+                    }
+                }
+            }
+        }
+        private void NotifyThereIsAWinner(string gameCode, string gamertag)
+        {
+            string winnerGamertag = gamertag;
+            if (playersInGame[gameCode].Count > 0)
+            {
+                winnerGamertag = playersInGame[gameCode][0];
+            }
+            SaveWinner(gameCode, winnerGamertag);
+
+            if (gameConnections.ContainsKey(gameCode))
+            {
+                var playersInGame = gameConnections[gameCode];
+                foreach (var player in playersInGame)
+                {
+                    player.Value.EndTheGame(gameCode, winnerGamertag);
+                }
+            }
+        }
+
+        private void SaveWinner(string gameCode, string winnerGamertag)
+        {
+            int userId = PlayerManagerDB.GetPlayerByGamertag(winnerGamertag).userId;
+            GameManagerDB.UpdateWinner(gameCode, userId);
+        }
+
+        public void SendExamBomb(string gameCode, int gameDeckCount)
+        {
+            Random random = new Random();
+            int index = random.Next(0, gameDeckCount);
+            if (gameConnections.ContainsKey(gameCode))
+            {
+                var playersInGame = gameConnections[gameCode];
+                foreach (var player in playersInGame)
+                {
+                    player.Value.ReciveAndAddExamBomb(index);
+                }
+            }
+        }
+        public void SendDoubleTurn(string gameCode, string gamertag)
+        {
+            if (!doubleTurns.ContainsKey(gameCode))
+            {
+                doubleTurns[gameCode] = new List<string>();
+            }
+            if (!doubleTurns[gameCode].Contains(gamertag))
+            {
+                doubleTurns[gameCode].Add(gamertag);
             }
         }
     }

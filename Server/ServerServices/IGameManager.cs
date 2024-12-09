@@ -32,14 +32,6 @@ namespace ServerService
         [OperationContract(IsOneWay = true)]
         void InitializeDeck(string gameCode, int playerCount, string gamertag);
 
-        /// <summary>
-        /// Finaliza la partida y registra al jugador ganador.
-        /// </summary>
-        /// <param name="gameCode">Código único de la partida.</param>
-        /// <param name="winnerPlayerId">ID del jugador ganador.</param>
-        /// <returns>Verdadero si la operación fue exitosa; falso en caso contrario.</returns>
-        [OperationContract]
-        bool EndGame(string gameCode, int winnerPlayerId);
 
         /// <summary>
         /// Notifica al servidor que el turno de un jugador ha terminado.
@@ -123,6 +115,14 @@ namespace ServerService
         /// <param name="cardToSend">Carta enviada</param>
         [OperationContract(IsOneWay = true)]
         void SendCardToPlayer(string gameCode, string playerRequesting, CardManagement cardToSend);
+        [OperationContract(IsOneWay = true)]
+        void NotifyMessage(string gameCode, string gamertagOrigin, string gamertagDestination, string message);
+        [OperationContract(IsOneWay = true)]
+        void RemovePlayerByGame(string gameCode, string gamertag);
+        [OperationContract(IsOneWay = true)]
+        void SendExamBomb(string gameCode, int gameDeckCount);
+        [OperationContract(IsOneWay = true)]
+        void SendDoubleTurn(string gameCode, string gamertag);
      }
 
     /// <summary>
@@ -186,6 +186,12 @@ namespace ServerService
         /// <param name="card">Carta recibida por el jugador.</param>
         [OperationContract(IsOneWay = true)]
         void NotifyCardReceived(CardManagement card);
+        [OperationContract(IsOneWay = true)]
+        void ReciveNotification(string message);
+        [OperationContract(IsOneWay = true)]
+        void EndTheGame(string gameCode, string winnerGamertag);
+        [OperationContract(IsOneWay = true)]
+        void ReciveAndAddExamBomb(int index);
     }
 
 
