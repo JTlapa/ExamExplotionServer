@@ -89,5 +89,10 @@ namespace ServerService
         {
             return AccountManagerDB.DeactivateAccount(gamertag);
         }
+
+        public string GetAccountGamertagById(int accountId)
+        {
+            return AccountManagerDB.GetAccountGamertagById(accountId);
+        }
     }
 }

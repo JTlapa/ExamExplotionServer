@@ -85,6 +85,7 @@
     <Compile Include="EntitiesManager\GameManagerDB.cs" />
     <Compile Include="EntitiesManager\GuestManagerDB.cs" />
     <Compile Include="EntitiesManager\PlayerManagerDB.cs" />
+    <Compile Include="EntitiesManager\PlayersByGameManagerDB.cs" />
     <Compile Include="EntitiesManager\PurchasedAccessoryManagerDB.cs" />
     <Compile Include="EntitiesManager\ReportManagerDB.cs" />
     <Compile Include="EntitiesManager\UserManagerDB.cs" />

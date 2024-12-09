@@ -115,15 +115,66 @@ namespace ServerService
         /// <param name="cardToSend">Carta enviada</param>
         [OperationContract(IsOneWay = true)]
         void SendCardToPlayer(string gameCode, string playerRequesting, CardManagement cardToSend);
+
+        /// <summary>
+        /// Notificar la llegada de un mensaje del chat a un jugador
+        /// </summary>
+        /// <param name="gameCode">Codigo de la lobby donde se mando el mensaje</param>
+        /// <param name="gamertagOrigin">Jugaador que mando el mensaje</param>
+        /// <param name="gamertagDestination">Jugador que recibe el mensaje</param>
+        /// <param name="message">Mensaje</param>
         [OperationContract(IsOneWay = true)]
         void NotifyMessage(string gameCode, string gamertagOrigin, string gamertagDestination, string message);
+
+        /// <summary>
+        /// Elimina a un player del turno, y si solo queda un player notifica que hay un ganador
+        /// </summary>
+        /// <param name="gameCode">Codigo de la partida</param>
+        /// <param name="gamertag">Gamertag del jugador eliminado</param>
         [OperationContract(IsOneWay = true)]
         void RemovePlayerByGame(string gameCode, string gamertag);
+
+        /// <summary>
+        /// Notifica al servidor que ha ocurrido una condicion de pierde
+        /// </summary>
+        /// <param name="gameCode">Codigo de la partida</param>
+        /// <param name="gameDeckCount">Cartas restantes en el deck</param>
         [OperationContract(IsOneWay = true)]
         void SendExamBomb(string gameCode, int gameDeckCount);
+
+        /// <summary>
+        /// Notifica al servidor que un jugador jugara dos turnos seguidos
+        /// </summary>
+        /// <param name="gameCode">Codigo de partida</param>
+        /// <param name="gamertag">Gamertag del jugador afectado</param>
         [OperationContract(IsOneWay = true)]
         void SendDoubleTurn(string gameCode, string gamertag);
-     }
+
+        /// <summary>
+        /// Agrega un jugador al registro de la partida en la base de datos
+        /// </summary>
+        /// <param name="gameId">id del game al que se agregara</param>
+        /// <param name="playerId">id del player agregado</param>
+        [OperationContract(IsOneWay = true)]
+        void AddPlayersToGame(List<string> playerGamertags, string gameCode);
+
+        /// <summary>
+        /// Obtener todos los ids de los players de una partida
+        /// </summary>
+        /// <param name="gameId">id de la partida jugada</param>
+        /// <returns>lista de ints con los ids de los jugadores</returns>
+        [OperationContract]
+        List<int> GetGamePlayers(int gameId);
+
+
+        /// <summary>
+        /// Obtener el id de un game por su gameCode
+        /// </summary>
+        /// <param name="gameCode">Codigo de partida</param>
+        /// <returns>id de game</returns>
+        [OperationContract]
+        int GetGameId(string gameCode);
+    }
 
     /// <summary>
     /// Define las operaciones de callback que el servidor puede invocar en los clientes conectados.

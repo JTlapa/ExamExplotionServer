@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace DataAccess.EntitiesManager
 {
@@ -126,6 +127,35 @@ namespace DataAccess.EntitiesManager
             {
                 log.Error(entityException);
             }
+        }
+
+        public static int GetGameId(string gameCode)
+        {
+            int gameId = -1;
+            try
+            {
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    var game = context.Game.FirstOrDefault(g => g.invitationCode == gameCode);
+                    if (game != null)
+                    {
+                        gameId = game.gameId;
+                    }
+                }
+            }
+            catch (SqlException sqlException)
+            {
+                log.Error(sqlException);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                log.Warn(invalidOperationException);
+            }
+            catch (EntityException entityException)
+            {
+                log.Error(entityException);
+            }
+            return gameId;
         }
     }
 
