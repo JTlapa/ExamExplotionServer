@@ -99,6 +99,34 @@ namespace DataAccess.EntitiesManager
             }
             return deleted;
         }
+        public static void UpdateWinner(string gameCode, int userId)
+        {
+            try
+            {
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    var game = context.Game.FirstOrDefault(g => g.invitationCode == gameCode);
+
+                    if (game != null)
+                    {
+                        game.winnerPlayerId = userId;
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (SqlException sqlException)
+            {
+                log.Error(sqlException);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                log.Warn(invalidOperationException);
+            }
+            catch (EntityException entityException)
+            {
+                log.Error(entityException);
+            }
+        }
     }
 
 }
