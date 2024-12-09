@@ -50,7 +50,14 @@ namespace DataAccess.EntitiesManager
                 using(var context = new ExamExplotionDBEntities())
                 {
                     reportObtained = context.Report.FirstOrDefault(report => report.idPlayerReported == reportedPlayerId);
-                    reportObtained.amount += 1;
+                    if(reportObtained == null)
+                    {
+                        reportObtained = AddReport(reportedPlayerId);
+                    }
+                    else
+                    {
+                        reportObtained.amount += 1;
+                    }
                     reported = reportObtained.amount > 0;
                 }
             }
@@ -67,6 +74,31 @@ namespace DataAccess.EntitiesManager
                 log.Error(entityException);
             }
             return reported;
+        }
+
+        private static Report AddReport(int reportedPlayerId)
+        {
+            Report report = new Report();
+            try
+            {
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    report = context.Report.Add(new Report { amount = 1, idPlayerReported = reportedPlayerId });
+                }
+            }
+            catch (SqlException sqlException)
+            {
+                log.Error(sqlException);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                log.Warn(invalidOperationException);
+            }
+            catch (EntityException entityException)
+            {
+                log.Error(entityException);
+            }
+            return report;
         }
     }
 }

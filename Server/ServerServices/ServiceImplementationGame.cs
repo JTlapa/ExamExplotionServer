@@ -345,5 +345,25 @@ namespace ServerService
                 doubleTurns[gameCode].Add(gamertag);
             }
         }
+
+        public void AddPlayersToGame(List<string> playerGamertags, string gameCode)
+        {
+            int gameId = GetGameId(gameCode);
+            foreach (var palyerGamertag in playerGamertags)
+            {
+                var player = PlayerManagerDB.GetPlayerByGamertag(palyerGamertag);
+                PlayersByGameManagerDB.AddPlayerToGame(gameId, player.userId);
+            }
+        }
+
+        public List<int> GetGamePlayers(int gameId)
+        {
+            return PlayersByGameManagerDB.GetGamePlayersId(gameId);
+        }
+
+        public int GetGameId(string gameCode)
+        {
+            return GameManagerDB.GetGameId(gameCode);
+        }
     }
 }

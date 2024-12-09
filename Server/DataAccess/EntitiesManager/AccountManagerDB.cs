@@ -230,6 +230,35 @@ namespace DataAccess.EntitiesManager
             }
             return accountDeactivated;
         }
+
+        public static string GetAccountGamertagById(int accountId)
+        {
+            string gamertag = string.Empty;
+            try
+            {
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    Account account = context.Account.FirstOrDefault(a => a.accountId == accountId);
+                    if (account != null)
+                    {
+                        gamertag = account.gamertag;
+                    }
+                }
+            }
+            catch (SqlException sqlException)
+            {
+                log.Error(sqlException);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                log.Warn(invalidOperationException);
+            }
+            catch (EntityException entityException)
+            {
+                log.Error(entityException);
+            }
+            return gamertag;
+        }
     }
 }
 
