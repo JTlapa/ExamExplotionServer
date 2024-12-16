@@ -75,9 +75,41 @@ namespace DataAccess.EntitiesManager
             return scoreUpdated;
         }
 
+        public static bool AddWin(int userId)
+        {
+            bool winAdded = false;
+            try
+            {
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    var player = context.Player.FirstOrDefault(p => p.userId == userId);
+
+                    if (player != null)
+                    {
+                        winAdded = true;
+                        player.wins += 1;
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (SqlException sqlException)
+            {
+                log.Error(sqlException);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                log.Warn(invalidOperationException);
+            }
+            catch (EntityException entityException)
+            {
+                log.Error(entityException);
+            }
+            return winAdded;
+        }
+
         public static int GetWins(int playerId)
         {
-            int wins = -1; // Valor por defecto en caso de error o si el jugador no existe
+            int wins = -1;
             try
             {
                 using (var context = new ExamExplotionDBEntities())
@@ -106,7 +138,7 @@ namespace DataAccess.EntitiesManager
 
         public static int GetPoints(int playerId)
         {
-            int points = -1; // Valor por defecto en caso de error o si el jugador no existe
+            int points = -1;
             try
             {
                 using (var context = new ExamExplotionDBEntities())
@@ -135,7 +167,7 @@ namespace DataAccess.EntitiesManager
 
         public static Player GetPlayerByGamertag(string gamertag)
         {
-            Player player = null; // Valor por defecto en caso de error o si el jugador no existe
+            Player player = null;
             try
             {
                 int accountId = AccountManagerDB.GetAccountIdByGamertag(gamertag);
@@ -161,7 +193,7 @@ namespace DataAccess.EntitiesManager
 
         public static Dictionary<string, int> GetGlobalLeaderboard()
         {
-            Dictionary<string, int> globalLeaderboard = new Dictionary<string, int>(); // Inicialización por defecto
+            Dictionary<string, int> globalLeaderboard = new Dictionary<string, int>();
             try
             {
                 using (var context = new ExamExplotionDBEntities())
@@ -198,7 +230,7 @@ namespace DataAccess.EntitiesManager
 
         public static Dictionary<string, int> GetLeaderboardByFriends(List<int> friendsId)
         {
-            Dictionary<string, int> friendsLeaderboard = new Dictionary<string, int>(); // Inicialización por defecto
+            Dictionary<string, int> friendsLeaderboard = new Dictionary<string, int>();
             try
             {
                 using (var context = new ExamExplotionDBEntities())

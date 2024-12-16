@@ -32,6 +32,14 @@ namespace ServerService
         bool UpdateScore(int userId, int newScore);
 
         /// <summary>
+        /// Aumenta en 1 las victorias del jugador
+        /// </summary>
+        /// <param name="userId">ID del usuario relacionado al jugador</param>
+        /// <returns></returns>
+        [OperationContract]
+        bool AddWin(int userId);
+
+        /// <summary>
         /// Obtiene el número de victorias de un jugador.
         /// </summary>
         /// <param name="playerId">Identificador único del jugador.</param>

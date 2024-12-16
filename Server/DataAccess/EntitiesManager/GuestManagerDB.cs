@@ -43,6 +43,35 @@ namespace DataAccess.EntitiesManager
             }
             return guestNumber;
         }
+
+        public static int GetUserIdByGuestId(int guestId)
+        {
+            int userId = -1;
+            try
+            {
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    Guest guest = context.Guest.FirstOrDefault(g => g.guestNumber == guestId);
+                    if (guest != null)
+                    {
+                        userId = guest.userId;
+                    }
+                }
+            }
+            catch (SqlException sqlException)
+            {
+                log.Error(sqlException);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                log.Warn(invalidOperationException);
+            }
+            catch (EntityException entityException)
+            {
+                log.Error(entityException);
+            }
+            return userId;
+        }
     }
 
 }

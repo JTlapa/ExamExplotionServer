@@ -23,7 +23,7 @@
           <Property Name="name" Type="nvarchar" MaxLength="50" />
           <Property Name="email" Type="nvarchar" MaxLength="50" />
           <Property Name="gamertag" Type="varchar" MaxLength="20" />
-          <Property Name="password" Type="varchar" MaxLength="256" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="status" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="BlockList">
@@ -104,7 +104,7 @@
           </Key>
           <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <Association Name="FK__BlockList__block__70DDC3D8">
+        <Association Name="FK__BlockList__block__03F0984C">
           <End Role="Player" Type="Self.Player" Multiplicity="1" />
           <End Role="BlockList" Type="Self.BlockList" Multiplicity="*" />
           <ReferentialConstraint>
@@ -116,7 +116,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BlockList__idPla__6FE99F9F">
+        <Association Name="FK__BlockList__idPla__02FC7413">
           <End Role="Player" Type="Self.Player" Multiplicity="1" />
           <End Role="BlockList" Type="Self.BlockList" Multiplicity="*" />
           <ReferentialConstraint>
@@ -188,18 +188,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PlayersBy__playe__4F7CD00D">
-          <End Role="Player" Type="Self.Player" Multiplicity="1" />
-          <End Role="PlayersByGame" Type="Self.PlayersByGame" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="PlayersByGame">
-              <PropertyRef Name="playerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Purchased__acces__4CA06362">
           <End Role="Accessory" Type="Self.Accessory" Multiplicity="1" />
           <End Role="PurchasedAccessory" Type="Self.PurchasedAccessory" Multiplicity="*" />
@@ -248,6 +236,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PlayersByGame_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="PlayersByGame" Type="Self.PlayersByGame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="PlayersByGame">
+              <PropertyRef Name="playerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_Guest">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Guest" Type="Self.Guest" Multiplicity="0..1" />
@@ -284,11 +284,11 @@
           <EntitySet Name="PurchasedAccessory" EntityType="Self.PurchasedAccessory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__BlockList__block__70DDC3D8" Association="Self.FK__BlockList__block__70DDC3D8">
+          <AssociationSet Name="FK__BlockList__block__03F0984C" Association="Self.FK__BlockList__block__03F0984C">
             <End Role="Player" EntitySet="Player" />
             <End Role="BlockList" EntitySet="BlockList" />
           </AssociationSet>
-          <AssociationSet Name="FK__BlockList__idPla__6FE99F9F" Association="Self.FK__BlockList__idPla__6FE99F9F">
+          <AssociationSet Name="FK__BlockList__idPla__02FC7413" Association="Self.FK__BlockList__idPla__02FC7413">
             <End Role="Player" EntitySet="Player" />
             <End Role="BlockList" EntitySet="BlockList" />
           </AssociationSet>
@@ -312,10 +312,6 @@
             <End Role="Game" EntitySet="Game" />
             <End Role="PlayersByGame" EntitySet="PlayersByGame" />
           </AssociationSet>
-          <AssociationSet Name="FK__PlayersBy__playe__4F7CD00D" Association="Self.FK__PlayersBy__playe__4F7CD00D">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="PlayersByGame" EntitySet="PlayersByGame" />
-          </AssociationSet>
           <AssociationSet Name="FK__Purchased__acces__4CA06362" Association="Self.FK__Purchased__acces__4CA06362">
             <End Role="Accessory" EntitySet="Accessory" />
             <End Role="PurchasedAccessory" EntitySet="PurchasedAccessory" />
@@ -331,6 +327,10 @@
           <AssociationSet Name="FK_Player_Account" Association="Self.FK_Player_Account">
             <End Role="Account" EntitySet="Account" />
             <End Role="Player" EntitySet="Player" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlayersByGame_Users" Association="Self.FK_PlayersByGame_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PlayersByGame" EntitySet="PlayersByGame" />
           </AssociationSet>
           <AssociationSet Name="FK_User_Guest" Association="Self.FK_User_Guest">
             <End Role="Users" EntitySet="Users" />
@@ -364,7 +364,7 @@
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="gamertag" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="password" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Player" Relationship="Self.FK_Player_Account" FromRole="Account" ToRole="Player" />
         </EntityType>
@@ -414,7 +414,6 @@
           <NavigationProperty Name="Account" Relationship="Self.FK_Player_Account" FromRole="Player" ToRole="Account" />
           <NavigationProperty Name="Friend" Relationship="Self.FK__Friend__playerId__46E78A0C" FromRole="Player" ToRole="Friend" />
           <NavigationProperty Name="Friend1" Relationship="Self.FK__Friend__playerId__47DBAE45" FromRole="Player" ToRole="Friend" />
-          <NavigationProperty Name="PlayersByGame" Relationship="Self.FK__PlayersBy__playe__4F7CD00D" FromRole="Player" ToRole="PlayersByGame" />
           <NavigationProperty Name="PurchasedAccessory" Relationship="Self.FK__Purchased__playe__4BAC3F29" FromRole="Player" ToRole="PurchasedAccessory" />
           <NavigationProperty Name="Report" Relationship="Self.FK__Report__idPlayer__49C3F6B7" FromRole="Player" ToRole="Report" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_Player" FromRole="Player" ToRole="Users" />
@@ -430,7 +429,7 @@
           <Property Name="tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="playersByGameId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Game" Relationship="Self.FK__PlayersBy__gameI__4E88ABD4" FromRole="PlayersByGame" ToRole="Game" />
-          <NavigationProperty Name="Player" Relationship="Self.FK__PlayersBy__playe__4F7CD00D" FromRole="PlayersByGame" ToRole="Player" />
+          <NavigationProperty Name="Users" Relationship="ExamExplotionDBModel.FK_PlayersByGame_Users" FromRole="PlayersByGame" ToRole="Users" />
         </EntityType>
         <EntityType Name="PurchasedAccessory">
           <Key>
@@ -461,6 +460,7 @@
           <NavigationProperty Name="Game1" Relationship="Self.FK__Game__winnerPlay__4222D4EF" FromRole="Users" ToRole="Game" />
           <NavigationProperty Name="Guest" Relationship="Self.FK_User_Guest" FromRole="Users" ToRole="Guest" />
           <NavigationProperty Name="Player" Relationship="Self.FK_User_Player" FromRole="Users" ToRole="Player" />
+          <NavigationProperty Name="PlayersByGame" Relationship="ExamExplotionDBModel.FK_PlayersByGame_Users" FromRole="Users" ToRole="PlayersByGame" />
         </EntityType>
         <Association Name="FK__Purchased__acces__4CA06362">
           <End Role="Accessory" Type="Self.Accessory" Multiplicity="1" />
@@ -555,18 +555,6 @@
             </Principal>
             <Dependent Role="Guest">
               <PropertyRef Name="userId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PlayersBy__playe__4F7CD00D">
-          <End Role="Player" Type="Self.Player" Multiplicity="1" />
-          <End Role="PlayersByGame" Type="Self.PlayersByGame" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Player">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="PlayersByGame">
-              <PropertyRef Name="playerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -649,10 +637,6 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Guest" EntitySet="Guest" />
           </AssociationSet>
-          <AssociationSet Name="FK__PlayersBy__playe__4F7CD00D" Association="Self.FK__PlayersBy__playe__4F7CD00D">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="PlayersByGame" EntitySet="PlayersByGame" />
-          </AssociationSet>
           <AssociationSet Name="FK__Purchased__playe__4BAC3F29" Association="Self.FK__Purchased__playe__4BAC3F29">
             <End Role="Player" EntitySet="Player" />
             <End Role="PurchasedAccessory" EntitySet="PurchasedAccessory" />
@@ -673,6 +657,10 @@
           <AssociationSet Name="FK__BlockList__idPla__6FE99F9F" Association="ExamExplotionDBModel.FK__BlockList__idPla__6FE99F9F">
             <End Role="Player" EntitySet="Player" />
             <End Role="BlockList" EntitySet="BlockList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlayersByGame_Users" Association="ExamExplotionDBModel.FK_PlayersByGame_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PlayersByGame" EntitySet="PlayersByGame" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="BlockList">
@@ -706,6 +694,18 @@
             </Principal>
             <Dependent Role="BlockList">
               <PropertyRef Name="idPlayer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlayersByGame_Users">
+          <End Type="ExamExplotionDBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="ExamExplotionDBModel.PlayersByGame" Role="PlayersByGame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="PlayersByGame">
+              <PropertyRef Name="playerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

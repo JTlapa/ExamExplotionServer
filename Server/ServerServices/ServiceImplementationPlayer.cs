@@ -77,5 +77,10 @@ namespace ServerService
         {
             return PlayerManagerDB.UpdateScore(userId, newScore);
         }
+
+        bool IPlayerManager.AddWin(int userId)
+        {
+            return PlayerManagerDB.AddWin(userId);
+        }
     }
 }

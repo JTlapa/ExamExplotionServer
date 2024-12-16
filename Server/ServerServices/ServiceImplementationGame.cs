@@ -317,8 +317,22 @@ namespace ServerService
 
         private void SaveWinner(string gameCode, string winnerGamertag)
         {
-            int userId = PlayerManagerDB.GetPlayerByGamertag(winnerGamertag).userId;
+            int userId = -1;
+            if (!winnerGamertag.StartsWith("GUEST"))
+            {
+                userId = PlayerManagerDB.GetPlayerByGamertag(winnerGamertag).userId;
+            }
+            else
+            {
+                int guestId = int.Parse(winnerGamertag.Substring(6));
+                userId = GuestManagerDB.GetUserIdByGuestId(guestId);
+            }
             GameManagerDB.UpdateWinner(gameCode, userId);
+            if (!winnerGamertag.StartsWith("GUEST"))
+            {
+                PlayerManagerDB.UpdateScore(userId, 100);
+                PlayerManagerDB.AddWin(userId);
+            }
         }
 
         public void SendExamBomb(string gameCode, int gameDeckCount)
@@ -348,11 +362,21 @@ namespace ServerService
 
         public void AddPlayersToGame(List<string> playerGamertags, string gameCode)
         {
+            int userId = -1;
             int gameId = GetGameId(gameCode);
-            foreach (var palyerGamertag in playerGamertags)
+            foreach (var playerGamertag in playerGamertags)
             {
-                var player = PlayerManagerDB.GetPlayerByGamertag(palyerGamertag);
-                PlayersByGameManagerDB.AddPlayerToGame(gameId, player.userId);
+                if (playerGamertag.StartsWith("GUEST"))
+                {
+                    int guestId = int.Parse(playerGamertag.Substring(6));
+                    userId = GuestManagerDB.GetUserIdByGuestId(guestId);
+                }
+                else
+                {
+                    var player = PlayerManagerDB.GetPlayerByGamertag(playerGamertag);
+                    userId = player.userId;
+                }
+                PlayersByGameManagerDB.AddPlayerToGame(gameId, userId);
             }
         }
 
