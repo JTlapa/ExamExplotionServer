@@ -51,7 +51,7 @@ namespace DataAccess.EntitiesManager
             }
             return idBlockAdded;
         }
-        private static bool IsPlayerBlocked(BlockList blockList)
+        public static bool IsPlayerBlocked(BlockList blockList)
         {
             bool isBlocked = false;
             try

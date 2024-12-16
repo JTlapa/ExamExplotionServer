@@ -83,7 +83,41 @@ namespace DataAccess.EntitiesManager
 
             return playerIds;
         }
+        public static List<int> GetAccountsIdByPlayerId(List<int> playersId)
+        {
+            List<int> accountsId = new List<int>();
 
+            try
+            {
+                using (var context = new ExamExplotionDBEntities())
+                {
+                    foreach(int playerId in playersId)
+                    {
+                        var accountId = context.Player
+                                        .Where(p => p.userId == playerId)
+                                        .Select(p => p.accountId)
+                                        .FirstOrDefault();
+                        if(accountId > 0)
+                        {
+                            accountsId.Add((int)accountId);
+                        }
+                    }
+                }
+            }
+            catch (SqlException sqlException)
+            {
+                log.Error(sqlException);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                log.Warn(invalidOperationException);
+            }
+            catch (EntityException entityException)
+            {
+                log.Error(entityException);
+            }
+            return accountsId;
+        }
 
     }
 }

@@ -166,6 +166,13 @@ namespace ServerService
         [OperationContract]
         List<int> GetGamePlayers(int gameId);
 
+        /// <summary>
+        /// Obtener todos los accountsids de los players de una partida
+        /// </summary>
+        /// <param name="playersId">Lista de playersId</param>
+        /// <returns>lista de ints con los ids de los jugadores</returns>
+        [OperationContract]
+        List<int> GetAccountsIdByPlayerId(List<int> playersId);
 
         /// <summary>
         /// Obtener el id de un game por su gameCode

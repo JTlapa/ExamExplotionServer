@@ -384,6 +384,10 @@ namespace ServerService
         {
             return PlayersByGameManagerDB.GetGamePlayersId(gameId);
         }
+        public List<int> GetAccountsIdByPlayerId(List<int> playersId)
+        {
+            return PlayersByGameManagerDB.GetAccountsIdByPlayerId(playersId);
+        }
 
         public int GetGameId(string gameCode)
         {
