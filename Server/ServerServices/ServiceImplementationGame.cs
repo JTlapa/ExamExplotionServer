@@ -320,18 +320,25 @@ namespace ServerService
             int userId = -1;
             if (!winnerGamertag.StartsWith("GUEST"))
             {
-                userId = PlayerManagerDB.GetPlayerByGamertag(winnerGamertag).userId;
+                var playerObtained = PlayerManagerDB.GetPlayerByGamertag(winnerGamertag);
+                if(playerObtained != null)
+                {
+                    userId = playerObtained.userId;
+                }
             }
             else
             {
                 int guestId = int.Parse(winnerGamertag.Substring(6));
                 userId = GuestManagerDB.GetUserIdByGuestId(guestId);
             }
-            GameManagerDB.UpdateWinner(gameCode, userId);
-            if (!winnerGamertag.StartsWith("GUEST"))
+            if (userId > 0)
             {
-                PlayerManagerDB.UpdateScore(userId, 100);
-                PlayerManagerDB.AddWin(userId);
+                GameManagerDB.UpdateWinner(gameCode, userId);
+                if (!winnerGamertag.StartsWith("GUEST"))
+                {
+                    PlayerManagerDB.UpdateScore(userId, 100);
+                    PlayerManagerDB.AddWin(userId);
+                }
             }
         }
 
