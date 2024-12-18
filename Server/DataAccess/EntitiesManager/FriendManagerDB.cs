@@ -89,7 +89,7 @@ namespace DataAccess.EntitiesManager
             BlockList blockList = new BlockList();
             blockList.idPlayer = friend.playerId1;
             blockList.blockedPlayer = friend.playerId2;
-            if (!ArePlayersFriends(friend) || !BlockListManagerDB.IsPlayerBlocked(blockList))
+            if (!ArePlayersFriends(friend) && !BlockListManagerDB.IsPlayerBlocked(blockList))
             {
                 try
                 {
