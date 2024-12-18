@@ -403,5 +403,22 @@ namespace ServerService
         {
             return GameManagerDB.GetGameId(gameCode);
         }
+
+        public void DisconnectGame(string gameCode, string gamertag)
+        {
+            if (gameConnections.ContainsKey(gameCode) && gameConnections[gameCode].ContainsKey(gamertag))
+            {
+                if (gameConnections[gameCode].Count == 1)
+                {
+                    GameManagerDB.DeleteGame(gameCode);
+                    Console.WriteLine("Juego terminado por falta de jugadores");
+                }
+                RemovePlayerByGame(gameCode, gamertag);
+                gameConnections[gameCode].Remove(gamertag);
+                playerStatus[gameCode].Remove(gamertag);
+                Console.WriteLine($"{gamertag} se ha desconectado");
+                
+            }
+        }
     }
 }
