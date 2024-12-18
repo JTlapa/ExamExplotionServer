@@ -54,14 +54,13 @@ namespace ServerService
                     playerDeck.Add(card);
                 }
                 playerDecks[i] = playerDeck;
-                Console.WriteLine($"Se repartio a {i}");
             }
             Stack<CardManagement> finalGameDeck = FinalizeGameDeck(gameDeck, playerCount);
             if (gameConnections.ContainsKey(gameCode))
             {
                 int index = 0;
-                var playersInGame = gameConnections[gameCode];
-                foreach (var player in playersInGame)
+                var playesInTheGame = gameConnections[gameCode];
+                foreach (var player in playesInTheGame)
                 {
                     player.Value.RecivePlayerAndGameDeck(finalGameDeck, playerDecks[index]);
                     index++;
@@ -73,8 +72,8 @@ namespace ServerService
         {
             if (gameConnections.ContainsKey(gameCode))
             {
-                var playersInGame = gameConnections[gameCode];
-                foreach (var player in playersInGame)
+                var playesInTheGame = gameConnections[gameCode];
+                foreach (var player in playesInTheGame)
                 {
                     player.Value.ReceiveGameDeck(gameDeck);
                 }
@@ -125,7 +124,7 @@ namespace ServerService
         }
         public void InitializeGameTurns(string gameCode, List<string> gamertags)
         {
-            playersInGame[gameCode] = gamertags.OrderBy(_ => Guid.NewGuid()).ToList();
+            this.playersInGame[gameCode] = gamertags.OrderBy(_ => Guid.NewGuid()).ToList();
             var firstPlayer = playersInGame[gameCode].First();
             currentTurnByGame[gameCode] = firstPlayer;
             turnTransitionState[gameCode] = false;
@@ -136,8 +135,8 @@ namespace ServerService
         {
                 if (gameConnections.ContainsKey(gameCode))
                 {
-                    var playersInGame = gameConnections[gameCode];
-                    foreach (var player in playersInGame)
+                    var playesInTheGame = gameConnections[gameCode];
+                    foreach (var player in playesInTheGame)
                     {
                         player.Value.UpdateCurrentTurn(nextGametag);
                         player.Value.SyncTimer();
@@ -154,6 +153,11 @@ namespace ServerService
                 {
                     var players = playersInGame[gameCode];
                     int currentIndex = players.IndexOf(currentGamertag);
+
+                    foreach(var p in players)
+                    {
+                        Console.WriteLine(p);
+                    }
 
                     int nextIndex = (currentIndex + 1) % players.Count;
                     var nextGametag = players[nextIndex];
@@ -204,8 +208,8 @@ namespace ServerService
         {
             if (gameConnections.ContainsKey(gameCode))
             {
-                var playersInGame = gameConnections[gameCode];
-                foreach (var player in playersInGame)
+                var playesInTheGame = gameConnections[gameCode];
+                foreach (var player in playesInTheGame)
                 {
                     if(player.Key != gamertag)
                     {
@@ -219,8 +223,8 @@ namespace ServerService
         {
             if(gameConnections.ContainsKey(gameCode))
             {
-                var playersInGame = gameConnections[gameCode];
-                foreach (var player in playersInGame)
+                var playesInTheGame = gameConnections[gameCode];
+                foreach (var player in playesInTheGame)
                 {
                     player.Value.PrintCardOnBoard(path);
                 }
@@ -231,8 +235,8 @@ namespace ServerService
         {
             if (gameConnections.ContainsKey(gameCode))
             {
-                var playersInGame = gameConnections[gameCode];
-                foreach (var player in playersInGame)
+                var playesInTheGame = gameConnections[gameCode];
+                foreach (var player in playesInTheGame)
                 {
                     if (player.Key.Equals(playerRequested))
                     {
@@ -246,8 +250,8 @@ namespace ServerService
         {
             if (gameConnections.ContainsKey(gameCode))
             {
-                var playersInGame = gameConnections[gameCode];
-                foreach (var player in playersInGame)
+                var playesInTheGame = gameConnections[gameCode];
+                foreach (var player in playesInTheGame)
                 {
                     if (player.Key.Equals(playerRequesting))
                     {
@@ -260,10 +264,10 @@ namespace ServerService
         {
             if (gameConnections.ContainsKey(gameCode))
             {
-                var playersInGame = gameConnections[gameCode];
+                var playesInTheGame = gameConnections[gameCode];
                 if(gamertagDestination == "all")
                 {
-                    foreach (var player in playersInGame)
+                    foreach (var player in playesInTheGame)
                     {
                         if (player.Key != gamertagOrigin)
                         {
@@ -275,7 +279,7 @@ namespace ServerService
                 {
                     if (playersInGame.ContainsKey(gamertagDestination))
                     {
-                        playersInGame[gamertagDestination].ReciveNotification(message);
+                        playesInTheGame[gamertagDestination].ReciveNotification(message);
                     }
                 }
             }
@@ -305,8 +309,8 @@ namespace ServerService
             }
             if (gameConnections.ContainsKey(gameCode))
             {
-                var playersInGame = gameConnections[gameCode];
-                foreach (var player in playersInGame)
+                var playesInTheGame = gameConnections[gameCode];
+                foreach (var player in playesInTheGame)
                 {
                     player.Value.EndTheGame(gameCode, winnerGamertag);
                 }
@@ -347,8 +351,8 @@ namespace ServerService
             int index = random.Next(0, gameDeckCount);
             if (gameConnections.ContainsKey(gameCode))
             {
-                var playersInGame = gameConnections[gameCode];
-                foreach (var player in playersInGame)
+                var playesInTheGame = gameConnections[gameCode];
+                foreach (var player in playesInTheGame)
                 {
                     player.Value.ReciveAndAddExamBomb(index);
                 }

@@ -244,10 +244,23 @@ namespace ServerService
         /// <param name="card">Carta recibida por el jugador.</param>
         [OperationContract(IsOneWay = true)]
         void NotifyCardReceived(CardManagement card);
+        /// <summary>
+        /// Notifica al cliente que ha recibido una notificación para ser mostrada.
+        /// </summary>
+        /// <param name="message">Mensaje recibido.</param>
         [OperationContract(IsOneWay = true)]
         void ReciveNotification(string message);
+        /// <summary>
+        /// Notifica al cliente que ya concluyó la partida.
+        /// </summary>
+        /// <param name="gameCode">Código de la partida en la que se encuentra el jugador.</param>
+        /// <param name="winnerGamertag">Gamertag del jugador que ganó.</param>
         [OperationContract(IsOneWay = true)]
         void EndTheGame(string gameCode, string winnerGamertag);
+        /// <summary>
+        /// Notifica al cliente que se debe reinsertar el ExamBomb en la baraja del juego.
+        /// </summary>
+        /// <param name="index">Índice generado aleatoriamente por el server para insertar en esa posición la carta.</param>
         [OperationContract(IsOneWay = true)]
         void ReciveAndAddExamBomb(int index);
     }
