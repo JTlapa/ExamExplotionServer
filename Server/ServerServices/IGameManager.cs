@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using DataAccess.EntitiesManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -181,6 +182,14 @@ namespace ServerService
         /// <returns>id de game</returns>
         [OperationContract]
         int GetGameId(string gameCode);
+
+        /// <summary>
+        /// Desconectar a un jugador de los diccionarios del juego actual
+        /// </summary>
+        /// <param name="gameCode">Codigo de partida</param>
+        /// <param name="gamertag">Gamertag a desconectar</param>
+        [OperationContract(IsOneWay = true)]
+        void DisconnectGame(string gameCode, string gamertag);
     }
 
     /// <summary>
