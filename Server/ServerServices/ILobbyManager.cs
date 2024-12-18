@@ -76,8 +76,8 @@ namespace ServerService
         /// Inicia el juego dentro de un lobby.
         /// </summary>
         /// <param name="lobbyCode">Código único del lobby donde se inicia el juego.</param>
-        [OperationContract(IsOneWay = true)]
-        void PlayGame(string lobbyCode);
+        [OperationContract]
+        bool PlayGame(string lobbyCode);
     }
 
     /// <summary>

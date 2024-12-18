@@ -17,6 +17,7 @@ namespace ServerService
         private static Dictionary<string, Dictionary<string, IGameConnectionCallback>> gameConnections = new Dictionary<string, Dictionary<string, IGameConnectionCallback>>();
         private static Dictionary<string, bool> turnTransitionState = new Dictionary<string, bool>();
         private static Dictionary<string, List<string>> doubleTurns = new Dictionary<string, List<string>>();
+        private static Dictionary<string, bool> deckInitialized = new Dictionary<string, bool>();
         public void InitializeDeck(string gameCode, int playerCount, string gamertag)
         {
             List<CardManagement> cards = new List<CardManagement>();
@@ -64,6 +65,10 @@ namespace ServerService
                 {
                     player.Value.RecivePlayerAndGameDeck(finalGameDeck, playerDecks[index]);
                     index++;
+                }
+                if (!deckInitialized.ContainsKey(gameCode))
+                {
+                    deckInitialized[gameCode] = true;
                 }
             }
         }
@@ -193,6 +198,7 @@ namespace ServerService
         }
         public bool ConnectGame(string gameCode, string gamertag)
         {
+            
             var callback = OperationContext.Current.GetCallbackChannel<IGameConnectionCallback>();
             bool connected = false;
             if (!gameConnections.ContainsKey(gameCode))
@@ -201,6 +207,10 @@ namespace ServerService
             } 
             gameConnections[gameCode][gamertag] = callback;
             connected = true;
+            if (deckInitialized.ContainsKey(gameCode) && deckInitialized[gameCode] == true)
+            {
+                connected = false;
+            }
             return connected;
         }
 

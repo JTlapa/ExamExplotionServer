@@ -155,12 +155,13 @@ namespace ServerService
             }
         }
 
-        public void PlayGame(string lobbyCode)
+        public bool PlayGame(string lobbyCode)
         {
             foreach (var player in lobbyConnections[lobbyCode])
             {
                 player.Value.StartGame(playerStatus[lobbyCode]);
             }
+            return true;
         }
     }
 }
