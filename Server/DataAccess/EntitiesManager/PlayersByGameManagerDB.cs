@@ -50,7 +50,10 @@ namespace DataAccess.EntitiesManager
             {
                 log.Error(entityException);
             }
-
+            catch (Exception exception)
+            {
+                log.Error(exception);
+            }
             return playerAdded;
         }
 
@@ -80,7 +83,10 @@ namespace DataAccess.EntitiesManager
             {
                 log.Error(entityException);
             }
-
+            catch (Exception exception)
+            {
+                log.Error(exception);
+            }
             return playerIds;
         }
         public static List<int> GetAccountsIdByPlayerId(List<int> playersId)
@@ -115,6 +121,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             return accountsId;
         }

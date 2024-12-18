@@ -37,14 +37,22 @@ namespace DataAccess.EntitiesManager
             catch (SqlException sqlException)
             {
                 log.Error(sqlException);
+                idAccount = -3;
             }
             catch (InvalidOperationException invalidOperationException)
             {
                 log.Warn(invalidOperationException);
+                idAccount = -3;
             }
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+                idAccount = -3;
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
+                idAccount = -3;
             }
             return idAccount;
         }
@@ -80,6 +88,10 @@ namespace DataAccess.EntitiesManager
             {
                 log.Error(entityException);
             }
+            catch (Exception exception)
+            {
+                log.Error(exception);
+            }
             return idAccount;
         }
         public static bool UpdatePassword(Account account)
@@ -112,12 +124,16 @@ namespace DataAccess.EntitiesManager
             {
                 log.Error(entityException);
             }
+            catch (Exception exception)
+            {
+                log.Error(exception);
+            }
             return passwordUpdated;
         }
 
-        public static bool VerifyExistingGamertag(string gamertag)
+        public static int VerifyExistingGamertag(string gamertag)
         {
-            bool gamertagExists = false;
+            int gamertagExists = 0;
             try
             {
                 using (var context = new ExamExplotionDBEntities())
@@ -125,27 +141,35 @@ namespace DataAccess.EntitiesManager
                     var account = context.Account.FirstOrDefault(a => a.gamertag == gamertag);
                     if (account != null)
                     {
-                        gamertagExists = true;
+                        gamertagExists = 1;
                     }
                 }
             }
             catch (SqlException sqlException)
             {
                 log.Error(sqlException);
+                gamertagExists = 2;
             }
             catch (InvalidOperationException invalidOperationException)
             {
                 log.Warn(invalidOperationException);
+                gamertagExists = 2;
             }
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+                gamertagExists = 2;
+            }
+            catch(Exception exception)
+            {
+                log.Error(exception);
+                gamertagExists = 2;
             }
             return gamertagExists;
         }
-        public static bool VerifyExistingEmail(string email)
+        public static int VerifyExistingEmail(string email)
         {
-            bool emailExists = false;
+            int emailExists = 0;
             try
             {
                 using (var context = new ExamExplotionDBEntities())
@@ -153,21 +177,29 @@ namespace DataAccess.EntitiesManager
                     var account = context.Account.FirstOrDefault(a => a.email == email);
                     if (account != null)
                     {
-                        emailExists = true;
+                        emailExists = 1;
                     }
                 }
             }
             catch (SqlException sqlException)
             {
                 log.Error(sqlException);
+                emailExists = 2;
             }
             catch (InvalidOperationException invalidOperationException)
             {
                 log.Warn(invalidOperationException);
+                emailExists = 2;
             }
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+                emailExists = 2;
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
+                emailExists = 2;
             }
             return emailExists;
         }
@@ -197,6 +229,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             return accountId;
         }
@@ -228,6 +264,10 @@ namespace DataAccess.EntitiesManager
             {
                 log.Error(entityException);
             }
+            catch (Exception exception)
+            {
+                log.Error(exception);
+            }
             return accountDeactivated;
         }
 
@@ -256,6 +296,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             return gamertag;
         }

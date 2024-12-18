@@ -303,8 +303,6 @@ namespace ServerService
             {
                 winnerGamertag = playersInGame[gameCode][0];
             }
-            SaveWinner(gameCode, winnerGamertag);
-
             if (gameConnections.ContainsKey(gameCode))
             {
                 var playersInGame = gameConnections[gameCode];
@@ -313,6 +311,7 @@ namespace ServerService
                     player.Value.EndTheGame(gameCode, winnerGamertag);
                 }
             }
+            SaveWinner(gameCode, winnerGamertag);
         }
 
         private void SaveWinner(string gameCode, string winnerGamertag)

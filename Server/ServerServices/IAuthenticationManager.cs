@@ -19,28 +19,28 @@ namespace ServerService
         int Login(AccountManagement account);
 
         /// <summary>
+        /// Verifica si un gamertag ya está registrado en el sistema.
+        /// </summary>
+        /// <param name="gamertag">Gamertag a verificar.</param>
+        /// <returns>1 si existe, 0 si no y 2 en caso de alguna excepcion presentada en la BD</returns>
+        [OperationContract]
+        int VerifyExistingGamertag(string gamertag);
+
+        /// <summary>
+        /// Verifica si un correo electrónico ya está registrado en el sistema.
+        /// </summary>
+        /// <param name="email">Correo electrónico a verificar.</param>
+        /// <returns>1 si existe, 0 si no y 2 en caso de alguna excepcion presentada en la BD</returns>
+        [OperationContract]
+        int VerifyExistingEmail(string email);
+
+        /// <summary>
         /// Registra una nueva cuenta en el sistema.
         /// </summary>
         /// <param name="account">Objeto <see cref="AccountManagement"/> con los detalles de la cuenta a registrar.</param>
         /// <returns>Verdadero si la cuenta fue registrada exitosamente; falso en caso contrario.</returns>
         [OperationContract]
         bool AddAccount(AccountManagement account);
-
-        /// <summary>
-        /// Verifica si un gamertag ya está registrado en el sistema.
-        /// </summary>
-        /// <param name="gamertag">Gamertag a verificar.</param>
-        /// <returns>Verdadero si el gamertag ya existe; falso en caso contrario.</returns>
-        [OperationContract]
-        bool VerifyExistingGamertag(string gamertag);
-
-        /// <summary>
-        /// Verifica si un correo electrónico ya está registrado en el sistema.
-        /// </summary>
-        /// <param name="email">Correo electrónico a verificar.</param>
-        /// <returns>Verdadero si el correo ya existe; falso en caso contrario.</returns>
-        [OperationContract]
-        bool VerifyExistingEmail(string email);
 
         /// <summary>
         /// Actualiza la contraseña de una cuenta.

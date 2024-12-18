@@ -41,6 +41,10 @@ namespace DataAccess.EntitiesManager
             {
                 log.Error(entityException);
             }
+            catch (Exception exception)
+            {
+                log.Error(exception);
+            }
             return guestNumber;
         }
 
@@ -69,6 +73,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             return userId;
         }

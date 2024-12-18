@@ -70,12 +70,12 @@ namespace ServerService
             return AccountManagerDB.UpdatePassword(accountToUpdate);
         }
 
-        public bool VerifyExistingEmail(string email)
+        public int VerifyExistingEmail(string email)
         {
             return AccountManagerDB.VerifyExistingEmail(email);
         }
 
-        public bool VerifyExistingGamertag(string gamertag)
+        public int VerifyExistingGamertag(string gamertag)
         {
             return AccountManagerDB.VerifyExistingGamertag(gamertag);
         }

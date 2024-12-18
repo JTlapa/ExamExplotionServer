@@ -39,6 +39,10 @@ namespace DataAccess.EntitiesManager
             {
                 log.Error(entityException);
             }
+            catch (Exception exception)
+            {
+                log.Error(exception);
+            }
             return friendsId;
         }
         public static Dictionary<int, string> GetFriendsGamertags(int playerId)
@@ -72,6 +76,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             return friendsGamertags;
         }
@@ -107,6 +115,10 @@ namespace DataAccess.EntitiesManager
                 {
                     log.Error(entityException);
                 }
+                catch (Exception exception)
+                {
+                    log.Error(exception);
+                }
             }
             else
             {
@@ -137,6 +149,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             return areFriends;
         }
@@ -170,6 +186,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             return removed;
         }

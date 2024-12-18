@@ -42,6 +42,10 @@ namespace DataAccess.EntitiesManager
             {
                 log.Error(entityException);
             }
+            catch (Exception exception)
+            {
+                log.Error(exception);
+            }
             return purchasedAccessoryAdded;
         }
 
@@ -70,6 +74,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             PlayerManagerDB.UpdateScore(purchasedAccessory.playerId, amount);
         }
@@ -101,6 +109,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             return purchasedAccessoryUpdated;
         }
@@ -136,6 +148,10 @@ namespace DataAccess.EntitiesManager
                 {
                     log.Error(entityException);
                 }
+                catch (Exception exception)
+                {
+                    log.Error(exception);
+                }
             }
             return purchasedAccessoryUpdated;
         }
@@ -160,6 +176,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             return purchasedAccessoriesIds;
         }
@@ -191,6 +211,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             return accessory;
         }

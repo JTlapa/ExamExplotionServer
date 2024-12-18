@@ -44,6 +44,10 @@ namespace DataAccess.EntitiesManager
                 {
                     log.Error(entityException);
                 }
+                catch (Exception exception)
+                {
+                    log.Error(exception);
+                }
             }
             else
             {
@@ -74,6 +78,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             return isBlocked;
         }
@@ -109,6 +117,10 @@ namespace DataAccess.EntitiesManager
             {
                 log.Error(entityException);
             }
+            catch (Exception exception)
+            {
+                log.Error(exception);
+            }
             return blockedGamertags;
         }
         public static bool RemoveBlockList(BlockList blockList)
@@ -141,6 +153,10 @@ namespace DataAccess.EntitiesManager
             catch (EntityException entityException)
             {
                 log.Error(entityException);
+            }
+            catch (Exception exception)
+            {
+                log.Error(exception);
             }
             return isRemoved;
         }

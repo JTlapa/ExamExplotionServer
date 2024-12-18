@@ -39,7 +39,10 @@ namespace DataAccess.EntitiesManager
             {
                 log.Error(entityException);
             }
-
+            catch (Exception exception)
+            {
+                log.Error(exception);
+            }
             return idAccount;
         }
     }
