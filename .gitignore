@@ -17,12 +17,6 @@ bld/
 [Bb]in/
 [Oo]bj/
 
-# Entity Framework
-*.tt                # Ignorar plantillas T4 (generadas)
-*.edmx.diagram       # Ignorar archivos de diagramas
-*.Designer.cs        # Ignorar archivos de diseñador generados automáticamente
-
-
 # NuGet
 *.nupkg
 # NuGet Packages
@@ -102,3 +96,6 @@ $RECYCLE.BIN/
 *.testsettings
 *.vsmdi
 TestResults/
+
+#SonarQube
+Server/.sonarqube

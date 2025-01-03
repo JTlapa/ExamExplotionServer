@@ -17,11 +17,20 @@ namespace DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Player()
         {
+<<<<<<< HEAD
             this.PurchasedAccessory = new HashSet<PurchasedAccessory>();
             this.Report = new HashSet<Report>();
             this.Player1 = new HashSet<Player>();
             this.Player2 = new HashSet<Player>();
             this.Game = new HashSet<Game>();
+=======
+            this.Friend = new HashSet<Friend>();
+            this.Friend1 = new HashSet<Friend>();
+            this.PurchasedAccessory = new HashSet<PurchasedAccessory>();
+            this.Report = new HashSet<Report>();
+            this.BlockList = new HashSet<BlockList>();
+            this.BlockList1 = new HashSet<BlockList>();
+>>>>>>> f796509853e9a2b1f8b30832f75c8529577581bf
         }
     
         public int userId { get; set; }
@@ -30,16 +39,29 @@ namespace DataAccess
         public int accountId { get; set; }
     
         public virtual Account Account { get; set; }
+<<<<<<< HEAD
+=======
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Friend> Friend { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Friend> Friend1 { get; set; }
+>>>>>>> f796509853e9a2b1f8b30832f75c8529577581bf
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchasedAccessory> PurchasedAccessory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Report> Report { get; set; }
         public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+<<<<<<< HEAD
         public virtual ICollection<Player> Player1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Player> Player2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Game> Game { get; set; }
+=======
+        public virtual ICollection<BlockList> BlockList { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BlockList> BlockList1 { get; set; }
+>>>>>>> f796509853e9a2b1f8b30832f75c8529577581bf
     }
 }

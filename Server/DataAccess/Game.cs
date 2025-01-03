@@ -17,7 +17,11 @@ namespace DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Game()
         {
+<<<<<<< HEAD
             this.Player = new HashSet<Player>();
+=======
+            this.PlayersByGame = new HashSet<PlayersByGame>();
+>>>>>>> f796509853e9a2b1f8b30832f75c8529577581bf
         }
     
         public int gameId { get; set; }
@@ -32,6 +36,6 @@ namespace DataAccess
         public virtual Users Users { get; set; }
         public virtual Users Users1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Player> Player { get; set; }
+        public virtual ICollection<PlayersByGame> PlayersByGame { get; set; }
     }
 }

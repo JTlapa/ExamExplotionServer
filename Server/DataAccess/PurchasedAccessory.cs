@@ -17,6 +17,10 @@ namespace DataAccess
         public int playerId { get; set; }
         public int accessoryId { get; set; }
         public Nullable<bool> inUse { get; set; }
+<<<<<<< HEAD
+=======
+        public int PurchasedAccessoryId { get; set; }
+>>>>>>> f796509853e9a2b1f8b30832f75c8529577581bf
     
         public virtual Accessory Accessory { get; set; }
         public virtual Player Player { get; set; }

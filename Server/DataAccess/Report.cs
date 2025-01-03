@@ -16,6 +16,10 @@ namespace DataAccess
     {
         public int idPlayerReported { get; set; }
         public int amount { get; set; }
+<<<<<<< HEAD
+=======
+        public int reportId { get; set; }
+>>>>>>> f796509853e9a2b1f8b30832f75c8529577581bf
     
         public virtual Player Player { get; set; }
     }
