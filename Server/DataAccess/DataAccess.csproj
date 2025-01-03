@@ -76,10 +76,8 @@
     <Compile Include="Account.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="EntitiesManager\AccountManagerDB.cs" />
     <Compile Include="EntitiesManager\PlayerManagerDB.cs" />
-=======
     <Compile Include="BlockList.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -96,16 +94,13 @@
     <Compile Include="Friend.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
->>>>>>> f796509853e9a2b1f8b30832f75c8529577581bf
     <Compile Include="Game.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Guest.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="ExamExplotionDB.cs" />
-=======
     <Compile Include="Helpers\PasswordEncryptor.cs" />
     <Compile Include="Model1.Context.cs">
       <AutoGen>True</AutoGen>
@@ -117,7 +112,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
->>>>>>> f796509853e9a2b1f8b30832f75c8529577581bf
     <Compile Include="Model1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -126,12 +120,9 @@
     <Compile Include="Player.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-<<<<<<< HEAD
-=======
     <Compile Include="PlayersByGame.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
->>>>>>> f796509853e9a2b1f8b30832f75c8529577581bf
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchasedAccessory.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -144,13 +135,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <None Include="App.config" />
-=======
     <None Include="App.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
->>>>>>> f796509853e9a2b1f8b30832f75c8529577581bf
     <EntityDeploy Include="Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -161,11 +149,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <WCFMetadata Include="Connected Services\" />
-=======
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
->>>>>>> f796509853e9a2b1f8b30832f75c8529577581bf
   </ItemGroup>
   <ItemGroup>
     <Content Include="Model1.Context.tt">
@@ -179,12 +164,9 @@
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
   </ItemGroup>
-<<<<<<< HEAD
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-=======
->>>>>>> f796509853e9a2b1f8b30832f75c8529577581bf
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
