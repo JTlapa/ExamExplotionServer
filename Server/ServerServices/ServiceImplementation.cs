@@ -1,6 +1,12 @@
 ﻿using DataAccess;
 using DataAccess.EntitiesManager;
+<<<<<<< HEAD
 using ServerServices;
+=======
+using System;
+using System.Collections.Generic;
+using System.ServiceModel;
+>>>>>>> 754b0ba372397191d518c9a129b79cc74768fad3
 
 namespace ServerService
 {
@@ -45,6 +51,31 @@ namespace ServerService
         bool IPlayerManager.UpdateScore(int userId, int newScore)
         {
             return PlayerManagerDB.UpdateScore(userId, newScore);
+    public partial class ServiceImplementation : ILobbyManager
+    {
+        private static Dictionary<string, ILobbyConnectionCallback> connectedUsers = new Dictionary<string, ILobbyConnectionCallback>();
+
+        public bool Connect(string gamertag)
+        {
+            var callback = OperationContext.Current.GetCallbackChannel<ILobbyConnectionCallback>();
+
+            if (!connectedUsers.ContainsKey(gamertag))
+            {
+                connectedUsers.Add(gamertag, callback);
+                Console.WriteLine($"{gamertag} conectado.");
+                return true;
+            }
+
+            return false;
+        }
+
+        public void SendMessage(string gamertag, string message)
+        {
+            foreach (var client in connectedUsers.Values)
+            {
+                client.ReceiveMessage(gamertag, message);
+            }
+>>>>>>> 754b0ba372397191d518c9a129b79cc74768fad3
         }
     }
 }

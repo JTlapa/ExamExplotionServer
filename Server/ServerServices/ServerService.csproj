@@ -48,6 +48,7 @@
     <Compile Include="IGameManager.cs" />
     <Compile Include="IPlayerManager.cs" />
     <Compile Include="IReportManager.cs" />
+    <Compile Include="ILobbyManager.cs" />
     <Compile Include="ServiceImplementation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
